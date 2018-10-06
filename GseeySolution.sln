@@ -3,53 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 Framework", "0 Framework", "{343964A7-791B-42AD-AD4F-1477891F47A6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Services", "1 Services", "{2441BB35-342D-41B0-912D-33A2C2122D92}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.Common", "Gseey.Framework.Common\Gseey.Framework.Common.csproj", "{284A0B48-D91D-4AE8-8349-AD2253C8F70B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.DataBase", "Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj", "{6855CC71-8C8E-44AF-A131-A6F4B1919153}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 Interfaces", "2 Interfaces", "{6F465952-5C2F-4C6D-9207-64D27CF291E4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 UIs", "3 UIs", "{932701DB-A9AC-4C73-9CB0-2775E0918FCF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.MessageQueue", "Gseey.Framework.MessageQueue\Gseey.Framework.MessageQueue.csproj", "{74C81FAA-DEDB-40A6-BC9F-B35A1918017A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.Middleware", "Gseey.Framework.Middleware\Gseey.Framework.Middleware.csproj", "{2DC8237B-562D-4EBB-805E-E1564BCA646E}"
-EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{284A0B48-D91D-4AE8-8349-AD2253C8F70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{284A0B48-D91D-4AE8-8349-AD2253C8F70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{284A0B48-D91D-4AE8-8349-AD2253C8F70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{284A0B48-D91D-4AE8-8349-AD2253C8F70B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6855CC71-8C8E-44AF-A131-A6F4B1919153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6855CC71-8C8E-44AF-A131-A6F4B1919153}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6855CC71-8C8E-44AF-A131-A6F4B1919153}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6855CC71-8C8E-44AF-A131-A6F4B1919153}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74C81FAA-DEDB-40A6-BC9F-B35A1918017A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74C81FAA-DEDB-40A6-BC9F-B35A1918017A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74C81FAA-DEDB-40A6-BC9F-B35A1918017A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74C81FAA-DEDB-40A6-BC9F-B35A1918017A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DC8237B-562D-4EBB-805E-E1564BCA646E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DC8237B-562D-4EBB-805E-E1564BCA646E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DC8237B-562D-4EBB-805E-E1564BCA646E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DC8237B-562D-4EBB-805E-E1564BCA646E}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{284A0B48-D91D-4AE8-8349-AD2253C8F70B} = {343964A7-791B-42AD-AD4F-1477891F47A6}
-		{6855CC71-8C8E-44AF-A131-A6F4B1919153} = {343964A7-791B-42AD-AD4F-1477891F47A6}
-		{74C81FAA-DEDB-40A6-BC9F-B35A1918017A} = {343964A7-791B-42AD-AD4F-1477891F47A6}
-		{2DC8237B-562D-4EBB-805E-E1564BCA646E} = {343964A7-791B-42AD-AD4F-1477891F47A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FCF8BEF-F038-44B1-9A89-4D0A66576AEA}
