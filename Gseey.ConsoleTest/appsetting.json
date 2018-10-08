@@ -1,4 +1,9 @@
 {
+  "ConnectionStrings": {
+    "MySqlConnection": "Data Source=.;Database=Zhangtiancai;User ID=root;Password=*;pooling=true;CharSet=utf8;port=3306;sslmode=none",
+    "t1": "fsfsfsd",
+    "t2": "fsfddddddddddddddd"
+  },
   "test": {
     "t1": {
       "t2": "fsfsfsfsd"

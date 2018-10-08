@@ -54,11 +54,11 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 获取连接字符串
         /// </summary>
-        /// <param name="key">配置键</param>
+        /// <param name="name">配置键</param>
         /// <returns></returns>
-        public static string GetConnectionString(string key)
+        public static string GetConnectionString(string name)
         {
-            return config.GetConnectionString(key);
+            return config.GetConnectionString(name);
         }
 
         #endregion
