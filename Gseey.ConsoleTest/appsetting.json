@@ -5,8 +5,13 @@
     "t2": "fsfddddddddddddddd"
   },
   "test": {
+    "t0": "111",
     "t1": {
       "t2": "fsfsfsfsd"
     }
+  },
+  "Redis": {
+    "ConnectionString": "127.0.0.1:6379,abortConnect=false,ConnectTimeout=5000,SyncTimeout=5000",
+    "DefaultKey": "Gseey.ConsoleTest"
   }
 }

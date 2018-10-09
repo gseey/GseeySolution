@@ -16,7 +16,7 @@ namespace Gseey.Framework.Common.Helpers
         {
             var binder = new ConfigurationBuilder();
             binder.SetBasePath(Directory.GetCurrentDirectory());
-            binder.AddJsonFile("appsetting.json", optional: true, reloadOnChange: true);
+            binder.AddJsonFile("appsetting.json", optional: false, reloadOnChange: true);
             config = binder.Build();
         }
 
@@ -32,7 +32,8 @@ namespace Gseey.Framework.Common.Helpers
         /// <returns></returns>
         public static string Get(string key, string defaultValue = "")
         {
-            return config.GetValue<string>(key, defaultValue);
+            var value = config.GetValue(key, defaultValue);
+            return string.IsNullOrEmpty(value) ? config[key] : value;
         }
 
 
@@ -44,7 +45,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <returns></returns>
         public static T Get<T>(string key, T defaultValue = default(T))
         {
-            return config.GetValue<T>(key, defaultValue);
+            return config.GetValue(key, defaultValue);
         }
 
         #endregion

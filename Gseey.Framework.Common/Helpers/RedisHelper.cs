@@ -1,18 +1,13 @@
-﻿using Newtonsoft.Json;
-using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Reflection;
-using System.Text;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace Gseey.Framework.DataBase.Redis
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Redis 助手
     /// http://www.cnblogs.com/liqingwen/p/6672452.html
@@ -62,33 +57,34 @@ namespace Gseey.Framework.DataBase.Redis
             return _connMultiplexer;
         }
 
-        #region 其它
-
+        /// <summary>
+        /// The GetTransaction
+        /// </summary>
+        /// <returns>The <see cref="ITransaction"/></returns>
         public ITransaction GetTransaction()
         {
             return _db.CreateTransaction();
         }
 
-        #endregion 其它
-
-        #region 构造函数
-
+        /// <summary>
+        /// Initializes static members of the <see cref="RedisHelper"/> class.
+        /// </summary>
         static RedisHelper()
         {
-            ConnectionString = ConfigurationManager.ConnectionStrings["RedisConnectionString"].ConnectionString;
+            ConnectionString = ConfigHelper.Get("Redis:ConnectionString");
             _connMultiplexer = ConnectionMultiplexer.Connect(ConnectionString);
-            DefaultKey = ConfigurationManager.AppSettings["Redis.DefaultKey"];
+            DefaultKey = ConfigHelper.Get("Redis:DefaultKey");
             AddRegisterEvent();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RedisHelper"/> class.
+        /// </summary>
+        /// <param name="db">The db<see cref="int"/></param>
         public RedisHelper(int db = -1)
         {
             _db = _connMultiplexer.GetDatabase(db);
         }
-
-        #endregion 构造函数
-
-        #region String 操作
 
         /// <summary>
         /// 设置 key 并保存字符串（如果 key 已存在，则覆盖值）
@@ -130,6 +126,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 存储一个对象（该对象会被序列化保存）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
@@ -144,6 +141,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 获取一个对象（会进行反序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
@@ -152,8 +150,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return Deserialize<T>(_db.StringGet(redisKey));
         }
-
-        #region async
 
         /// <summary>
         /// 保存一个字符串值
@@ -196,6 +192,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 存储一个对象（该对象会被序列化保存）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
@@ -210,6 +207,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 获取一个对象（会进行反序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
@@ -218,12 +216,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return Deserialize<T>(await _db.StringGetAsync(redisKey));
         }
-
-        #endregion async
-
-        #endregion String 操作
-
-        #region Hash 操作
 
         /// <summary>
         /// 判断该字段是否存在 hash 中
@@ -335,6 +327,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在 hash 设定值（序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
@@ -349,6 +342,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在 hash 中获取值（反序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
@@ -357,8 +351,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return Deserialize<T>(_db.HashGet(redisKey, hashField));
         }
-
-        #region async
 
         /// <summary>
         /// 判断该字段是否存在 hash 中
@@ -414,6 +406,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashFields"></param>
+        /// <returns>The <see cref="Task"/></returns>
         public async Task HashSetAsync(string redisKey, IEnumerable<HashEntry> hashFields)
         {
             redisKey = AddKeyPrefix(redisKey);
@@ -470,6 +463,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在 hash 设定值（序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
@@ -484,6 +478,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在 hash 中获取值（反序列化）
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
@@ -492,12 +487,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return Deserialize<T>(await _db.HashGetAsync(redisKey, hashField));
         }
-
-        #endregion async
-
-        #endregion Hash 操作
-
-        #region List 操作
 
         /// <summary>
         /// 移除并返回存储在该键列表的第一个元素
@@ -582,6 +571,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 移除并返回存储在该键列表的第一个元素
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
         public T ListLeftPop<T>(string redisKey)
@@ -593,6 +583,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 移除并返回存储在该键列表的最后一个元素
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
         public T ListRightPop<T>(string redisKey)
@@ -604,6 +595,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在列表尾部插入值。如果键不存在，先创建再插入值
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
@@ -616,6 +608,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在列表头部插入值。如果键不存在，先创建再插入值
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
@@ -624,8 +617,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return _db.ListLeftPush(redisKey, Serialize(redisValue));
         }
-
-        #region List-async
 
         /// <summary>
         /// 移除并返回存储在该键列表的第一个元素
@@ -710,6 +701,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 移除并返回存储在该键列表的第一个元素
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
         public async Task<T> ListLeftPopAsync<T>(string redisKey)
@@ -721,6 +713,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 移除并返回存储在该键列表的最后一个元素
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
         public async Task<T> ListRightPopAsync<T>(string redisKey)
@@ -732,6 +725,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在列表尾部插入值。如果键不存在，先创建再插入值
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
@@ -744,6 +738,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// 在列表头部插入值。如果键不存在，先创建再插入值
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
@@ -752,12 +747,6 @@ namespace Gseey.Framework.DataBase.Redis
             redisKey = AddKeyPrefix(redisKey);
             return await _db.ListLeftPushAsync(redisKey, Serialize(redisValue));
         }
-
-        #endregion List-async
-
-        #endregion List 操作
-
-        #region SortedSet 操作
 
         /// <summary>
         /// SortedSet 新增
@@ -809,6 +798,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// SortedSet 新增
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
@@ -820,8 +810,6 @@ namespace Gseey.Framework.DataBase.Redis
 
             return _db.SortedSetAdd(redisKey, json, score);
         }
-
-        #region SortedSet-Async
 
         /// <summary>
         /// SortedSet 新增
@@ -873,6 +861,7 @@ namespace Gseey.Framework.DataBase.Redis
         /// <summary>
         /// SortedSet 新增
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
@@ -884,12 +873,6 @@ namespace Gseey.Framework.DataBase.Redis
 
             return await _db.SortedSetAddAsync(redisKey, json, score);
         }
-
-        #endregion SortedSet-Async
-
-        #endregion SortedSet 操作
-
-        #region key 操作
 
         /// <summary>
         /// 移除指定 Key
@@ -948,8 +931,6 @@ namespace Gseey.Framework.DataBase.Redis
             return _db.KeyExpire(redisKey, expiry);
         }
 
-        #region key-async
-
         /// <summary>
         /// 移除指定 Key
         /// </summary>
@@ -1007,12 +988,6 @@ namespace Gseey.Framework.DataBase.Redis
             return await _db.KeyExpireAsync(redisKey, expiry);
         }
 
-        #endregion key-async
-
-        #endregion key 操作
-
-        #region 发布订阅
-
         /// <summary>
         /// 订阅
         /// </summary>
@@ -1049,13 +1024,12 @@ namespace Gseey.Framework.DataBase.Redis
             return sub.Publish(channel, Serialize(message));
         }
 
-        #region 发布订阅-async
-
         /// <summary>
         /// 订阅
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="handle"></param>
+        /// <returns>The <see cref="Task"/></returns>
         public async Task SubscribeAsync(RedisChannel channel, Action<RedisChannel, RedisValue> handle)
         {
             var sub = _connMultiplexer.GetSubscriber();
@@ -1087,12 +1061,6 @@ namespace Gseey.Framework.DataBase.Redis
             return await sub.PublishAsync(channel, Serialize(message));
         }
 
-        #endregion 发布订阅-async
-
-        #endregion 发布订阅
-
-        #region private method
-
         /// <summary>
         /// 添加 Key 的前缀
         /// </summary>
@@ -1102,8 +1070,6 @@ namespace Gseey.Framework.DataBase.Redis
         {
             return $"{DefaultKey}:{key}";
         }
-
-        #region 注册事件
 
         /// <summary>
         /// 添加注册事件
@@ -1190,8 +1156,6 @@ namespace Gseey.Framework.DataBase.Redis
             Console.WriteLine($"{nameof(ConnMultiplexer_ConnectionRestored)}: {e.Exception}");
         }
 
-        #endregion 注册事件
-
         /// <summary>
         /// 序列化
         /// </summary>
@@ -1229,7 +1193,5 @@ namespace Gseey.Framework.DataBase.Redis
                 return result;
             }
         }
-
-        #endregion private method
     }
 }

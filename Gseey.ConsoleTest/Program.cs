@@ -8,18 +8,12 @@ namespace Gseey.ConsoleTest
     {
         static void Main(string[] args)
         {
-            var count = 0;
-            while (count<1000)
-            {
-                Thread.Sleep(1000);
-                var confingValue = ConfigHelper.Get("test:t1:t2", "fsfsdfsfsfsdf");
+            //var e1 = ConfigHelper.Get("test:t0");
 
-                Console.WriteLine(confingValue);
-
-                var connectionStr = ConfigHelper.GetConnectionString("t2");
-
-                Console.WriteLine(connectionStr);
-            }
+            RedisHelper redisHelper = new RedisHelper(0);
+            var redisKey = "test";
+            var r1 = redisHelper.StringSet(redisKey, "2131232");
+            var r2 = redisHelper.StringGet(redisKey);
 
             Console.WriteLine("Hello World!");
 

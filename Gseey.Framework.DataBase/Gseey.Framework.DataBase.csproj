@@ -15,4 +15,8 @@
     <Folder Include="EntityFramwork\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+  </ItemGroup>
+
 </Project>
