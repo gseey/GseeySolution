@@ -11,6 +11,10 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            var t1 = EncrtpyHelper.RSAEncrypt("", "test");
+            var t2 = EncrtpyHelper.RSADecrypt("", t1);
+
+
             var h1 = HttpHelper.GetHtml("http://esf.fang.com/chushou/3_417109133.htm?channel=2,2&psid=1_1_70");
             var h2 = HttpHelper.GetHtmlAsync("https://www.cnblogs.com/sunxucool/p/4180375.html").Result;
 
