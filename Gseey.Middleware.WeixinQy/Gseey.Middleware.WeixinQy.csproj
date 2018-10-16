@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Senparc.Weixin" Version="6.1.6.1" />
     <PackageReference Include="Senparc.Weixin.Cache.Redis" Version="2.2.1" />
-    <PackageReference Include="Senparc.Weixin.QY" Version="4.4.1" />
+    <PackageReference Include="Senparc.Weixin.Work" Version="3.1.13.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Service\MessageHandler\" />
   </ItemGroup>
 
 </Project>

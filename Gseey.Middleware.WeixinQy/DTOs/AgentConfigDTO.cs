@@ -15,9 +15,14 @@ namespace Gseey.Middleware.WeixinQy.DTOs
         public int Id { get; set; }
 
         /// <summary>
-        /// 应用密钥
+        /// 企业号appid
         /// </summary>
-        public string Sercet { get; set; }
+        public string CorpId { get; set; }
+
+        /// <summary>
+        /// 应用appsercet
+        /// </summary>
+        public string CorpSercet { get; set; }
 
         /// <summary>
         /// 应用token
@@ -28,5 +33,14 @@ namespace Gseey.Middleware.WeixinQy.DTOs
         /// 应用消息加密串
         /// </summary>
         public string EncodingAESKey { get; set; }
+
+        public AgentConfigDTO()
+        {
+            Id = 6;
+            CorpId = "wx9a80f6e6ed2a89e6";
+            CorpSercet = "KVZ_1nE2thZdbu3kcftpgA5Ld-O3TafmS3AlUtWQeHM";
+            Token = "qygscoy";
+            EncodingAESKey = "FDPibMBM3MExJxBaD9Oe6uaOfsvsjmTQT94f6tt2lJl";
+        }
     }
 }
