@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 Framework", "0 Framework"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 Middleware", "1 Middleware", "{7376D610-FD89-476E-AEF0-8406C63F2830}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 UnitTests", "3 UnitTests", "{A95B0C6D-AAFA-4D7D-BDBD-62AF2551169E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 UnitTests", "4 UnitTests", "{A95B0C6D-AAFA-4D7D-BDBD-62AF2551169E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.Common", "Gseey.Framework.Common\Gseey.Framework.Common.csproj", "{0B3DB851-C9D5-4F25-9D8A-CABD7DD363D1}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Middleware.WeixinQy", "Gseey.Middleware.WeixinQy\Gseey.Middleware.WeixinQy.csproj", "{F63EDACF-37C7-43FE-A522-9E55251D558B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.ConsoleTest", "Gseey.ConsoleTest\Gseey.ConsoleTest.csproj", "{169059C7-8019-4DE4-BDD5-DCA54859A658}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 UserInterface", "3 UserInterface", "{F78D9D0D-FFB4-47EA-8397-FEC5FFBDC469}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
