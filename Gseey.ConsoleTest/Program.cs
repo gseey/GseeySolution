@@ -11,6 +11,11 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            var s1 = ConfigHelper.Get("GseeyConnections:DbConnectionString");
+            var s2 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpId");
+            var s3 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpSercet");
+
+
             var t1 = EncrtpyHelper.RSAEncrypt("", "test");
             var t2 = EncrtpyHelper.RSADecrypt("", t1);
 

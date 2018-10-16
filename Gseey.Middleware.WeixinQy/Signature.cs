@@ -2,7 +2,8 @@
 
 namespace Gseey.Middleware.WeixinQy
 {
-    public class Class1
+    public class Signature
     {
+
     }
 }
