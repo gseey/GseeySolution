@@ -11,13 +11,16 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            var l1 = DateTime.Now.ToUnixTime(true);
+            var t1 = l1.FromUnixTime(true);
+
             var s1 = ConfigHelper.Get("GseeyConnections:DbConnectionString");
             var s2 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpId");
             var s3 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpSercet");
 
 
-            var t1 = EncrtpyHelper.RSAEncrypt("", "test");
-            var t2 = EncrtpyHelper.RSADecrypt("", t1);
+            //var t1 = EncrtpyHelper.RSAEncrypt("", "test");
+            //var t2 = EncrtpyHelper.RSADecrypt("", t1);
 
 
             var h1 = HttpHelper.GetHtml("http://esf.fang.com/chushou/3_417109133.htm?channel=2,2&psid=1_1_70");
