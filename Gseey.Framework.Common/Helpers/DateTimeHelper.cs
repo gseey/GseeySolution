@@ -236,7 +236,7 @@ namespace Gseey.Framework.Common.Helpers
         public static long ToUnixTime(this DateTime localTime, bool IsMilliSecends = false)
         {
             var start = new DateTime(1970, 1, 1, 0, 0, 0, localTime.Kind);
-            var result = 0l;
+            var result = 0L;
             if (IsMilliSecends)
                 result = Convert.ToInt64((localTime - start).TotalMilliseconds);
             else
