@@ -98,7 +98,7 @@ namespace Gseey.Framework.Common.Helpers
             }
             catch (Exception ex)
             {
-                //LogHelper.Error(string.Format("DES加密错误，{0}", ex.Message), ex);
+                LogHelper.Error(string.Format("DES加密错误，{0}", ex.Message), ex);
             }
             return result;
         }
@@ -144,7 +144,7 @@ namespace Gseey.Framework.Common.Helpers
             }
             catch (Exception ex)
             {
-                //LogHelper.Error(string.Format("DES解密错误，{0}", ex.Message), ex);
+                LogHelper.Error(string.Format("DES解密错误，{0}", ex.Message), ex);
             }
             return result;
         }

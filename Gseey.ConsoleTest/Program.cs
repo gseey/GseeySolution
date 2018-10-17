@@ -13,7 +13,15 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var p1 = DBHelper.Get<Custom>(1);
+            LogHelper.RunLog("fsfsfsfd", folderName: "fsfsd");
+
+            var p1 = DBHelper.GetAsync<Custom>(1);
+            p1.Wait();
+            var pw1 = p1.Result;
+
+            var p2 = DBHelper.GetAsync<Custom>(2);
+            p2.Wait();
+            var pw2 = p2.Result;
 
             var l1 = DateTime.Now.ToUnixTime(true);
             var t1 = l1.FromUnixTime(true);

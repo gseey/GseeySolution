@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SQLite;
+using System.Threading.Tasks;
 
 namespace Gseey.Framework.DataBase
 {
@@ -108,7 +109,7 @@ namespace Gseey.Framework.DataBase
                     //SimpleCRUD.SetDialect(SimpleCRUD.Dialect.SQLite);
                     break;
             }
-            connection.Open();
+            //connection.Open();
 
             return connection;
         }
@@ -134,16 +135,16 @@ namespace Gseey.Framework.DataBase
 
         #region 公共函数
 
-        public static T Get<T>(int id) where T : class
+        public static async Task<T> GetAsync<T>(int id) where T : class
         {
             try
             {
-                var result = DBConnection.Get<T>(id);
+                var result = await DBConnection.GetAsync<T>(id);
                 return result;
             }
             catch (Exception ex)
             {
-
+                ex.WriteExceptionLog("", bizEnum: LogHelper.LogicBuissnussEnum.Framework);
             }
             return default(T);
         }

@@ -41,7 +41,7 @@ namespace Gseey.Framework.Common.Helpers
             }
             catch (Exception ex)
             {
-                //ex.WriteExceptionLog("转换json出错", bizEnum: LogHelper.LogicBuissnussEnum.Framework);
+                ex.WriteExceptionLog("转换json出错", bizEnum: LogHelper.LogicBuissnussEnum.Framework);
             }
             return null;
         }
@@ -60,7 +60,7 @@ namespace Gseey.Framework.Common.Helpers
             }
             catch (Exception ex)
             {
-                //ex.WriteExceptionLog("转换json出错", bizEnum: LogHelper.LogicBuissnussEnum.Framework);
+                ex.WriteExceptionLog("转换json出错", bizEnum: LogHelper.LogicBuissnussEnum.Framework);
             }
             return default(T);
         }
