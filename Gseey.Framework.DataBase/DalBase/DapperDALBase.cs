@@ -1,4 +1,6 @@
-﻿using Gseey.Framework.DataBase.EntityBase;
+﻿using Gseey.Framework.Common.Helpers;
+using Gseey.Framework.DataBase.Attributes;
+using Gseey.Framework.DataBase.EntityBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +59,7 @@ namespace Gseey.Framework.DataBase.DalBase
 
         #region 内部方法
 
-        private string GetDbSql(string selectColumnStr = "", string whereSql = "", string orderbyStr = "", string groupbyStr = "")
+        private string GetDbSelectSql(string selectColumnStr = "", string whereSql = "", string orderbyStr = "", string groupbyStr = "")
         {
             //获取表名
             var tableName = GetTableName();
@@ -91,16 +93,24 @@ namespace Gseey.Framework.DataBase.DalBase
             return string.Empty;
         }
 
+        /// <summary>
+        /// 获取表名
+        /// </summary>
+        /// <returns></returns>
         private string GetTableName()
         {
-            return string.Empty;
+            var customAttrs = ReflectionHelper.GetCustomAttributes<T>();
+
+            var tableAttr = (TableAttribute)customAttrs.Where(m => m is TableAttribute).SingleOrDefault();
+
+            return tableAttr.Name;
         }
 
         #endregion
 
         public async Task<T> GetEntityAsync(int id)
         {
-            var sql = GetDbSql("");
+            var sql = GetDbSelectSql("");
             var queryResult = await DapperDBHelper.QueryAsync<T>(sql);
             return queryResult.SingleOrDefault();
         }
