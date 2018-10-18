@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Gseey.Framework.DataBase
 {
-    public class DBHelper
+    public class DapperDBHelper
     {
 
         #region 内部枚举
         /// <summary>
         /// 数据库类型
         /// </summary>
-        private enum DBType
+        internal enum DBType
         {
             /// <summary>
             /// ms sql server 数据库
@@ -52,11 +52,6 @@ namespace Gseey.Framework.DataBase
         #region 内部属性
 
         /// <summary>
-        /// 数据库类型
-        /// </summary>
-        private static DBType DataBaseType { get; }
-
-        /// <summary>
         /// 读 连接
         /// </summary>
         private static IDbConnection DBReadConnection { get; }
@@ -68,9 +63,18 @@ namespace Gseey.Framework.DataBase
 
         #endregion
 
+        #region 公用属性
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        internal static DBType DataBaseType { get; }
+
+        #endregion
+
         #region 构造函数
 
-        static DBHelper()
+        static DapperDBHelper()
         {
             //从配置文件中获取数据库类型
             DataBaseType = GetDbType();
@@ -91,7 +95,7 @@ namespace Gseey.Framework.DataBase
         {
             var dbType = DBType.MSSQL;
 
-            var configDbTypeStr = ConfigHelper.Get("GseeyConnections:DbConnectionType");
+            var configDbTypeStr = ConfigHelper.Get("Gseey:Connections:DbConnectionType");
             if (!string.IsNullOrEmpty(configDbTypeStr))
             {
                 if (Enum.TryParse(configDbTypeStr, true, out dbType))
@@ -144,7 +148,7 @@ namespace Gseey.Framework.DataBase
         {
             var connString = string.Empty;
 
-            var configKey = string.Format("GseeyConnections:{0}Db{1}ConnectionString",
+            var configKey = string.Format("Gseey:Connections:{0}Db{1}ConnectionString",
                 dataBaseType.ToString().ToUpper(),
                 optType.ToString().ToUpper());
 

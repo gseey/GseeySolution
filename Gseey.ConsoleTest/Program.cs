@@ -14,31 +14,9 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            //var s = LambdaToSqlHelper.GetWhereSql<Custom>(m => m.CustomID > 0 && m.CreateTime >= DateTime.Now, new List<LambdaToSqlHelper.SqlParaModel>
-            //{
-            //    new LambdaToSqlHelper.SqlParaModel{
-            //        name="1",
-            //        value=1
-            //    }
-            //});
+            var i1 = DapperDBHelper.InsertAsync("insert into custom (HostPartyName,Address) values (@HostPartyName,@Address)", new { HostPartyName = "ffafafssfs", Address = "1231gssdg2" }).Result;
 
-            //ExpressionVisitorHelper helper = new ExpressionVisitorHelper();
-            //helper.ResolveExpression<Custom>(m => m.CustomGrantTime >= DateTime.Now
-            ////|| m.CustomID > 0
-            ////&& m.Email.Contains("ss")
-            ////|| m.HeadImgUrl == "sfsd"
-            ////|| m.CustomRole != 10
-            //);
-            //var w1 = helper.Where;
-
-            //LogHelper.RunLog("fsfsfsfd", folderName: "fsfsd");
-
-            //var c1 = new Custom() { HostPartyName = "cests", Address = "fsfsdf" };
-            //var i1 = DBHelper.InsertAsync<Custom>(c1).Result;
-
-            var i1 = DBHelper.InsertAsync("insert into custom (HostPartyName,Address) values (@HostPartyName,@Address)", new { HostPartyName = "ffafafssfs", Address = "1231gssdg2" }).Result;
-
-            var p1 = DBHelper.QueryAsync<Custom>("select * from custom where customid=@id", new { id = i1 });
+            var p1 = DapperDBHelper.QueryAsync<Custom>("select * from custom where customid=@id", new { id = i1 });
             p1.Wait();
             var pw1 = p1.Result;
 
