@@ -2,6 +2,7 @@
 using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
@@ -13,15 +14,39 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            LogHelper.RunLog("fsfsfsfd", folderName: "fsfsd");
+            //var s = LambdaToSqlHelper.GetWhereSql<Custom>(m => m.CustomID > 0 && m.CreateTime >= DateTime.Now, new List<LambdaToSqlHelper.SqlParaModel>
+            //{
+            //    new LambdaToSqlHelper.SqlParaModel{
+            //        name="1",
+            //        value=1
+            //    }
+            //});
 
-            var p1 = DBHelper.GetAsync<Custom>(1);
+            //ExpressionVisitorHelper helper = new ExpressionVisitorHelper();
+            //helper.ResolveExpression<Custom>(m => m.CustomGrantTime >= DateTime.Now
+            ////|| m.CustomID > 0
+            ////&& m.Email.Contains("ss")
+            ////|| m.HeadImgUrl == "sfsd"
+            ////|| m.CustomRole != 10
+            //);
+            //var w1 = helper.Where;
+
+            //LogHelper.RunLog("fsfsfsfd", folderName: "fsfsd");
+
+            //var c1 = new Custom() { HostPartyName = "cests", Address = "fsfsdf" };
+            //var i1 = DBHelper.InsertAsync<Custom>(c1).Result;
+
+            var i1 = DBHelper.InsertAsync("insert into custom (HostPartyName,Address) values (@HostPartyName,@Address)", new { HostPartyName = "ffafafssfs", Address = "1231gssdg2" }).Result;
+
+            var p1 = DBHelper.QueryAsync<Custom>("select * from custom where customid=@id", new { id = i1 });
             p1.Wait();
             var pw1 = p1.Result;
 
-            var p2 = DBHelper.GetAsync<Custom>(2);
-            p2.Wait();
-            var pw2 = p2.Result;
+
+
+            //var p2 = DBHelper.GetAsync<Custom>(2);
+            //p2.Wait();
+            //var pw2 = p2.Result;
 
             var l1 = DateTime.Now.ToUnixTime(true);
             var t1 = l1.FromUnixTime(true);
@@ -63,7 +88,7 @@ namespace Gseey.ConsoleTest
     [Serializable]
     public class Custom
     {
-        [Key]
+        //[Key]
         public int CustomID { get; set; }
 
         public int CustomType { get; set; }
