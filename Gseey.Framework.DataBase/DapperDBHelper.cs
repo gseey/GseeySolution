@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Gseey.Framework.DataBase
 {
-    public class DapperDBHelper
+    internal class DapperDBHelper
     {
 
         #region 内部枚举

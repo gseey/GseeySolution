@@ -17,85 +17,15 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var db = new DapperDALBase<Custom>();
-            //var c1 = db.Insert(new { HostPartyName = "fsfsfsdfs", HeadImgUrl = "q4234243243242" });
 
-            var c3 = db.Update(new { HostPartyName = "1111" }, new { CustomID = 1127 });
-
-            var c2 = db.QueryList(new { CustomID = 1127 });
-
-
-
-            //var p2 = DBHelper.GetAsync<Custom>(2);
-            //p2.Wait();
-            //var pw2 = p2.Result;
-
-            var l1 = DateTime.Now.ToUnixTime(true);
-            var t1 = l1.FromUnixTime(true);
-
-            var s1 = ConfigHelper.Get("GseeyConnections:DbConnectionString");
-            var s2 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpId");
-            var s3 = ConfigHelper.Get("GseeyWeixinConfig:QY:CorpSercet");
-
-
-            //var t1 = EncrtpyHelper.RSAEncrypt("", "test");
-            //var t2 = EncrtpyHelper.RSADecrypt("", t1);
-
-
-            var h1 = HttpHelper.GetHtml("http://esf.fang.com/chushou/3_417109133.htm?channel=2,2&psid=1_1_70");
-            var h2 = HttpHelper.GetHtmlAsync("https://www.cnblogs.com/sunxucool/p/4180375.html").Result;
-
-            //var e1 = ConfigHelper.Get("test:t0");
-
-            RedisHelper redisHelper = new RedisHelper(0);
-            var redisKey = "test";
-            var r1 = redisHelper.StringSet(redisKey, "2131232");
-            var r2 = redisHelper.StringGet(redisKey);
-
-            Console.WriteLine("Hello World!");
+            LogHelper.RunLog("fsfsd",
+                new Exception("11111111111", 
+                    new DivideByZeroException("22222222")),
+                folderName: "fff",
+                isShowConsole: true,
+                logType: LogHelper.LogType.Nlog);
 
             Console.ReadKey();
-        }
-
-        public static void DisplayPropertyInfo(PropertyInfo[] propInfos)
-        {
-            // Display information for all properties.
-            foreach (var propInfo in propInfos)
-            {
-                bool readable = propInfo.CanRead;
-                bool writable = propInfo.CanWrite;
-
-                Console.WriteLine("   Property name: {0}", propInfo.Name);
-                Console.WriteLine("   Property type: {0}", propInfo.PropertyType);
-                Console.WriteLine("   Read-Write:    {0}", readable & writable);
-                if (readable)
-                {
-                    MethodInfo getAccessor = propInfo.GetMethod;
-                    Console.WriteLine("   Visibility:    {0}",
-                                      GetVisibility(getAccessor));
-                }
-                if (writable)
-                {
-                    MethodInfo setAccessor = propInfo.SetMethod;
-                    Console.WriteLine("   Visibility:    {0}",
-                                      GetVisibility(setAccessor));
-                }
-                Console.WriteLine();
-            }
-        }
-
-        public static String GetVisibility(MethodInfo accessor)
-        {
-            if (accessor.IsPublic)
-                return "Public";
-            else if (accessor.IsPrivate)
-                return "Private";
-            else if (accessor.IsFamily)
-                return "Protected";
-            else if (accessor.IsAssembly)
-                return "Internal/Friend";
-            else
-                return "Protected Internal/Friend";
         }
     }
 
@@ -215,40 +145,6 @@ namespace Gseey.ConsoleTest
         public int WeixinBaseId { get; set; }
 
         public string HeadImgUrl { get; set; }
-    }
-
-    // Create a class having six properties.
-    public class PropertyClass
-    {
-        public String Property1
-        {
-            get { return "hello"; }
-        }
-
-        public String Property2
-        {
-            get { return "hello"; }
-        }
-
-        protected String Property3
-        {
-            get { return "hello"; }
-        }
-
-        private Int32 Property4
-        {
-            get { return 32; }
-        }
-
-        internal String Property5
-        {
-            get { return "value"; }
-        }
-
-        protected internal String Property6
-        {
-            get { return "value"; }
-        }
     }
 
 }

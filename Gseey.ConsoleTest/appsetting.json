@@ -13,5 +13,13 @@
   "Redis": {
     "ConnectionString": "127.0.0.1:6379,abortConnect=false,ConnectTimeout=5000,SyncTimeout=5000",
     "DefaultKey": "Gseey.ConsoleTest"
-  }
+  },
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Trace",
+      "Microsoft": "Information"
+    }
+  },
+  "LogPath": "E:\\GseeyLog"
 }
