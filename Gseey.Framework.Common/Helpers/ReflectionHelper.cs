@@ -52,11 +52,28 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetPropertyInfos(object obj)
+        {
+            var type = obj.GetType();
+            var propInfoList = currentPropDict.GetOrAdd(type, t =>
+            {
+                var propList = t.GetProperties().AsEnumerable();
+
+                return propList;
+            });
+            return propInfoList;
+        }
+
+        /// <summary>
+        /// 获取类型的属性集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IEnumerable<PropertyInfo> GetPropertyInfos<T>()
         {
             var propInfoList = currentPropDict.GetOrAdd(typeof(T), t =>
             {
-                var propList = t.GetType().GetProperties().AsEnumerable();
+                var propList = t.GetProperties().AsEnumerable();
 
                 return propList;
             });
@@ -72,25 +89,7 @@ namespace Gseey.Framework.Common.Helpers
         {
             var attrInfoList = currentCustomAttributeDict.GetOrAdd(typeof(T), t =>
             {
-                var attrList = t.GetType().GetCustomAttributes();
-
-                return attrList;
-            });
-            return attrInfoList;
-        }
-
-        /// <summary>
-        /// 获取类型的自定义标签集合
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static IEnumerable<Attribute> GetAttributes<T>()
-        {
-            var attrInfoList = currentCustomAttributeDict.GetOrAdd(typeof(T), t =>
-            {
-                var attrs = t.GetType().Attributes;
-                var attrList = new List<Attribute>();
-
+                var attrList = t.GetCustomAttributes();
 
                 return attrList;
             });
@@ -106,7 +105,7 @@ namespace Gseey.Framework.Common.Helpers
         {
             var memberInfoList = currentMethodDict.GetOrAdd(typeof(T), t =>
             {
-                var memberList = t.GetType().GetMethods().AsEnumerable();
+                var memberList = t.GetMethods().AsEnumerable();
 
                 return memberList;
             });
@@ -118,11 +117,12 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<MemberInfo> GetMemberInfos<T>()
+        public static IEnumerable<MemberInfo> GetMemberInfos(object obj)
         {
-            var memberInfoList = currentMemberDict.GetOrAdd(typeof(T), t =>
+            var type = obj.GetType();
+            var memberInfoList = currentMemberDict.GetOrAdd(type, t =>
             {
-                var memberList = t.GetType().GetMembers().AsEnumerable();
+                var memberList = t.GetMembers().AsEnumerable();
 
                 return memberList;
             });
@@ -134,11 +134,12 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static IEnumerable<FieldInfo> GetFieldInfos<T>()
+        public static IEnumerable<FieldInfo> GetFieldInfos(object obj)
         {
-            var memberInfoList = currentFieldDict.GetOrAdd(typeof(T), t =>
+            var type = obj.GetType();
+            var memberInfoList = currentFieldDict.GetOrAdd(type, t =>
             {
-                var memberList = t.GetType().GetFields().AsEnumerable();
+                var memberList = t.GetFields().AsEnumerable();
 
                 return memberList;
             });
@@ -154,7 +155,7 @@ namespace Gseey.Framework.Common.Helpers
         {
             var memberInfoList = currentEventDict.GetOrAdd(typeof(T), t =>
             {
-                var memberList = t.GetType().GetEvents().AsEnumerable();
+                var memberList = t.GetEvents().AsEnumerable();
 
                 return memberList;
             });

@@ -374,10 +374,7 @@ namespace Gseey.Framework.DataBase
         /// <returns></returns>
         public static IEnumerable<T> ExecuteToProcdeure<T>(string porcdeureName, object param = null, int? commandTimeout = null)
         {
-
-            {
-                return DBWriteConnection.Query<T>(porcdeureName, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure, param: param);
-            }
+            return DBWriteConnection.Query<T>(porcdeureName, commandTimeout: commandTimeout, commandType: CommandType.StoredProcedure, param: param);
         }
 
         #endregion

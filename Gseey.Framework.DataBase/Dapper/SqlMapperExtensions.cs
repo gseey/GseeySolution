@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace Gseey.Framework.DataBase.Dapper
 {
-    /// <summary>Dapper extensions.
+    /// <summary>
+    /// Dapper extensions.
+    /// https://www.cnblogs.com/zhaozhengyan/p/ecommon_dapper.html
     /// </summary>
     public static class SqlMapperExtensions
     {

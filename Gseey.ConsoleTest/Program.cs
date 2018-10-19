@@ -1,8 +1,11 @@
 ﻿using Dapper;
 using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
+using Gseey.Framework.DataBase.DalBase;
+using Gseey.Framework.DataBase.EntityBase;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -14,11 +17,12 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var i1 = DapperDBHelper.InsertAsync("insert into custom (HostPartyName,Address) values (@HostPartyName,@Address)", new { HostPartyName = "ffafafssfs", Address = "1231gssdg2" }).Result;
+            var db = new DapperDALBase<Custom>();
+            //var c1 = db.Insert(new { HostPartyName = "fsfsfsdfs", HeadImgUrl = "q4234243243242" });
 
-            var p1 = DapperDBHelper.QueryAsync<Custom>("select * from custom where customid=@id", new { id = i1 });
-            p1.Wait();
-            var pw1 = p1.Result;
+            var c3 = db.Update(new { HostPartyName = "1111" }, new { CustomID = 1127 });
+
+            var c2 = db.QueryList(new { CustomID = 1127 });
 
 
 
@@ -52,6 +56,47 @@ namespace Gseey.ConsoleTest
 
             Console.ReadKey();
         }
+
+        public static void DisplayPropertyInfo(PropertyInfo[] propInfos)
+        {
+            // Display information for all properties.
+            foreach (var propInfo in propInfos)
+            {
+                bool readable = propInfo.CanRead;
+                bool writable = propInfo.CanWrite;
+
+                Console.WriteLine("   Property name: {0}", propInfo.Name);
+                Console.WriteLine("   Property type: {0}", propInfo.PropertyType);
+                Console.WriteLine("   Read-Write:    {0}", readable & writable);
+                if (readable)
+                {
+                    MethodInfo getAccessor = propInfo.GetMethod;
+                    Console.WriteLine("   Visibility:    {0}",
+                                      GetVisibility(getAccessor));
+                }
+                if (writable)
+                {
+                    MethodInfo setAccessor = propInfo.SetMethod;
+                    Console.WriteLine("   Visibility:    {0}",
+                                      GetVisibility(setAccessor));
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public static String GetVisibility(MethodInfo accessor)
+        {
+            if (accessor.IsPublic)
+                return "Public";
+            else if (accessor.IsPrivate)
+                return "Private";
+            else if (accessor.IsFamily)
+                return "Protected";
+            else if (accessor.IsAssembly)
+                return "Internal/Friend";
+            else
+                return "Protected Internal/Friend";
+        }
     }
 
     public class person
@@ -64,7 +109,7 @@ namespace Gseey.ConsoleTest
 
 
     [Serializable]
-    public class Custom
+    public class Custom : DapperEntityBase
     {
         //[Key]
         public int CustomID { get; set; }
@@ -171,4 +216,39 @@ namespace Gseey.ConsoleTest
 
         public string HeadImgUrl { get; set; }
     }
+
+    // Create a class having six properties.
+    public class PropertyClass
+    {
+        public String Property1
+        {
+            get { return "hello"; }
+        }
+
+        public String Property2
+        {
+            get { return "hello"; }
+        }
+
+        protected String Property3
+        {
+            get { return "hello"; }
+        }
+
+        private Int32 Property4
+        {
+            get { return 32; }
+        }
+
+        internal String Property5
+        {
+            get { return "value"; }
+        }
+
+        protected internal String Property6
+        {
+            get { return "value"; }
+        }
+    }
+
 }
