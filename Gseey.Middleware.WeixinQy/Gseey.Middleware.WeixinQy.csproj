@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+    <ProjectReference Include="..\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>

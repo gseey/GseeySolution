@@ -302,5 +302,9 @@ namespace Gseey.Framework.DataBase.DalBase
 
         #endregion
 
+        #region 公共属性
+        
+
+        #endregion
     }
 }

@@ -14,7 +14,7 @@ namespace Gseey.Middleware.WeixinQy
         /// <param name="corpId"></param>
         /// <param name="appId"></param>
         /// <returns></returns>
-        public static async Task<string> GetAccessToken(string corpId, int appId)
+        public static async Task<string> GetAccessTokenAsync(string corpId, int appId)
         {
             var configDto = await AgentHelper.GetAgentConfigDTOAsync(appId);
             if (configDto != null && configDto.Id > 0)
