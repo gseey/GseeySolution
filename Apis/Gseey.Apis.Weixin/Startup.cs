@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gseey.Middleware.WeixinQy.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -41,7 +42,13 @@ namespace Gseey.Apis.Weixin
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(route =>
+            {
+                route.MapRoute(
+                    name: "default",
+                    template: "{controller=Weixin}/{action=Index}/{id?}");
+            });
+            app.UseInterceptMiddleware();
         }
     }
 }

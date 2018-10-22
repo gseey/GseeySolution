@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Gseey.Middleware.WeixinQy.DAL
 {
-    public class AgentConfigDAL : DapperDALBase<AgentConfigEntity>
+    public class ChannelConfigDAL : DapperDALBase<ChannelConfigEntity>
     {
     }
 }

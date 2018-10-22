@@ -14,7 +14,7 @@ namespace Gseey.Apis.Weixin.Controllers
     {
         public async Task<ActionResult<IEnumerable<string>>> IndexAsync()
         {
-            var result = await AgentHelper.GetAgentConfigDTOAsync(1);
+            var result = await ChannelHelper.GetAgentConfigDTOAsync(1);
 
             return Content(result.ToJson());
         }

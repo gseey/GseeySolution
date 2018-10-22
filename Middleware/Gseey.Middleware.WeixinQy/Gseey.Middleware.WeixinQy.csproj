@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.Autofac\Gseey.Framework.Autofac.csproj" />
     <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
     <ProjectReference Include="..\..\Framework\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
   </ItemGroup>

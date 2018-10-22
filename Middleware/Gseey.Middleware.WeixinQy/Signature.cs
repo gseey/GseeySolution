@@ -9,11 +9,11 @@ namespace Gseey.Middleware.WeixinQy
     {
         #region 基本配置
 
-        public AgentConfigDTO Config { get; set; }
+        public ChannelConfigDTO Config { get; set; }
 
         #endregion
 
-        public Signature(AgentConfigDTO config)
+        public Signature(ChannelConfigDTO config)
         {
             Config = config;
         }

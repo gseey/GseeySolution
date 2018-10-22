@@ -4,6 +4,8 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using NLog;
 using System;
 using System.Collections.Concurrent;
@@ -710,7 +712,7 @@ namespace Gseey.Framework.Common.Helpers
             if (exception != null)//有异常才会记录相关信息
             {
                 msg += GetStactTraceMsg();
-                //msg += GetRequestMsg(HttpContext.Current == null ? null : HttpContext.Current.Request);
+                //msg += GetRequestMsg( == null ? null : HttpContext.Current.Request);
             }
 
             var count = 0;
@@ -735,8 +737,9 @@ namespace Gseey.Framework.Common.Helpers
                 }
                 else if (exception is WebException)
                 {
-                    builder.Append("\n\tWeb返回值：" + ((WebException)exception).Status.ToString());
-                    builder.Append("\n\tWeb异常路径：" + ((WebException)exception).Response.ResponseUri.AbsoluteUri);
+                    var exp = ((WebException)exception);
+                    builder.Append("\n\tWeb返回值：" + exp.Status.ToString());
+                    builder.Append("\n\tWeb异常路径：" + exp.Response.ResponseUri.AbsoluteUri);
                 }
                 #endregion
 
@@ -749,49 +752,56 @@ namespace Gseey.Framework.Common.Helpers
             return string.Format("{0}{1}", message, msg);
         }
 
-        ///// <summary>
-        ///// 记录request请求信息
-        ///// </summary>
-        ///// <param name="request"></param>
-        ///// <returns></returns>
-        //private static string GetRequestMsg(HttpRequest request = null)
-        //{
-        //    var msg = string.Empty;
-        //    //记录request的参数
-        //    if (request != null)
-        //    {
-        //        msg += string.Format("\n\t参数信息{3}\n\t页面地址:{0}\n\t调用方式:{1}\n\tUrlReferrer:{2}", request.Url.AbsolutePath, request.RequestType.ToUpper(), request.UrlReferrer, GetNameValueCollection(request));
-        //    }
+        /// <summary>
+        /// 记录request请求信息
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private static string GetRequestMsg(HttpRequest request = null)
+        {
+            var msg = string.Empty;
+            //记录request的参数
+            if (request != null)
+            {
 
-        //    return msg;
-        //}
+                msg += string.Format("\n\t参数信息{3}\n\t页面地址:{0}\n\t调用方式:{1}\n\tUrlReferrer:{2}", request.Path, request.Method.ToUpper(), request.Headers.ToJson(), GetNameValueCollection(request));
+            }
 
-        ///// <summary>
-        ///// 获取传输过来的参数及参数值
-        ///// </summary>
-        ///// <returns></returns>
-        //private static string GetNameValueCollection(HttpRequest request)
-        //{
-        //    try
-        //    {
-        //        StringBuilder builder = new StringBuilder();
-        //        NameValueCollection list = new NameValueCollection();
-        //        list.Add(request.Form);
-        //        list.Add(request.QueryString);
+            return msg;
+        }
 
-        //        builder.AppendFormat("\r\n\t\t参数名称\t\t参数值");
-        //        foreach (string key in list)
-        //        {
-        //            var value = list[key];
-        //            builder.AppendFormat("\r\n\t\t{0}\t\t{1}", key, value);
-        //        }
-        //        return builder.ToString();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return "\r\n\t\t参数名称\t\t参数值";
-        //    }
-        //}
+        /// <summary>
+        /// 获取传输过来的参数及参数值
+        /// </summary>
+        /// <returns></returns>
+        private static string GetNameValueCollection(HttpRequest request)
+        {
+            try
+            {
+                StringBuilder builder = new StringBuilder();
+                var paramDict = new Dictionary<string, StringValues>();
+                foreach (var item in request.Form)
+                {
+                    paramDict.Add(item.Key, item.Value);
+                }
+                foreach (var item in request.Query)
+                {
+                    paramDict.Add(item.Key, item.Value);
+                }
+
+                builder.AppendFormat("\r\n\t\t参数名称\t\t参数值");
+                foreach (string key in paramDict.Keys)
+                {
+                    var value = paramDict[key];
+                    builder.AppendFormat("\r\n\t\t{0}\t\t{1}", key, value);
+                }
+                return builder.ToString();
+            }
+            catch (Exception)
+            {
+                return "\r\n\t\t参数名称\t\t参数值";
+            }
+        }
 
         /// <summary>
         /// 记录堆栈信息

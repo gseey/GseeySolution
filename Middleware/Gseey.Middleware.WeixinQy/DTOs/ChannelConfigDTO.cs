@@ -1,13 +1,13 @@
-﻿using Gseey.Framework.DataBase.Attributes;
-using Gseey.Framework.DataBase.EntityBase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.WeixinQy.Entities
+namespace Gseey.Middleware.WeixinQy.DTOs
 {
-    [Table(Name = "AgentConfig")]
-    public class AgentConfigEntity: DapperEntityBase
+    /// <summary>
+    /// 应用配置信息
+    /// </summary>
+    public class ChannelConfigDTO
     {
         /// <summary>
         /// 应用id
@@ -33,5 +33,14 @@ namespace Gseey.Middleware.WeixinQy.Entities
         /// 应用消息加密串
         /// </summary>
         public string EncodingAESKey { get; set; }
+
+        public ChannelConfigDTO()
+        {
+            Id = 6;
+            CorpId = "wx9a80f6e6ed2a89e6";
+            CorpSercet = "KVZ_1nE2thZdbu3kcftpgA5Ld-O3TafmS3AlUtWQeHM";
+            Token = "qygscoy";
+            EncodingAESKey = "FDPibMBM3MExJxBaD9Oe6uaOfsvsjmTQT94f6tt2lJl";
+        }
     }
 }
