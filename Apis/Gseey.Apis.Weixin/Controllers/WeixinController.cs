@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gseey.Framework.Common.Helpers;
+using Gseey.Middleware.WeixinQy;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gseey.Apis.Weixin.Controllers
@@ -10,9 +12,11 @@ namespace Gseey.Apis.Weixin.Controllers
     [ApiController]
     public class WeixinController : ControllerBase
     {
-        public ActionResult<IEnumerable<string>> Index()
+        public async Task<ActionResult<IEnumerable<string>>> IndexAsync()
         {
-            return Content("fsdfdsfsdfsdfsf");
+            var result = await AgentHelper.GetAgentConfigDTOAsync(1);
+
+            return Content(result.ToJson());
         }
     }
 }

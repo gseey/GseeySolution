@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
-    <ProjectReference Include="..\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
+    <Folder Include="Service\MessageHandler\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Service\MessageHandler\" />
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
   </ItemGroup>
 
 </Project>

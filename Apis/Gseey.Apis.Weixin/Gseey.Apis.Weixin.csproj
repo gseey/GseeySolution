@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+    <ProjectReference Include="..\..\Middleware\Gseey.Middleware.WeixinQy\Gseey.Middleware.WeixinQy.csproj" />
+  </ItemGroup>
+
 </Project>

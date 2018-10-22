@@ -10,12 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
-    <ProjectReference Include="..\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
+    <ProjectReference Include="..\..\Framework\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="appsetting.json">
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="log4net.config">
