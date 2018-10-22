@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,8 @@ namespace Gseey.Framework.Autofac
 {
     public class AutofacHelper
     {
+        private static ContainerBuilder builder = new ContainerBuilder();
+
         #region 内部枚举
 
         public enum LifeCycleEnum
@@ -49,14 +52,14 @@ namespace Gseey.Framework.Autofac
 
         #endregion
 
-        private static ContainerBuilder builder = new ContainerBuilder();
+        #region 注册接口
 
         /// <summary>
         /// 注册接口
         /// </summary>
         /// <typeparam name="TInterface">接口类型</typeparam>
         /// <typeparam name="TClass">接口的实际实现</typeparam>
-        /// <returns></returns>
+        /// <param name="lifeCycle">生命周期</param>
         public static void Register<TInterface, TClass>(LifeCycleEnum lifeCycle = LifeCycleEnum.InstancePerDependency)
         {
             var result = builder.RegisterType<TClass>().As<TInterface>();
@@ -86,6 +89,49 @@ namespace Gseey.Framework.Autofac
         }
 
         /// <summary>
+        /// 注册接口
+        /// </summary>
+        /// <typeparam name="TInterface">接口类型</typeparam>
+        /// <typeparam name="TClass">接口的实际实现</typeparam>
+        /// <param name="lifeCycle">生命周期</param>
+        /// <param name="enableInterceptors">是否启用aop注册</param>
+        public static void Register<TInterface, TClass, TIInterceptor>(LifeCycleEnum lifeCycle = LifeCycleEnum.InstancePerDependency, bool enableInterceptors = false)
+        {
+            var result = builder.RegisterType<TClass>().As<TInterface>();
+
+            switch (lifeCycle)
+            {
+                case LifeCycleEnum.InstancePerDependency:
+                default:
+                    result.InstancePerDependency();
+                    break;
+                case LifeCycleEnum.InstancePerLifetimeScope:
+                    result.InstancePerLifetimeScope();
+                    break;
+                case LifeCycleEnum.InstancePerMatchingLifetimeScope:
+                    result.InstancePerMatchingLifetimeScope();
+                    break;
+                case LifeCycleEnum.InstancePerOwned:
+                    result.InstancePerOwned(typeof(TInterface));
+                    break;
+                case LifeCycleEnum.SingleInstance:
+                    result.SingleInstance();
+                    break;
+                case LifeCycleEnum.InstancePerRequest:
+                    result.InstancePerRequest();
+                    break;
+            }
+
+            if (enableInterceptors)
+            {
+                result.InterceptedBy(typeof(TIInterceptor)).EnableInterfaceInterceptors();
+            }
+        }
+
+        #endregion
+
+        #region 获取接口实例
+        /// <summary>
         /// 获取接口实例
         /// </summary>
         /// <typeparam name="TInterface">接口类型</typeparam>
@@ -95,5 +141,7 @@ namespace Gseey.Framework.Autofac
             var result = builder.Build().Resolve<TInterface>();
             return result;
         }
+
+        #endregion
     }
 }
