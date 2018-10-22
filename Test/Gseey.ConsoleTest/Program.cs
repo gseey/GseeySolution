@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Gseey.ConsoleTest.AutofacDemo;
 using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
 using Gseey.Framework.DataBase.DalBase;
@@ -17,14 +18,9 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-
-            LogHelper.RunLog("fsfsd",
-                new Exception("11111111111", 
-                    new DivideByZeroException("22222222")),
-                folderName: "fff",
-                isShowConsole: true,
-                logType: LogHelper.LogType.Nlog);
-
+            AutofacHelper.Register<ITest1, Test1, TestIinterceptor>();
+            var ss = AutofacHelper.Resolve<ITest1>().TestMethod2(1212);
+            Console.WriteLine(ss);
             Console.ReadKey();
         }
     }
@@ -38,7 +34,7 @@ namespace Gseey.ConsoleTest
     }
 
 
-    [Serializable]
+    //[System.Serializable]
     public class Custom : DapperEntityBase
     {
         //[Key]

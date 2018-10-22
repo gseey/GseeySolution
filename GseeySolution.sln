@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 UnitTests", "4 UnitTests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 UserInterface", "3 UserInterface", "{F78D9D0D-FFB4-47EA-8397-FEC5FFBDC469}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.Autofac", "Framework\Gseey.Framework.Autofac\Gseey.Framework.Autofac.csproj", "{7B9E351D-413A-47F8-8819-8D97B22FCD84}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.Common", "Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj", "{A21912AC-DFD1-4752-BEE0-90310209AF67}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.DataBase", "Framework\Gseey.Framework.DataBase\Gseey.Framework.DataBase.csproj", "{26202ABC-2DDE-47F6-B377-E5FF603D3902}"
@@ -37,10 +35,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B9E351D-413A-47F8-8819-8D97B22FCD84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B9E351D-413A-47F8-8819-8D97B22FCD84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B9E351D-413A-47F8-8819-8D97B22FCD84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B9E351D-413A-47F8-8819-8D97B22FCD84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A21912AC-DFD1-4752-BEE0-90310209AF67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A21912AC-DFD1-4752-BEE0-90310209AF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A21912AC-DFD1-4752-BEE0-90310209AF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,7 +72,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7B9E351D-413A-47F8-8819-8D97B22FCD84} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{A21912AC-DFD1-4752-BEE0-90310209AF67} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{26202ABC-2DDE-47F6-B377-E5FF603D3902} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{483ABC36-D704-43CE-B45B-D24508A4D24F} = {1BFF248D-8399-425C-8180-3BD9556821DD}

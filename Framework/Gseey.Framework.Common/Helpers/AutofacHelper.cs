@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Framework.Autofac
+namespace Gseey.Framework.Common.Helpers
 {
     public class AutofacHelper
     {
