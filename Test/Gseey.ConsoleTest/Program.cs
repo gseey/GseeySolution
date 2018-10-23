@@ -18,9 +18,8 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            AutofacHelper.Register<ITest1, Test1, TestIinterceptor>();
-            var ss = AutofacHelper.Resolve<ITest1>().TestMethod2(1212);
-            Console.WriteLine(ss);
+            TestDemo.Test();
+
             Console.ReadKey();
         }
     }

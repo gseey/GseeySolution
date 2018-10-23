@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Castle.DynamicProxy;
+using Gseey.Framework.Common.AopIntercepor;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -94,11 +95,12 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="TInterface">接口类型</typeparam>
         /// <typeparam name="TClass">接口的实际实现</typeparam>
+        /// <typeparam name="TIInterceptor">aop拦截器实现</typeparam>
         /// <param name="lifeCycle">生命周期</param>
         /// <param name="enableInterceptors">是否启用aop注册</param>
-        public static void Register<TInterface, TClass, TIInterceptor>(LifeCycleEnum lifeCycle = LifeCycleEnum.InstancePerDependency, bool enableInterceptors = true)
+        public static void Register<TInterface, TClass, TIInterceptor>(LifeCycleEnum lifeCycle = LifeCycleEnum.InstancePerDependency)
             where TClass : TInterface
-            where TIInterceptor : class, IInterceptor
+            where TIInterceptor : BaseInterceptor
         {
             var result = builder.RegisterType<TClass>().As<TInterface>().PropertiesAutowired();
 
@@ -126,11 +128,8 @@ namespace Gseey.Framework.Common.Helpers
             }
 
             //开启AOP
-            if (enableInterceptors)
-            {
-                builder.RegisterType<TIInterceptor>().AsSelf();
-                result.EnableInterfaceInterceptors().InterceptedBy(typeof(TIInterceptor));
-            }
+            builder.RegisterType<TIInterceptor>();
+            result.EnableInterfaceInterceptors().InterceptedBy(typeof(TIInterceptor));
         }
 
         #endregion

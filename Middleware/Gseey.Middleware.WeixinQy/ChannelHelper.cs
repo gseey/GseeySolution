@@ -1,5 +1,4 @@
-﻿using Gseey.Framework.Autofac;
-using Gseey.Framework.Common.Helpers;
+﻿using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.WeixinQy.DTOs;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Gseey.Middleware.WeixinQy.Service;
