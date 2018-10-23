@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Gseey.Middleware.WeixinQy
 {
-    public class TokenHelper
+    internal class TokenHelper
     {
         /// <summary>
         /// 异步获取accesstoken

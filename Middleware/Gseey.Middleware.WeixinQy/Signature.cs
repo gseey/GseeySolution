@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Gseey.Middleware.WeixinQy
 {
-    public class Signature
+    internal class Signature
     {
         #region 基本配置
 

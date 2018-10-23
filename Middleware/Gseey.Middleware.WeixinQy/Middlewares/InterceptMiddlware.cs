@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Gseey.Framework.Common.Helpers;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,12 +25,20 @@ namespace Gseey.Middleware.WeixinQy.Middlewares
 
         private void PreProceed(HttpContext context)
         {
-            Console.WriteLine($"{DateTime.Now} middleware invoke preproceed");
+            var msg = $"{DateTime.Now} middleware invoke preproceed";
+
+            Console.WriteLine(msg);
+
+            LogHelper.RunLog(msg);
         }
 
         private void PostProceed(HttpContext context)
         {
-            Console.WriteLine($"{DateTime.Now} middleware invoke postproceed");
+            var msg = $"{DateTime.Now} middleware invoke postproceed";
+
+            Console.WriteLine(msg);
+
+            LogHelper.RunLog(msg);
         }
     }
 }

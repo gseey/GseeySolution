@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Gseey.Middleware.WeixinQy
 {
-    public class ChannelHelper
+    internal class ChannelHelper
     {
         /// <summary>
         /// 根据appid获取应用配置信息
@@ -18,12 +18,16 @@ namespace Gseey.Middleware.WeixinQy
         /// <returns></returns>
         public static async Task<ChannelConfigDTO> GetAgentConfigDTOAsync(int channelId)
         {
-            AutofacHelper.Register<IChannelConfigService, ChannelConfigService>();
-
-            var service = AutofacHelper.Resolve<IChannelConfigService>();
-            var configDto = await service.GetAgentConfigDTOByChannelIdAsync(channelId);
-
-
+            ChannelConfigDTO configDto = null;
+            try
+            {
+                var service = new ChannelConfigService();
+                configDto = await service.GetAgentConfigDTOByChannelIdAsync(channelId);
+            }
+            catch (Exception ex)
+            {
+                ex.WriteExceptionLog("");
+            }
 
             if (configDto == null)
                 configDto = new ChannelConfigDTO();

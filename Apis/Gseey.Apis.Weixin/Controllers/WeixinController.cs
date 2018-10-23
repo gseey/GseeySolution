@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.WeixinQy;
+﻿using Gseey.Middleware.WeixinQy;
+using Gseey.Middleware.WeixinQy.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Gseey.Apis.Weixin.Controllers
 {
@@ -12,11 +9,26 @@ namespace Gseey.Apis.Weixin.Controllers
     [ApiController]
     public class WeixinController : ControllerBase
     {
-        public async Task<ActionResult<IEnumerable<string>>> IndexAsync()
-        {
-            var result = await ChannelHelper.GetAgentConfigDTOAsync(1);
+        IChannelConfigService _channelService;
 
-            return Content(result.ToJson());
+        public WeixinController(IChannelConfigService configService)
+        {
+            _channelService = configService;
+        }
+        /// <summary>
+        /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
+        /// </summary>
+        [HttpGet]
+        //[ActionName("QyIndex")]
+        public async Task<ActionResult<string>> QyIndexAsync(int channelId, string signature, string timestamp, string nonce, string echostr)
+        {
+            var configDTO = await _channelService.GetAgentConfigDTOByChannelIdAsync(channelId);
+            //var sign = new Signature(configDTO);
+            //var checkResult = sign.CheckSign(signature, timestamp, nonce);
+            //if (checkResult)
+            //    return Content(echostr);
+            //else
+                return Content("");
         }
     }
 }

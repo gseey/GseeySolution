@@ -670,7 +670,24 @@ namespace Gseey.Framework.Common.Helpers
         {
             LoadAppender(folderName);
             var respName = "NETCoreRepository";
-            var repository = log4net.LogManager.CreateRepository(respName);
+            var name = "";
+            log4net.Repository.ILoggerRepository repository = null;
+            try
+            {
+                repository = log4net.LogManager.GetRepository(respName);
+                if (repository == null)
+                    repository = log4net.LogManager.CreateRepository(respName);
+                else
+                {
+                    repository.Exists(name);
+                }
+            }
+            catch (Exception)
+            {
+                if (repository == null)
+                    repository = log4net.LogManager.CreateRepository(respName);
+            }
+
             XmlConfigurator.Configure(repository, new FileInfo("log4net.config"));
 
             var log = log4net.LogManager.GetLogger(respName, type.Name);

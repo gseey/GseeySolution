@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Castle.DynamicProxy;
+using Gseey.Framework.Common.Helpers;
 
 namespace Gseey.Framework.Common.AopIntercepor
 {
@@ -13,7 +14,6 @@ namespace Gseey.Framework.Common.AopIntercepor
         /// <param name="invocation"></param>
         public override void PostProceed(IInvocation invocation)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -22,7 +22,21 @@ namespace Gseey.Framework.Common.AopIntercepor
         /// <param name="invocation"></param>
         public override void PreProceed(IInvocation invocation)
         {
-            throw new NotImplementedException();
+            var redisKey = string.Format("{0}.{1}_{2}", invocation.InvocationTarget, invocation.Method.Name, invocation.Arguments.ToJson());
+            Console.WriteLine(redisKey);
+
+            var redisHelper = new RedisHelper();
+            var value = redisHelper.StringGet(redisKey);
+            if (!string.IsNullOrEmpty(value))
+            {
+                invocation.ReturnValue = value;
+            }
+            else
+            {
+                var redisValue = "fdsfdsfsfsdfsd";
+                redisHelper.StringSet(redisKey, redisValue);
+                invocation.ReturnValue = redisValue;
+            }
         }
     }
 }
