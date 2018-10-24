@@ -1,13 +1,7 @@
 ﻿using Gseey.Framework.BaseDTO;
-using Gseey.Middleware.WeixinQy.DTOs;
-using Gseey.Middleware.WeixinQy.Entities;
-using Senparc.NeuChar.Context;
-using Senparc.Weixin.Work.Entities;
-using Senparc.Weixin.Work.MessageHandlers;
+using Gseey.Middleware.WeixinQy.Service.MessageHandler;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gseey.Middleware.WeixinQy.Interfaces
@@ -27,6 +21,6 @@ namespace Gseey.Middleware.WeixinQy.Interfaces
         /// <param name="channelId"></param>
         /// <param name="inputStream"></param>
         /// <returns></returns>
-        Task<ExecuteResult<WorkMessageHandler<MessageContext<IWorkRequestMessageBase, IWorkResponseMessageBase>>>> HandleInputWeixinQyMessageAsync(int channelId, Stream inputStream);
+        Task<ExecuteResult<CustomMessageHandler>> HandleInputWeixinQyMessageAsync(int channelId, Stream inputStream);
     }
 }

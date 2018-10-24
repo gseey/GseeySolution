@@ -1,15 +1,9 @@
 ﻿using Gseey.Framework.BaseDTO;
 using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.WeixinQy.DTOs;
-using Gseey.Middleware.WeixinQy.Entities;
 using Gseey.Middleware.WeixinQy.Interfaces;
-using Senparc.NeuChar.Context;
-using Senparc.Weixin.Work.Entities;
-using Senparc.Weixin.Work.MessageHandlers;
+using Gseey.Middleware.WeixinQy.Service.MessageHandler;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Gseey.Middleware.WeixinQy.Service
@@ -59,9 +53,19 @@ namespace Gseey.Middleware.WeixinQy.Service
         /// <param name="channelId"></param>
         /// <param name="inputStream"></param>
         /// <returns></returns>
-        public Task<ExecuteResult<WorkMessageHandler<MessageContext<IWorkRequestMessageBase, IWorkResponseMessageBase>>>> HandleInputWeixinQyMessageAsync(int channelId, Stream inputStream)
+        public Task<ExecuteResult<CustomMessageHandler>> HandleInputWeixinQyMessageAsync(int channelId, Stream inputStream)
         {
-            throw new NotImplementedException();
+            var result = new ExecuteResult<CustomMessageHandler>
+            {
+                Success=false,
+                ErrorMsg="",
+                ErrorCode= ExecuteResult.ErrorCodeEnum.Fail,
+                //Data=new CustomMessageHandler()
+            };
+
+
+
+            return Task.FromResult(result);
         }
 
         #endregion
