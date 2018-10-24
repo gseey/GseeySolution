@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Senparc.CO2NET.HttpUtility;
@@ -52,12 +55,20 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ActionName("QyIndex")]
-        public async Task<IActionResult> QyIndexAsync(int channelId)
+        public async Task<IActionResult> QyIndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
         {
-            var stream = Request.GetRequestMemoryStream();
-            var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, stream);
+            //获取企业号推送过来的消息
+            var msg = string.Empty;
+            using (Stream stream = HttpContext.Request.Body)
+            {
+                byte[] buffer = new byte[HttpContext.Request.ContentLength.Value];
+                stream.Read(buffer, 0, buffer.Length);
+                msg = Encoding.UTF8.GetString(buffer);
+            }
 
-            return Content(Guid.NewGuid().ToString());
+            var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, msg_signature, timestamp, nonce, msg);
+
+            return Content(result.Data);
         }
         #endregion
 

@@ -19,8 +19,11 @@ namespace Gseey.Middleware.WeixinQy.Interfaces
         /// 处理微信消息
         /// </summary>
         /// <param name="channelId"></param>
-        /// <param name="inputStream"></param>
+        /// <param name="msg_signature"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="nonce"></param>
+        /// <param name="msg"></param>
         /// <returns></returns>
-        Task<ExecuteResult<CustomMessageHandler>> HandleInputWeixinQyMessageAsync(int channelId, Stream inputStream);
+        Task<ExecuteResult<string>> HandleInputWeixinQyMessageAsync(int channelId, string msg_signature, string timestamp, string nonce, string msg);
     }
 }
