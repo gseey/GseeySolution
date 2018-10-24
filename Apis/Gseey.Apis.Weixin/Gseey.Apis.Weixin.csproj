@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Mine\GseeySolution\Apis\Gseey.Apis.Weixin\bin\Debug\netcoreapp2.1\Swagger.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="log4net.config" />
     <Content Remove="nlog.config" />

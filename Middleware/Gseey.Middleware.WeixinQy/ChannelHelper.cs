@@ -16,17 +16,20 @@ namespace Gseey.Middleware.WeixinQy
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public static async Task<ChannelConfigDTO> GetAgentConfigDTOAsync(int channelId)
+        public static async Task<ChannelConfigDTO> GetAgentConfigDTOByChannelIdAsync(int channelId)
         {
             ChannelConfigDTO configDto = null;
             try
             {
-                var service = new ChannelConfigService();
-                configDto = await service.GetAgentConfigDTOByChannelIdAsync(channelId);
+                //根据appid获取应用信息(从缓存中获取)
+                RedisHelper redisHelper = new RedisHelper();
+                var redisKey = string.Format("CorpAppId_{0}", channelId);
+
+                configDto = await redisHelper.StringGetAsync<ChannelConfigDTO>(redisKey);
             }
             catch (Exception ex)
             {
-                ex.WriteExceptionLog("");
+                //                ex.WriteExceptionLog("");
             }
 
             if (configDto == null)

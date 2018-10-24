@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Gseey.Framework.Common.AopIntercepor;
 using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Gseey.Middleware.WeixinQy.Service;
@@ -9,14 +11,15 @@ using System.Text;
 
 namespace Gseey.Middleware.WeixinQy
 {
-    public class RegistModel : Module
+    public class RegistWeixinQyModel : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            //base.Load(builder);
-            //var autofacHelper = new AutofacHelper(builder);
-            //autofacHelper.Register<IChannelConfigService, ChannelConfigService>();
-            builder.RegisterType<ChannelConfigService>().As<IChannelConfigService>();
+            builder.RegisterType<LogInterceptor>();
+            builder.RegisterType<ChannelConfigService>()
+                .As<IChannelConfigService>()
+                .EnableInterfaceInterceptors()
+                .InterceptedBy(typeof(LogInterceptor));
         }
     }
 }

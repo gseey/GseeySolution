@@ -1,20 +1,17 @@
-﻿using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.WeixinQy;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Senparc.CO2NET.HttpUtility;
-using System;
-using System.Threading.Tasks;
 
-namespace Gseey.Apis.Weixin.Controllers
+namespace Gseey.UserInterface.FontUI.Controllers
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    [Route("api/Weixin")]
-    [ApiController]
-    public class WeixinController : ControllerBase
+    public class WeixinController : Controller
     {
+        #region 构造函数
+
         IChannelConfigService _channelService;
 
         /// <summary>
@@ -25,10 +22,20 @@ namespace Gseey.Apis.Weixin.Controllers
         {
             _channelService = configService;
         }
+
+        #endregion
+
+        #region 公众号/订阅号
+
+        #endregion
+
+        #region 企业号
+
         /// <summary>
         /// 微信企业号后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
         [HttpGet]
+        [ActionName("QyIndex")]
         public async Task<IActionResult> QyIndexAsync(int channelId, string msg_signature, string timestamp, string nonce, string echostr)
         {
             //校验微信签名
@@ -44,33 +51,21 @@ namespace Gseey.Apis.Weixin.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ActionName("QyIndex")]
         public async Task<IActionResult> QyIndexAsync(int channelId)
         {
-            try
-            {
-                var stream = Request.GetRequestMemoryStream();
-
-                var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, stream);
-                if (result.Success)
-                {
-                    return Content(result.Data.ResponseDocument.ToString());
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.WriteExceptionLog("微信企业号事件处理出错");
-            }
+            var stream = Request.GetRequestMemoryStream();
+            var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, stream);
 
             return Content(Guid.NewGuid().ToString());
         }
+        #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Test()
+        public IActionResult About()
         {
-            return Content(Guid.NewGuid().ToString());
+            ViewData["Message"] = "Your application description page.";
+
+            return Content("fsfsfsd");
         }
     }
 }

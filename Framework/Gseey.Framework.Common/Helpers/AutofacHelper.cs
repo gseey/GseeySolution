@@ -10,6 +10,9 @@ namespace Gseey.Framework.Common.Helpers
 {
     public class AutofacHelper
     {
+        /// <summary>
+        /// 容器
+        /// </summary>
         private static ContainerBuilder builder = new ContainerBuilder();
 
         #region 内部枚举
@@ -50,6 +53,19 @@ namespace Gseey.Framework.Common.Helpers
             /// 在一次Http请求上下文中,共享一个组件实例。
             /// </summary>
             InstancePerRequest = 60
+        }
+
+        #endregion
+
+        #region 获取当前容器
+
+        /// <summary>
+        /// 获取当前容器
+        /// </summary>
+        /// <returns></returns>
+        public static ContainerBuilder GetCurrentContainer()
+        {
+            return builder;
         }
 
         #endregion

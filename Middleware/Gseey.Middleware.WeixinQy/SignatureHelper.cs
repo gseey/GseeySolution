@@ -1,11 +1,12 @@
 ﻿using Gseey.Middleware.WeixinQy.DTOs;
+using Senparc.Weixin.Work;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Gseey.Middleware.WeixinQy
 {
-    internal class Signature
+    internal class SignatureHelper
     {
         #region 基本配置
 
@@ -13,7 +14,7 @@ namespace Gseey.Middleware.WeixinQy
 
         #endregion
 
-        public Signature(ChannelConfigDTO config)
+        public SignatureHelper(ChannelConfigDTO config)
         {
             Config = config;
         }
@@ -25,10 +26,11 @@ namespace Gseey.Middleware.WeixinQy
         /// <param name="timestamp"></param>
         /// <param name="nonce"></param>
         /// <returns></returns>
-        public bool CheckSign(string signature, string timestamp, string nonce)
+        public bool CheckSign(string signature, string timestamp, string nonce, string echo, out string replyEcho)
         {
-            var customSign = GetSignature(timestamp, nonce);
-            return signature.Equals(customSign);
+            replyEcho = Signature.VerifyURL(Config.Token, Config.EncodingAESKey, Config.CorpId, signature, timestamp, nonce, echo);
+
+            return echo.Equals(replyEcho);
         }
 
         /// <summary>

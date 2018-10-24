@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.UserInterface.FontUI"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.ConsoleTest", "Test\Gseey.ConsoleTest\Gseey.ConsoleTest.csproj", "{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Framework.BaseDTO", "Framework\Gseey.Framework.BaseDTO\Gseey.Framework.BaseDTO.csproj", "{BAB26939-EF74-47A4-A356-0A5C09F2DB43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB26939-EF74-47A4-A356-0A5C09F2DB43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB26939-EF74-47A4-A356-0A5C09F2DB43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB26939-EF74-47A4-A356-0A5C09F2DB43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB26939-EF74-47A4-A356-0A5C09F2DB43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1} = {2D185327-C077-4AC9-A5DD-F91124F47572}
 		{F519A2FA-DAAB-4BC5-B819-CE0439FDA3F6} = {F78D9D0D-FFB4-47EA-8397-FEC5FFBDC469}
 		{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71} = {A95B0C6D-AAFA-4D7D-BDBD-62AF2551169E}
+		{BAB26939-EF74-47A4-A356-0A5C09F2DB43} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FCF8BEF-F038-44B1-9A89-4D0A66576AEA}

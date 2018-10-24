@@ -16,7 +16,7 @@ namespace Gseey.Middleware.WeixinQy
         /// <returns></returns>
         public static async Task<string> GetAccessTokenAsync(string corpId, int appId)
         {
-            var configDto = await ChannelHelper.GetAgentConfigDTOAsync(appId);
+            var configDto = await ChannelHelper.GetAgentConfigDTOByChannelIdAsync(appId);
             if (configDto != null && configDto.Id > 0)
             {
                 var tokenResult = await AccessTokenContainer.TryGetTokenAsync(configDto.CorpId, configDto.CorpSercet);
