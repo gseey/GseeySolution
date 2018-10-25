@@ -18,6 +18,11 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            RedisHelper redisHelper = new RedisHelper();
+            var key = "k1";
+            var value = "v1";
+            var r1 = redisHelper.StringSet(key, value);
+
             TestDemo.Test();
 
             Console.ReadKey();

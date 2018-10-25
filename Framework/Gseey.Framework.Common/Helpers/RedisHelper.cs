@@ -71,7 +71,7 @@
         /// </summary>
         static RedisHelper()
         {
-            ConnectionString = ConfigHelper.Get("Redis:ConnectionString");
+            ConnectionString = ConfigHelper.Get("Gseey:Connections:RedisConnectionString");
             _connMultiplexer = ConnectionMultiplexer.Connect(ConnectionString);
             DefaultKey = ConfigHelper.Get("Redis:DefaultKey");
             AddRegisterEvent();
