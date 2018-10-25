@@ -2,6 +2,10 @@
 using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Gseey.Middleware.WeixinQy.Service.MessageHandler;
+using Senparc.NeuChar.Context;
+using Senparc.NeuChar.Helpers;
+using Senparc.Weixin.Work.Entities;
+using Senparc.Weixin.Work.MessageHandlers;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -81,13 +85,27 @@ namespace Gseey.Middleware.WeixinQy.Service
                 crypt.EncryptMsg(reply, timestamp, nonce, ref replyMsg);
 
                 result.Data = replyMsg;
-                return result;
 
                 var signHelper = new SignatureHelper(configDto);
                 //signHelper.d
+                string testXml = @"<xml><ToUserName><![CDATA[wx7618c0a6d9358622]]></ToUserName>
+<Encrypt><![CDATA[h3z+AK9zKP4dYs8j1FmthAILbJghEmdo2Y1U9Pdghzann6H2KJOpepaDT1zcp09/1/e/6ta48aUXebkHlu0rhzk4GW+cvVUHzbEiQVFlIvD+q4T/NLIm8E8BM+gO+DHslM7aXmYjvgMw6AYiBx80D+nZKNyJD3I8lRT3aHCq/hez0c+HTAnZyuCi5TfUAw0c6jWSfAq61VesRw4lhV925vJUOBXT/zOw760CEsYXSr2IAr/n4aPfDgRs2Ww2h/HPiVOQ2Ms1f/BOtFiKVWMqZCxbmJ7cyPHH7+uOSAS6DtXiQAdwpEZwHz+A5QTsmK6V0C6Ifgr7zrStb7ygM7kmcrAJctPhCfG7WlfrWrFNLdtx9Q2F7d6/soinswdoYF8g56s8UWguOVkM7UFGr8H2QqrUJm5S5iFP/XNcBwvPWYA=]]></Encrypt>
+<AgentID><![CDATA[2]]></AgentID>
+</xml>";
+                var postModel = new Senparc.Weixin.Work.Entities.PostModel()
+                {
+                    Msg_Signature = "845997ceb6e4fd73edd9a377be227848ce20d34f",
+                    Timestamp = "1412587525",
+                    Nonce = "1501543730",
+
+                    Token = "fzBsmSaI8XE1OwBh",
+                    EncodingAESKey = "9J8CQ7iF9mLtQDZrUM1loOVQ6oNDxVtBi1DBU2oaewl",
+                    CorpId = "wx7618c0a6d9358622"
+                };
+                var messageHandler = new CustomMessageHandlers(XDocument.Parse(testXml), postModel, 10);
 
                 var xmlInfo = XDocument.Parse(msg);
-                var postModel = new Senparc.Weixin.Work.Entities.PostModel
+                var postModel1 = new Senparc.Weixin.Work.Entities.PostModel
                 {
                     CorpId = configDto.CorpId,
                     EncodingAESKey = configDto.EncodingAESKey,
@@ -104,7 +122,9 @@ namespace Gseey.Middleware.WeixinQy.Service
                     //EncodingAESKey = "9J8CQ7iF9mLtQDZrUM1loOVQ6oNDxVtBi1DBU2oaewl",
                     //CorpId = "wx7618c0a6d9358622"
                 };
-                var handler = new CustomMessageHandler(xmlInfo, postModel, 10);
+                var handler = new CustomMessageHandler(xmlInfo, postModel1, 10);
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -118,5 +138,34 @@ namespace Gseey.Middleware.WeixinQy.Service
         #endregion
 
 
+    }
+
+    public class CustomMessageHandlers : WorkMessageHandler<MessageContext<IWorkRequestMessageBase, IWorkResponseMessageBase>>
+    {
+        public CustomMessageHandlers(XDocument requestDoc, PostModel postModel, int maxRecordCount = 0)
+            : base(requestDoc, postModel, maxRecordCount)
+        {
+        }
+
+        public override IWorkResponseMessageBase OnTextRequest(RequestMessageText requestMessage)
+        {
+            var responseMessage = RequestMessage.CreateResponseMessage<ResponseMessageText>();
+
+            responseMessage.Content = "文字信息";
+            return responseMessage;
+        }
+
+
+        /// <summary>
+        /// 默认消息
+        /// </summary>
+        /// <param name="requestMessage"></param>
+        /// <returns></returns>
+        public override IWorkResponseMessageBase DefaultResponseMessage(IWorkRequestMessageBase requestMessage)
+        {
+            var responseMessage = this.CreateResponseMessage<ResponseMessageText>();
+            responseMessage.Content = "这是一条默认消息。";
+            return responseMessage;
+        }
     }
 }
