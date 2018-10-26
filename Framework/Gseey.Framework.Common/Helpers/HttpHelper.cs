@@ -35,10 +35,12 @@ namespace Gseey.Framework.Common.Helpers
         public static string GetHtml(string url)
         {
             var uri = new Uri(url);
-            var client = GetHttpClient();
-            client.BaseAddress = uri;
-            var result = client.GetStringAsync(uri).Result;
-            return result;
+            using (var client = GetHttpClient())
+            {
+                client.BaseAddress = uri;
+                var result = client.GetStringAsync(uri).Result;
+                return result;
+            }
         }
         /// <summary>
         /// 获取网页信息(异步)
@@ -48,10 +50,12 @@ namespace Gseey.Framework.Common.Helpers
         public static async Task<string> GetHtmlAsync(string url)
         {
             var uri = new Uri(url);
-            var client = GetHttpClient();
-            client.BaseAddress = uri;
-            var result = await client.GetStringAsync(uri);
-            return result;
+            using (var client = GetHttpClient())
+            {
+                client.BaseAddress = uri;
+                var result = await client.GetStringAsync(uri);
+                return result;
+            }
         }
 
 
@@ -63,11 +67,13 @@ namespace Gseey.Framework.Common.Helpers
         public static TResult GetHtml<TResult>(string url) where TResult : class
         {
             var uri = new Uri(url);
-            var client = GetHttpClient();
-            client.BaseAddress = uri;
-            var html = client.GetStringAsync(uri).Result;
-            var result = html.FromJson<TResult>();
-            return result;
+            using (var client = GetHttpClient())
+            {
+                client.BaseAddress = uri;
+                var html = client.GetStringAsync(uri).Result;
+                var result = html.FromJson<TResult>();
+                return result;
+            }
         }
         /// <summary>
         /// 获取网页信息(异步)
@@ -77,11 +83,13 @@ namespace Gseey.Framework.Common.Helpers
         public static async Task<TResult> GetHtmlAsync<TResult>(string url) where TResult : class
         {
             var uri = new Uri(url);
-            var client = GetHttpClient();
-            client.BaseAddress = uri;
-            var html = await client.GetStringAsync(uri);
-            var result = html.FromJson<TResult>();
-            return result;
+            using (var client = GetHttpClient())
+            {
+                client.BaseAddress = uri;
+                var html = await client.GetStringAsync(uri);
+                var result = html.FromJson<TResult>();
+                return result;
+            }
         }
 
         #endregion
@@ -134,6 +142,41 @@ namespace Gseey.Framework.Common.Helpers
             var result = html.FromJson<TResult>();
             return result;
         }
+        #endregion
+
+        #region 上传文件
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="fileFullPath"></param>
+        /// <returns></returns>
+        public static async Task<TResult> UploadFile<TResult>(string url, string fileFullPath) where TResult : class
+        {
+            var uri = new Uri(url);
+            using (var client = GetHttpClient())
+            {
+                client.BaseAddress = uri;
+                var nonceStr = Guid.NewGuid().ToString().Replace("-", "");
+
+                using (MultipartFormDataContent content = new MultipartFormDataContent(string.Format("{0}", nonceStr)))
+                {
+                    var fileName = Path.GetFileName(fileFullPath);
+                    content.Add(new StreamContent(File.OpenRead(fileFullPath)), "bilddatei", fileName);
+                    using (var message = await client.PostAsync(uri, content))
+                    {
+                        var html = await message.Content.ReadAsStringAsync();
+
+                        var result = html.FromJson<TResult>();
+
+                        return result;
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -4,8 +4,11 @@ using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
 using Gseey.Framework.DataBase.DalBase;
 using Gseey.Framework.DataBase.EntityBase;
+using Gseey.Middleware.Weixin.Media;
 using Gseey.Middleware.Weixin.Menu;
 using Gseey.Middleware.Weixin.Menu.Entities;
+using Gseey.Middleware.Weixin.Message;
+using Gseey.Middleware.Weixin.Message.Entities;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -20,36 +23,19 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var m2 = MenuApi.DeleteMenuAsync(1).Result;
+            var u1 = MediaApi.UploadAsync(1, UploadMediaFileType.file, @"F:\30_09.log").Result;
 
-            //var m1 = MenuApi.CreateMenuAsync(2, new ButtonGroup
-            //{
-            //    button = new List<BaseButton>
-            //    {
-            //        new SingleClickButton{
-            //            key="V1001_TODAY_MUSIC",
-            //            name="今日歌曲"
-            //        },
-            //        new SingleClickButton{
-            //            key="V1001_TODAY_MUSIC1",
-            //            name="今日歌曲1"
-            //        },
-            //        new SingleClickButton{
-            //            key="V1001_TODAY_MUSIC2",
-            //            name="今日歌曲2"
-            //        }
-            //    }
-            //}).Result;
+            var xml = @"<xml><ToUserName><![CDATA[toUser]]></ToUserName>
+<FromUserName><![CDATA[FromUser]]></FromUserName>
+<CreateTime>1408091189</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[enter_agent]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+";
 
+            var t = MessageApi.ParseMessage(1, xml);
 
-            //var result = MenuApi.GetMenuAsync(1).Result;
-
-            //RedisHelper redisHelper = new RedisHelper();
-            //var key = "k1";
-            //var value = "v1";
-            //var r1 = redisHelper.StringSet(key, value);
-
-            //TestDemo.Test();
 
             Console.ReadKey();
         }
