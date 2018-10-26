@@ -1,5 +1,5 @@
 ﻿using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.Weixin.BaseEntities;
+using Gseey.Middleware.Weixin.BaseDTOs;
 using Gseey.Middleware.Weixin.Enums;
 using System;
 using System.Collections.Generic;

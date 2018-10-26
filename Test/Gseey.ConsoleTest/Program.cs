@@ -6,7 +6,7 @@ using Gseey.Framework.DataBase.DalBase;
 using Gseey.Framework.DataBase.EntityBase;
 using Gseey.Middleware.Weixin.Media;
 using Gseey.Middleware.Weixin.Menu;
-using Gseey.Middleware.Weixin.Menu.Entities;
+using Gseey.Middleware.Weixin.Menu.DTOs;
 using Gseey.Middleware.Weixin.Message;
 using Gseey.Middleware.Weixin.Message.Entities;
 using System;

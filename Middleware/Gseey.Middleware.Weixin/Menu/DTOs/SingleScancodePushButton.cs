@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.Menu.Entities
+namespace Gseey.Middleware.Weixin.Menu.DTOs
 {
     /// <summary>
     /// 单个按键

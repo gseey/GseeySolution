@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.Menu.Entities
+namespace Gseey.Middleware.Weixin.Menu.DTOs
 {
     /// <summary>
     /// 整个按钮设置（可以直接用ButtonGroup实例返回JSON对象）

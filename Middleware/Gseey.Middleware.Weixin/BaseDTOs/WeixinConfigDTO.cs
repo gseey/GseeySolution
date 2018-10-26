@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.BaseEntities
+namespace Gseey.Middleware.Weixin.BaseDTOs
 {
     /// <summary>
     /// 微信配置信息
