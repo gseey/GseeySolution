@@ -36,6 +36,11 @@ namespace Gseey.Middleware.Weixin.BaseEntities
         public string EncodingAESKey { get; set; }
 
         /// <summary>
+        /// 企业号应用id
+        /// </summary>
+        public int AgentId { get; set; }
+
+        /// <summary>
         /// 微信类型
         /// </summary>
         public WeixinType WxType { get; set; }
