@@ -20,10 +20,10 @@ namespace Gseey.Middleware.Weixin.Enums
         /// </summary>
         WxWork = 2,
 
-        /// <summary>
-        /// 微信小程序
-        /// </summary>
-        WxApp = 3
+        ///// <summary>
+        ///// 微信小程序
+        ///// </summary>
+        //WxApp = 3
 
     }
 }

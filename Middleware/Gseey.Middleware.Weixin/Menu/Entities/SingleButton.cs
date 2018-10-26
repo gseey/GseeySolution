@@ -12,7 +12,7 @@ namespace Gseey.Middleware.Weixin.Menu.Entities
         /// <summary>
         /// 按钮类型（click或view）
         /// </summary>
-        public string type { get; set; }
+        public string type { get;}
 
         public SingleButton(string theType)
         {
