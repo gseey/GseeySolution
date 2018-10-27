@@ -22,10 +22,9 @@ namespace Gseey.Middleware.WeixinQy
             try
             {
                 //根据appid获取应用信息(从缓存中获取)
-                RedisHelper redisHelper = new RedisHelper();
                 var redisKey = string.Format("CorpAppId_{0}", channelId);
 
-                configDto = await redisHelper.StringGetAsync<ChannelConfigDTO>(redisKey);
+                configDto = await RedisHelper.StringGetAsync<ChannelConfigDTO>(redisKey);
             }
             catch (Exception ex)
             {

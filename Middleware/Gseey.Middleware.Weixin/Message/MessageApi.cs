@@ -1,6 +1,9 @@
-﻿using Gseey.Framework.Common.Helpers;
+﻿using Gseey.Framework.BaseDTO;
+using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.Weixin.Helpers;
-using Gseey.Middleware.Weixin.Message.Entities;
+using Gseey.Middleware.Weixin.Keywords;
+using Gseey.Middleware.Weixin.Message.Entities.Request;
+using Gseey.Middleware.Weixin.Message.Entities.Response;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,17 +23,20 @@ namespace Gseey.Middleware.Weixin.Message
         /// <param name="nonce">随机串</param>
         /// <param name="inputMsg">加密消息</param>
         /// <returns></returns>
-        public static Task<string> ParseInputMsg(int channelId, string msg_signature, string timestamp, string nonce, string inputMsg)
+        public static async Task<string> ParseInputMsgAsync(int channelId, string msg_signature, string timestamp, string nonce, string inputMsg)
         {
             var encryptMsg = SignHelper.DecryptMsg(channelId, msg_signature, timestamp, nonce, inputMsg);
 
-            ReceiveBaseMessageDTO baseMessageDTO = ParseMessage(channelId, encryptMsg);
-            return null;
+            var baseMessageDTO = ParseMessage(channelId, encryptMsg);
+
+            var result = await KeywordHelper.GetCustomKeywordsReplyAsync<ExecuteResult<string>>(channelId, baseMessageDTO.ToUserName, baseMessageDTO.FromUserName, "");
+
+            return result.Data;
         }
 
-        private static ReceiveBaseMessageDTO ParseBaseMessage(int channelId, string encryptMsg, out XElement encryptXml)
+        private static RequestBaseMessageDTO ParseBaseMessage(int channelId, string encryptMsg, out XElement encryptXml)
         {
-            ReceiveBaseMessageDTO baseMessageDTO = new ReceiveBaseMessageDTO();
+            RequestBaseMessageDTO baseMessageDTO = new RequestBaseMessageDTO();
             encryptXml = XElement.Parse(encryptMsg);
             var toUserName = encryptXml.Element("ToUserName").Value;
             var fromUserName = encryptXml.Element("FromUserName").Value;
@@ -47,7 +53,7 @@ namespace Gseey.Middleware.Weixin.Message
             baseMessageDTO.MsgType = msgType;
             if (msgType == "event")
             {
-                var eventBaseMessageDTO = new ReceiveEventBaseMessageDTO
+                var eventBaseMessageDTO = new RequestEventBaseMessageDTO
                 {
                     ToUserName = baseMessageDTO.ToUserName,
                     FromUserName = baseMessageDTO.FromUserName,
@@ -67,7 +73,7 @@ namespace Gseey.Middleware.Weixin.Message
         /// </summary>
         /// <param name="encryptMsg"></param>
         /// <returns></returns>
-        public static ReceiveBaseMessageDTO ParseMessage(int channelId, string encryptMsg)
+        public static RequestBaseMessageDTO ParseMessage(int channelId, string encryptMsg)
         {
             var baseMessageDTO = ParseBaseMessage(channelId, encryptMsg, out XElement encryptXml);
 
@@ -75,7 +81,7 @@ namespace Gseey.Middleware.Weixin.Message
             {
                 case "text"://文本消息
                     {
-                        var textMessageDTO = new ReceiveTextMessageDTO
+                        var textMessageDTO = new RequestTextMessageDTO
                         {
                             ToUserName = baseMessageDTO.ToUserName,
                             FromUserName = baseMessageDTO.FromUserName,
@@ -102,7 +108,7 @@ namespace Gseey.Middleware.Weixin.Message
 
                 case "event"://事件消息
                     {
-                        var eventType = ((ReceiveEventBaseMessageDTO)baseMessageDTO).Event;
+                        var eventType = ((RequestEventBaseMessageDTO)baseMessageDTO).Event;
 
                         switch (eventType)
                         {
@@ -143,7 +149,7 @@ namespace Gseey.Middleware.Weixin.Message
                     break;
             }
 
-            return null;
+            return baseMessageDTO;
         }
     }
 }

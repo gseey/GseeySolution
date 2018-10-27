@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.Message.Entities
+namespace Gseey.Middleware.Weixin.Message.Entities.Request
 {
     /// <summary>
     /// 消息基类
     /// </summary>
-    public class ReceiveBaseMessageDTO
+    public class RequestBaseMessageDTO
     {
         /// <summary>
         /// 企业微信CorpID/开发者微信号

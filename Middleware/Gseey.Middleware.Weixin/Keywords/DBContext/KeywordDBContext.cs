@@ -13,16 +13,37 @@ namespace Gseey.Middleware.Weixin.Keywords.DBContext
         private static DapperDALBase<ChannelKeywordRelationEntity> ChannelKeywrodRelationDAL { get; }
         private static DapperDALBase<KeywordReplyDetailEntity> KeywrodDAL { get; }
 
-        public static async Task<KeywordReplyDetailEntity> Test(int channelId)
+
+        /// <summary>
+        /// 获取渠道关键词回复内容
+        /// </summary>
+        /// <param name="channelId">渠道id</param>
+        /// <param name="keyword">关键词</param>
+        /// <param name="preKeywordContextId">上一关键词id</param>
+        /// <returns></returns>
+        public static async Task<KeywordReplyDetailEntity> GetKeywordReplyAsync(int channelId, string keyword, int preKeywordContextId = -1)
         {
-            var sql = "";
-            var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { a = 1 });
-            var channelRelationEntities = await ChannelKeywrodRelationDAL.QueryListAsync(new { ChannelId = channelId });
-            if (keywordEntities.Count() > 0)
+            try
             {
-                return keywordEntities.SingleOrDefault();
+                return new KeywordReplyDetailEntity
+                {
+                    KeywordContextId = 1,
+                    ReplyMsg = "test reply",
+                };
+
+                var sql = "";
+                var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { a = 1 });
+                var channelRelationEntities = await ChannelKeywrodRelationDAL.QueryListAsync(new { ChannelId = channelId });
+                if (keywordEntities.Count() > 0)
+                {
+                    return keywordEntities.SingleOrDefault();
+                }
             }
-            return null;
+            catch (Exception)
+            {
+
+            }
+            return new KeywordReplyDetailEntity();
         }
     }
 }

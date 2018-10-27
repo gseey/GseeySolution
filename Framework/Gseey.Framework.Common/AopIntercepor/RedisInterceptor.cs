@@ -24,9 +24,8 @@ namespace Gseey.Framework.Common.AopIntercepor
         {
             var redisKey = string.Format("{0}.{1}_{2}", invocation.InvocationTarget, invocation.Method.Name, invocation.Arguments.ToJson());
             Console.WriteLine(redisKey);
-
-            var redisHelper = new RedisHelper();
-            var value = redisHelper.StringGet(redisKey);
+            
+            var value = RedisHelper.StringGet(redisKey);
             if (!string.IsNullOrEmpty(value))
             {
                 invocation.ReturnValue = value;
@@ -34,7 +33,7 @@ namespace Gseey.Framework.Common.AopIntercepor
             else
             {
                 var redisValue = "fdsfdsfsfsdfsd";
-                redisHelper.StringSet(redisKey, redisValue);
+                RedisHelper.StringSet(redisKey, redisValue);
                 invocation.ReturnValue = redisValue;
             }
         }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.Message.Entities
+namespace Gseey.Middleware.Weixin.Message.Entities.Request
 {
     /// <summary>
     /// 文本消息
     /// </summary>
-    public class ReceiveTextMessageDTO : ReceiveBaseMessageDTO
+    public class RequestTextMessageDTO : RequestBaseMessageDTO
     {
         /// <summary>
         /// 文本消息内容

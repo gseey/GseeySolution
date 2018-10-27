@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gseey.Framework.Common.Helpers;
+using Gseey.Middleware.Weixin.Services;
 using Gseey.Middleware.WeixinQy.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Senparc.CO2NET.HttpUtility;
@@ -16,14 +17,16 @@ namespace Gseey.UserInterface.FontUI.Controllers
         #region 构造函数
 
         IChannelConfigService _channelService;
+        private readonly IMessageHandlerService _messageHandlerService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="configService"></param>
-        public WeixinController(IChannelConfigService configService)
+        public WeixinController(IChannelConfigService configService, IMessageHandlerService messageHandlerService)
         {
             _channelService = configService;
+            _messageHandlerService = messageHandlerService;
         }
 
         #endregion
@@ -32,17 +35,17 @@ namespace Gseey.UserInterface.FontUI.Controllers
 
         #endregion
 
-        #region 企业号
+        #region 
 
         /// <summary>
-        /// 微信企业号后台验证地址（使用Get），微信后台的“接口配置信息”的Url
+        /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
         [HttpGet]
         [ActionName("QyIndex")]
-        public async Task<IActionResult> QyIndexAsync(int channelId, string msg_signature, string timestamp, string nonce, string echostr)
+        public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
             //校验微信签名
-            var checkResult = await _channelService.CheckChannelWeixinQySignAsync(channelId, msg_signature, timestamp, nonce, echostr);
+            var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
             if (checkResult.Success)
                 return Content(checkResult.Data.Item2);
             else
@@ -50,14 +53,14 @@ namespace Gseey.UserInterface.FontUI.Controllers
         }
 
         /// <summary>
-        /// 微信企业号事件处理
+        /// 微信事件处理
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         [ActionName("QyIndex")]
-        public async Task<IActionResult> QyIndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
+        public async Task<IActionResult> IndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
         {
-            //获取企业号推送过来的消息
+            //获取推送过来的消息
             var msg = string.Empty;
             using (Stream stream = HttpContext.Request.Body)
             {
@@ -66,9 +69,10 @@ namespace Gseey.UserInterface.FontUI.Controllers
                 msg = Encoding.UTF8.GetString(buffer);
             }
 
-            var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, msg_signature, timestamp, nonce, msg);
+            var result = await _messageHandlerService.GetResponseAsync(channelId, msg_signature, timestamp, nonce, msg);
+            //var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, msg_signature, timestamp, nonce, msg);
 
-            return Content(result.Data);
+            return Content(result);
         }
         #endregion
 

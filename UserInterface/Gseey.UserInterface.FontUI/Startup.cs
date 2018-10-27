@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Gseey.Middleware.Weixin;
 using Gseey.Middleware.WeixinQy;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,7 +39,8 @@ namespace Gseey.UserInterface.FontUI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var builder = new ContainerBuilder();
-            //注册微信企业号服务
+            //注册微信服务
+            builder.RegisterModule<RegistWeixinModel>();
             builder.RegisterModule<RegistWeixinQyModel>();
 
             builder.Populate(services);

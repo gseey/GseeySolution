@@ -20,10 +20,9 @@ namespace Gseey.Middleware.Weixin.Helpers
         /// <returns></returns>
         public static async Task<string> GetAccessTokenAsync(int channelId, string appId, string appSercet, WeixinType wxType)
         {
-            var redisHelper = new RedisHelper();
             var redisKey = string.Format("AccessToken_{0}_{1}", channelId, appId);
             //从缓存中读取
-            var accessToken = await redisHelper.StringGetAsync<string>(redisKey);
+            var accessToken = await RedisHelper.StringGetAsync<string>(redisKey);
             if (string.IsNullOrEmpty(accessToken))
             {
                 //从api中获取
@@ -44,7 +43,7 @@ namespace Gseey.Middleware.Weixin.Helpers
                 {
                     accessToken = accessTokenDto.access_token;
 
-                    var setResult = redisHelper.StringSet<string>(redisKey, accessTokenDto.access_token, TimeSpan.FromSeconds(accessTokenDto.expires_in * 1.0));
+                    var setResult = RedisHelper.StringSet<string>(redisKey, accessTokenDto.access_token, TimeSpan.FromSeconds(accessTokenDto.expires_in * 1.0));
                 }
             }
             return accessToken;
@@ -59,10 +58,9 @@ namespace Gseey.Middleware.Weixin.Helpers
         {
             //获取accesstoken
             var accessToken = await GetAccessTokenAsync(channelId, appId, appSercet, wxType);
-            var redisHelper = new RedisHelper();
             var redisKey = string.Format("JsapiTicket_{0}_{1}", channelId, appId);
             //从缓存中读取
-            var jsapiTicket = await redisHelper.StringGetAsync<string>(redisKey);
+            var jsapiTicket = await RedisHelper.StringGetAsync<string>(redisKey);
             if (string.IsNullOrEmpty(jsapiTicket))
             {
                 //从api中获取
@@ -83,7 +81,7 @@ namespace Gseey.Middleware.Weixin.Helpers
                 {
                     jsapiTicket = jsapiTicketDto.ticket;
 
-                    var setResult = redisHelper.StringSet<string>(redisKey, jsapiTicketDto.ticket, TimeSpan.FromSeconds(jsapiTicketDto.expires_in * 1.0));
+                    var setResult = RedisHelper.StringSet<string>(redisKey, jsapiTicketDto.ticket, TimeSpan.FromSeconds(jsapiTicketDto.expires_in * 1.0));
                 }
             }
             return jsapiTicket;

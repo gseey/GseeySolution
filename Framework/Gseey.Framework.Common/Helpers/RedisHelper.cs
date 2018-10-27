@@ -1,18 +1,18 @@
-﻿namespace Gseey.Framework.Common.Helpers
-{
-    using StackExchange.Redis;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Runtime.Serialization.Formatters.Binary;
-    using System.Threading.Tasks;
+﻿using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
+namespace Gseey.Framework.Common.Helpers
+{
     /// <summary>
     /// Redis 助手
     /// http://www.cnblogs.com/liqingwen/p/6672452.html
     /// </summary>
-    public class RedisHelper
+    public static class RedisHelper
     {
         /// <summary>
         /// 连接字符串
@@ -37,13 +37,13 @@
         /// <summary>
         /// 数据库
         /// </summary>
-        private readonly IDatabase _db;
+        private static IDatabase _db;
 
         /// <summary>
         /// 获取 Redis 连接对象
         /// </summary>
         /// <returns></returns>
-        public IConnectionMultiplexer GetConnectionRedisMultiplexer()
+        public static IConnectionMultiplexer GetConnectionRedisMultiplexer()
         {
             if ((_connMultiplexer == null) || !_connMultiplexer.IsConnected)
             {
@@ -57,13 +57,20 @@
             return _connMultiplexer;
         }
 
+        private static IDatabase GetDatabase(int dbIndex = -1)
+        {
+            _db = _connMultiplexer.GetDatabase(dbIndex);
+            return _db;
+        }
+
         /// <summary>
         /// The GetTransaction
         /// </summary>
         /// <returns>The <see cref="ITransaction"/></returns>
-        public ITransaction GetTransaction()
+        public static ITransaction GetTransaction(int dbIndex = -1)
         {
-            return _db.CreateTransaction();
+            var db = GetDatabase(dbIndex);
+            return db.CreateTransaction();
         }
 
         /// <summary>
@@ -78,25 +85,17 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RedisHelper"/> class.
-        /// </summary>
-        /// <param name="db">The db<see cref="int"/></param>
-        public RedisHelper(int db = -1)
-        {
-            _db = _connMultiplexer.GetDatabase(db);
-        }
-
-        /// <summary>
         /// 设置 key 并保存字符串（如果 key 已存在，则覆盖值）
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public bool StringSet(string redisKey, string redisValue, TimeSpan? expiry = null)
+        public static bool StringSet(string redisKey, string redisValue, TimeSpan? expiry = null,int dbIndex=-1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.StringSet(redisKey, redisValue, expiry);
+            var db = GetDatabase(dbIndex);
+            return db.StringSet(redisKey, redisValue, expiry);
         }
 
         /// <summary>
@@ -104,11 +103,12 @@
         /// </summary>
         /// <param name="keyValuePairs"></param>
         /// <returns></returns>
-        public bool StringSet(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs)
+        public static bool StringSet(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs, int dbIndex = -1)
         {
             keyValuePairs =
                 keyValuePairs.Select(x => new KeyValuePair<RedisKey, RedisValue>(AddKeyPrefix(x.Key), x.Value));
-            return _db.StringSet(keyValuePairs.ToArray());
+            var db = GetDatabase(dbIndex);
+            return db.StringSet(keyValuePairs.ToArray());
         }
 
         /// <summary>
@@ -117,10 +117,11 @@
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public string StringGet(string redisKey, TimeSpan? expiry = null)
+        public static string StringGet(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.StringGet(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.StringGet(redisKey);
         }
 
         /// <summary>
@@ -131,11 +132,12 @@
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public bool StringSet<T>(string redisKey, T redisValue, TimeSpan? expiry = null)
+        public static bool StringSet<T>(string redisKey, T redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(redisValue);
-            return _db.StringSet(redisKey, json, expiry);
+            var db = GetDatabase(dbIndex);
+            return db.StringSet(redisKey, json, expiry);
         }
 
         /// <summary>
@@ -145,10 +147,11 @@
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public T StringGet<T>(string redisKey, TimeSpan? expiry = null)
+        public static T StringGet<T>(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(_db.StringGet(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(db.StringGet(redisKey));
         }
 
         /// <summary>
@@ -158,10 +161,11 @@
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public async Task<bool> StringSetAsync(string redisKey, string redisValue, TimeSpan? expiry = null)
+        public static async Task<bool> StringSetAsync(string redisKey, string redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.StringSetAsync(redisKey, redisValue, expiry);
+            var db = GetDatabase(dbIndex);
+            return await db.StringSetAsync(redisKey, redisValue, expiry);
         }
 
         /// <summary>
@@ -169,11 +173,12 @@
         /// </summary>
         /// <param name="keyValuePairs"></param>
         /// <returns></returns>
-        public async Task<bool> StringSetAsync(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs)
+        public static async Task<bool> StringSetAsync(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs, int dbIndex = -1)
         {
             keyValuePairs =
                 keyValuePairs.Select(x => new KeyValuePair<RedisKey, RedisValue>(AddKeyPrefix(x.Key), x.Value));
-            return await _db.StringSetAsync(keyValuePairs.ToArray());
+            var db = GetDatabase(dbIndex);
+            return await db.StringSetAsync(keyValuePairs.ToArray());
         }
 
         /// <summary>
@@ -183,10 +188,11 @@
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public async Task<string> StringGetAsync(string redisKey, string redisValue, TimeSpan? expiry = null)
+        public static async Task<string> StringGetAsync(string redisKey, string redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.StringGetAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.StringGetAsync(redisKey);
         }
 
         /// <summary>
@@ -197,11 +203,12 @@
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public async Task<bool> StringSetAsync<T>(string redisKey, T redisValue, TimeSpan? expiry = null)
+        public static async Task<bool> StringSetAsync<T>(string redisKey, T redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(redisValue);
-            return await _db.StringSetAsync(redisKey, json, expiry);
+            var db = GetDatabase(dbIndex);
+            return await db.StringSetAsync(redisKey, json, expiry);
         }
 
         /// <summary>
@@ -211,10 +218,11 @@
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public async Task<T> StringGetAsync<T>(string redisKey, TimeSpan? expiry = null)
+        public static async Task<T> StringGetAsync<T>(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(await _db.StringGetAsync(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(await db.StringGetAsync(redisKey));
         }
 
         /// <summary>
@@ -223,10 +231,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public bool HashExists(string redisKey, string hashField)
+        public static bool HashExists(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashExists(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return db.HashExists(redisKey, hashField);
         }
 
         /// <summary>
@@ -235,10 +244,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public bool HashDelete(string redisKey, string hashField)
+        public static bool HashDelete(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashDelete(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return db.HashDelete(redisKey, hashField);
         }
 
         /// <summary>
@@ -247,10 +257,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public long HashDelete(string redisKey, IEnumerable<RedisValue> hashField)
+        public static long HashDelete(string redisKey, IEnumerable<RedisValue> hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashDelete(redisKey, hashField.ToArray());
+            var db = GetDatabase(dbIndex);
+            return db.HashDelete(redisKey, hashField.ToArray());
         }
 
         /// <summary>
@@ -260,10 +271,11 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool HashSet(string redisKey, string hashField, string value)
+        public static bool HashSet(string redisKey, string hashField, string value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashSet(redisKey, hashField, value);
+            var db = GetDatabase(dbIndex);
+            return db.HashSet(redisKey, hashField, value);
         }
 
         /// <summary>
@@ -271,10 +283,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashFields"></param>
-        public void HashSet(string redisKey, IEnumerable<HashEntry> hashFields)
+        public static void HashSet(string redisKey, IEnumerable<HashEntry> hashFields, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            _db.HashSet(redisKey, hashFields.ToArray());
+            var db = GetDatabase(dbIndex);
+            db.HashSet(redisKey, hashFields.ToArray());
         }
 
         /// <summary>
@@ -283,10 +296,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public RedisValue HashGet(string redisKey, string hashField)
+        public static RedisValue HashGet(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashGet(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return db.HashGet(redisKey, hashField);
         }
 
         /// <summary>
@@ -296,10 +310,11 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public RedisValue[] HashGet(string redisKey, RedisValue[] hashField, string value)
+        public static RedisValue[] HashGet(string redisKey, RedisValue[] hashField, string value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashGet(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return db.HashGet(redisKey, hashField);
         }
 
         /// <summary>
@@ -307,10 +322,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public IEnumerable<RedisValue> HashKeys(string redisKey)
+        public static IEnumerable<RedisValue> HashKeys(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashKeys(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.HashKeys(redisKey);
         }
 
         /// <summary>
@@ -318,10 +334,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public RedisValue[] HashValues(string redisKey)
+        public static RedisValue[] HashValues(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.HashValues(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.HashValues(redisKey);
         }
 
         /// <summary>
@@ -332,11 +349,12 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool HashSet<T>(string redisKey, string hashField, T value)
+        public static bool HashSet<T>(string redisKey, string hashField, T value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(value);
-            return _db.HashSet(redisKey, hashField, json);
+            var db = GetDatabase(dbIndex);
+            return db.HashSet(redisKey, hashField, json);
         }
 
         /// <summary>
@@ -346,10 +364,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public T HashGet<T>(string redisKey, string hashField)
+        public static T HashGet<T>(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(_db.HashGet(redisKey, hashField));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(db.HashGet(redisKey, hashField));
         }
 
         /// <summary>
@@ -358,10 +377,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public async Task<bool> HashExistsAsync(string redisKey, string hashField)
+        public static async Task<bool> HashExistsAsync(string redisKey, string hashField,int dbIndex=-1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashExistsAsync(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return await db.HashExistsAsync(redisKey, hashField);
         }
 
         /// <summary>
@@ -370,10 +390,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public async Task<bool> HashDeleteAsync(string redisKey, string hashField)
+        public static async Task<bool> HashDeleteAsync(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashDeleteAsync(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return await db.HashDeleteAsync(redisKey, hashField);
         }
 
         /// <summary>
@@ -382,10 +403,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public async Task<long> HashDeleteAsync(string redisKey, IEnumerable<RedisValue> hashField)
+        public static async Task<long> HashDeleteAsync(string redisKey, IEnumerable<RedisValue> hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashDeleteAsync(redisKey, hashField.ToArray());
+            var db = GetDatabase(dbIndex);
+            return await db.HashDeleteAsync(redisKey, hashField.ToArray());
         }
 
         /// <summary>
@@ -395,10 +417,11 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public async Task<bool> HashSetAsync(string redisKey, string hashField, string value)
+        public static async Task<bool> HashSetAsync(string redisKey, string hashField, string value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashSetAsync(redisKey, hashField, value);
+            var db = GetDatabase(dbIndex);
+            return await db.HashSetAsync(redisKey, hashField, value);
         }
 
         /// <summary>
@@ -407,10 +430,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashFields"></param>
         /// <returns>The <see cref="Task"/></returns>
-        public async Task HashSetAsync(string redisKey, IEnumerable<HashEntry> hashFields)
+        public static async Task HashSetAsync(string redisKey, IEnumerable<HashEntry> hashFields, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            await _db.HashSetAsync(redisKey, hashFields.ToArray());
+            var db = GetDatabase(dbIndex);
+            await db.HashSetAsync(redisKey, hashFields.ToArray());
         }
 
         /// <summary>
@@ -419,10 +443,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public async Task<RedisValue> HashGetAsync(string redisKey, string hashField)
+        public static async Task<RedisValue> HashGetAsync(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashGetAsync(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return await db.HashGetAsync(redisKey, hashField);
         }
 
         /// <summary>
@@ -432,10 +457,11 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RedisValue>> HashGetAsync(string redisKey, RedisValue[] hashField, string value)
+        public static async Task<IEnumerable<RedisValue>> HashGetAsync(string redisKey, RedisValue[] hashField, string value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashGetAsync(redisKey, hashField);
+            var db = GetDatabase(dbIndex);
+            return await db.HashGetAsync(redisKey, hashField);
         }
 
         /// <summary>
@@ -443,10 +469,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RedisValue>> HashKeysAsync(string redisKey)
+        public static async Task<IEnumerable<RedisValue>> HashKeysAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashKeysAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.HashKeysAsync(redisKey);
         }
 
         /// <summary>
@@ -454,10 +481,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RedisValue>> HashValuesAsync(string redisKey)
+        public static async Task<IEnumerable<RedisValue>> HashValuesAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.HashValuesAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.HashValuesAsync(redisKey);
         }
 
         /// <summary>
@@ -468,11 +496,12 @@
         /// <param name="hashField"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public async Task<bool> HashSetAsync<T>(string redisKey, string hashField, T value)
+        public static async Task<bool> HashSetAsync<T>(string redisKey, string hashField, T value, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(value);
-            return await _db.HashSetAsync(redisKey, hashField, json);
+            var db = GetDatabase(dbIndex);
+            return await db.HashSetAsync(redisKey, hashField, json);
         }
 
         /// <summary>
@@ -482,10 +511,11 @@
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <returns></returns>
-        public async Task<T> HashGetAsync<T>(string redisKey, string hashField)
+        public static async Task<T> HashGetAsync<T>(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(await _db.HashGetAsync(redisKey, hashField));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(await db.HashGetAsync(redisKey, hashField));
         }
 
         /// <summary>
@@ -493,10 +523,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public string ListLeftPop(string redisKey)
+        public static string ListLeftPop(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListLeftPop(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.ListLeftPop(redisKey);
         }
 
         /// <summary>
@@ -504,10 +535,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public string ListRightPop(string redisKey)
+        public static string ListRightPop(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListRightPop(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.ListRightPop(redisKey);
         }
 
         /// <summary>
@@ -516,10 +548,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public long ListRemove(string redisKey, string redisValue)
+        public static long ListRemove(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListRemove(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return db.ListRemove(redisKey, redisValue);
         }
 
         /// <summary>
@@ -528,10 +561,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public long ListRightPush(string redisKey, string redisValue)
+        public static long ListRightPush(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListRightPush(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return db.ListRightPush(redisKey, redisValue);
         }
 
         /// <summary>
@@ -540,10 +574,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public long ListLeftPush(string redisKey, string redisValue)
+        public static long ListLeftPush(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListLeftPush(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return db.ListLeftPush(redisKey, redisValue);
         }
 
         /// <summary>
@@ -551,10 +586,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public long ListLength(string redisKey)
+        public static long ListLength(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListLength(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.ListLength(redisKey);
         }
 
         /// <summary>
@@ -562,10 +598,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public IEnumerable<RedisValue> ListRange(string redisKey)
+        public static IEnumerable<RedisValue> ListRange(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListRange(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.ListRange(redisKey);
         }
 
         /// <summary>
@@ -574,10 +611,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public T ListLeftPop<T>(string redisKey)
+        public static T ListLeftPop<T>(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(_db.ListLeftPop(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(db.ListLeftPop(redisKey));
         }
 
         /// <summary>
@@ -586,10 +624,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public T ListRightPop<T>(string redisKey)
+        public static T ListRightPop<T>(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(_db.ListRightPop(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(db.ListRightPop(redisKey));
         }
 
         /// <summary>
@@ -599,10 +638,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public long ListRightPush<T>(string redisKey, T redisValue)
+        public static long ListRightPush<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListRightPush(redisKey, Serialize(redisValue));
+            var db = GetDatabase(dbIndex);
+            return db.ListRightPush(redisKey, Serialize(redisValue));
         }
 
         /// <summary>
@@ -612,10 +652,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public long ListLeftPush<T>(string redisKey, T redisValue)
+        public static long ListLeftPush<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.ListLeftPush(redisKey, Serialize(redisValue));
+            var db = GetDatabase(dbIndex);
+            return db.ListLeftPush(redisKey, Serialize(redisValue));
         }
 
         /// <summary>
@@ -623,10 +664,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<string> ListLeftPopAsync(string redisKey)
+        public static async Task<string> ListLeftPopAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListLeftPopAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.ListLeftPopAsync(redisKey);
         }
 
         /// <summary>
@@ -634,10 +676,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<string> ListRightPopAsync(string redisKey)
+        public static async Task<string> ListRightPopAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListRightPopAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.ListRightPopAsync(redisKey);
         }
 
         /// <summary>
@@ -646,10 +689,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public async Task<long> ListRemoveAsync(string redisKey, string redisValue)
+        public static async Task<long> ListRemoveAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListRemoveAsync(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return await db.ListRemoveAsync(redisKey, redisValue);
         }
 
         /// <summary>
@@ -658,10 +702,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public async Task<long> ListRightPushAsync(string redisKey, string redisValue)
+        public static async Task<long> ListRightPushAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListRightPushAsync(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return await db.ListRightPushAsync(redisKey, redisValue);
         }
 
         /// <summary>
@@ -670,10 +715,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public async Task<long> ListLeftPushAsync(string redisKey, string redisValue)
+        public static async Task<long> ListLeftPushAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListLeftPushAsync(redisKey, redisValue);
+            var db = GetDatabase(dbIndex);
+            return await db.ListLeftPushAsync(redisKey, redisValue);
         }
 
         /// <summary>
@@ -681,10 +727,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<long> ListLengthAsync(string redisKey)
+        public static async Task<long> ListLengthAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListLengthAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.ListLengthAsync(redisKey);
         }
 
         /// <summary>
@@ -692,10 +739,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RedisValue>> ListRangeAsync(string redisKey)
+        public static async Task<IEnumerable<RedisValue>> ListRangeAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListRangeAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.ListRangeAsync(redisKey);
         }
 
         /// <summary>
@@ -704,10 +752,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<T> ListLeftPopAsync<T>(string redisKey)
+        public static async Task<T> ListLeftPopAsync<T>(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(await _db.ListLeftPopAsync(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(await db.ListLeftPopAsync(redisKey));
         }
 
         /// <summary>
@@ -716,10 +765,11 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<T> ListRightPopAsync<T>(string redisKey)
+        public static async Task<T> ListRightPopAsync<T>(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return Deserialize<T>(await _db.ListRightPopAsync(redisKey));
+            var db = GetDatabase(dbIndex);
+            return Deserialize<T>(await db.ListRightPopAsync(redisKey));
         }
 
         /// <summary>
@@ -729,10 +779,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public async Task<long> ListRightPushAsync<T>(string redisKey, T redisValue)
+        public static async Task<long> ListRightPushAsync<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListRightPushAsync(redisKey, Serialize(redisValue));
+            var db = GetDatabase(dbIndex);
+            return await db.ListRightPushAsync(redisKey, Serialize(redisValue));
         }
 
         /// <summary>
@@ -742,10 +793,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <returns></returns>
-        public async Task<long> ListLeftPushAsync<T>(string redisKey, T redisValue)
+        public static async Task<long> ListLeftPushAsync<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.ListLeftPushAsync(redisKey, Serialize(redisValue));
+            var db = GetDatabase(dbIndex);
+            return await db.ListLeftPushAsync(redisKey, Serialize(redisValue));
         }
 
         /// <summary>
@@ -755,10 +807,11 @@
         /// <param name="member"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public bool SortedSetAdd(string redisKey, string member, double score)
+        public static bool SortedSetAdd(string redisKey, string member, double score, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.SortedSetAdd(redisKey, member, score);
+            var db = GetDatabase(dbIndex);
+            return db.SortedSetAdd(redisKey, member, score);
         }
 
         /// <summary>
@@ -766,10 +819,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public IEnumerable<RedisValue> SortedSetRangeByRank(string redisKey)
+        public static IEnumerable<RedisValue> SortedSetRangeByRank(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.SortedSetRangeByRank(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.SortedSetRangeByRank(redisKey);
         }
 
         /// <summary>
@@ -777,10 +831,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public long SortedSetLength(string redisKey)
+        public static long SortedSetLength(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.SortedSetLength(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.SortedSetLength(redisKey);
         }
 
         /// <summary>
@@ -789,10 +844,11 @@
         /// <param name="redisKey"></param>
         /// <param name="memebr"></param>
         /// <returns></returns>
-        public bool SortedSetLength(string redisKey, string memebr)
+        public static bool SortedSetLength(string redisKey, string memebr, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.SortedSetRemove(redisKey, memebr);
+            var db = GetDatabase(dbIndex);
+            return db.SortedSetRemove(redisKey, memebr);
         }
 
         /// <summary>
@@ -803,12 +859,12 @@
         /// <param name="member"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public bool SortedSetAdd<T>(string redisKey, T member, double score)
+        public static bool SortedSetAdd<T>(string redisKey, T member, double score, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(member);
-
-            return _db.SortedSetAdd(redisKey, json, score);
+            var db = GetDatabase(dbIndex);
+            return db.SortedSetAdd(redisKey, json, score);
         }
 
         /// <summary>
@@ -818,10 +874,11 @@
         /// <param name="member"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public async Task<bool> SortedSetAddAsync(string redisKey, string member, double score)
+        public static async Task<bool> SortedSetAddAsync(string redisKey, string member, double score, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.SortedSetAddAsync(redisKey, member, score);
+            var db = GetDatabase(dbIndex);
+            return await db.SortedSetAddAsync(redisKey, member, score);
         }
 
         /// <summary>
@@ -829,10 +886,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RedisValue>> SortedSetRangeByRankAsync(string redisKey)
+        public static async Task<IEnumerable<RedisValue>> SortedSetRangeByRankAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.SortedSetRangeByRankAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.SortedSetRangeByRankAsync(redisKey);
         }
 
         /// <summary>
@@ -840,10 +898,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<long> SortedSetLengthAsync(string redisKey)
+        public static async Task<long> SortedSetLengthAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.SortedSetLengthAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.SortedSetLengthAsync(redisKey);
         }
 
         /// <summary>
@@ -852,10 +911,11 @@
         /// <param name="redisKey"></param>
         /// <param name="memebr"></param>
         /// <returns></returns>
-        public async Task<bool> SortedSetRemoveAsync(string redisKey, string memebr)
+        public static async Task<bool> SortedSetRemoveAsync(string redisKey, string memebr, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.SortedSetRemoveAsync(redisKey, memebr);
+            var db = GetDatabase(dbIndex);
+            return await db.SortedSetRemoveAsync(redisKey, memebr);
         }
 
         /// <summary>
@@ -866,12 +926,12 @@
         /// <param name="member"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public async Task<bool> SortedSetAddAsync<T>(string redisKey, T member, double score)
+        public static async Task<bool> SortedSetAddAsync<T>(string redisKey, T member, double score, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var json = Serialize(member);
-
-            return await _db.SortedSetAddAsync(redisKey, json, score);
+            var db = GetDatabase(dbIndex);
+            return await db.SortedSetAddAsync(redisKey, json, score);
         }
 
         /// <summary>
@@ -879,10 +939,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public bool KeyDelete(string redisKey)
+        public static bool KeyDelete(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.KeyDelete(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.KeyDelete(redisKey);
         }
 
         /// <summary>
@@ -890,10 +951,11 @@
         /// </summary>
         /// <param name="redisKeys"></param>
         /// <returns></returns>
-        public long KeyDelete(IEnumerable<string> redisKeys)
+        public static long KeyDelete(IEnumerable<string> redisKeys, int dbIndex = -1)
         {
             var keys = redisKeys.Select(x => (RedisKey)AddKeyPrefix(x));
-            return _db.KeyDelete(keys.ToArray());
+            var db = GetDatabase(dbIndex);
+            return db.KeyDelete(keys.ToArray());
         }
 
         /// <summary>
@@ -901,10 +963,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public bool KeyExists(string redisKey)
+        public static bool KeyExists(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.KeyExists(redisKey);
+            var db = GetDatabase(dbIndex);
+            return db.KeyExists(redisKey);
         }
 
         /// <summary>
@@ -913,10 +976,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisNewKey"></param>
         /// <returns></returns>
-        public bool KeyRename(string redisKey, string redisNewKey)
+        public static bool KeyRename(string redisKey, string redisNewKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.KeyRename(redisKey, redisNewKey);
+            var db = GetDatabase(dbIndex);
+            return db.KeyRename(redisKey, redisNewKey);
         }
 
         /// <summary>
@@ -925,10 +989,11 @@
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public bool KeyExpire(string redisKey, TimeSpan? expiry)
+        public static bool KeyExpire(string redisKey, TimeSpan? expiry, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return _db.KeyExpire(redisKey, expiry);
+            var db = GetDatabase(dbIndex);
+            return db.KeyExpire(redisKey, expiry);
         }
 
         /// <summary>
@@ -936,10 +1001,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<bool> KeyDeleteAsync(string redisKey)
+        public static async Task<bool> KeyDeleteAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.KeyDeleteAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.KeyDeleteAsync(redisKey);
         }
 
         /// <summary>
@@ -947,10 +1013,11 @@
         /// </summary>
         /// <param name="redisKeys"></param>
         /// <returns></returns>
-        public async Task<long> KeyDeleteAsync(IEnumerable<string> redisKeys)
+        public static async Task<long> KeyDeleteAsync(IEnumerable<string> redisKeys, int dbIndex = -1)
         {
             var keys = redisKeys.Select(x => (RedisKey)AddKeyPrefix(x));
-            return await _db.KeyDeleteAsync(keys.ToArray());
+            var db = GetDatabase(dbIndex);
+            return await db.KeyDeleteAsync(keys.ToArray());
         }
 
         /// <summary>
@@ -958,10 +1025,11 @@
         /// </summary>
         /// <param name="redisKey"></param>
         /// <returns></returns>
-        public async Task<bool> KeyExistsAsync(string redisKey)
+        public static async Task<bool> KeyExistsAsync(string redisKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.KeyExistsAsync(redisKey);
+            var db = GetDatabase(dbIndex);
+            return await db.KeyExistsAsync(redisKey);
         }
 
         /// <summary>
@@ -970,10 +1038,11 @@
         /// <param name="redisKey"></param>
         /// <param name="redisNewKey"></param>
         /// <returns></returns>
-        public async Task<bool> KeyRenameAsync(string redisKey, string redisNewKey)
+        public static async Task<bool> KeyRenameAsync(string redisKey, string redisNewKey, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.KeyRenameAsync(redisKey, redisNewKey);
+            var db = GetDatabase(dbIndex);
+            return await db.KeyRenameAsync(redisKey, redisNewKey);
         }
 
         /// <summary>
@@ -982,10 +1051,11 @@
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
         /// <returns></returns>
-        public async Task<bool> KeyExpireAsync(string redisKey, TimeSpan? expiry)
+        public static async Task<bool> KeyExpireAsync(string redisKey, TimeSpan? expiry, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
-            return await _db.KeyExpireAsync(redisKey, expiry);
+            var db = GetDatabase(dbIndex);
+            return await db.KeyExpireAsync(redisKey, expiry);
         }
 
         /// <summary>
@@ -993,9 +1063,10 @@
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="handle"></param>
-        public void Subscribe(RedisChannel channel, Action<RedisChannel, RedisValue> handle)
+        public static void Subscribe(RedisChannel channel, Action<RedisChannel, RedisValue> handle, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             sub.Subscribe(channel, handle);
         }
 
@@ -1005,9 +1076,10 @@
         /// <param name="channel"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public long Publish(RedisChannel channel, RedisValue message)
+        public static long Publish(RedisChannel channel, RedisValue message, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             return sub.Publish(channel, message);
         }
 
@@ -1018,9 +1090,10 @@
         /// <param name="channel"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public long Publish<T>(RedisChannel channel, T message)
+        public static long Publish<T>(RedisChannel channel, T message, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             return sub.Publish(channel, Serialize(message));
         }
 
@@ -1030,9 +1103,10 @@
         /// <param name="channel"></param>
         /// <param name="handle"></param>
         /// <returns>The <see cref="Task"/></returns>
-        public async Task SubscribeAsync(RedisChannel channel, Action<RedisChannel, RedisValue> handle)
+        public static async Task SubscribeAsync(RedisChannel channel, Action<RedisChannel, RedisValue> handle, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             await sub.SubscribeAsync(channel, handle);
         }
 
@@ -1042,9 +1116,10 @@
         /// <param name="channel"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public async Task<long> PublishAsync(RedisChannel channel, RedisValue message)
+        public static async Task<long> PublishAsync(RedisChannel channel, RedisValue message, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             return await sub.PublishAsync(channel, message);
         }
 
@@ -1055,9 +1130,10 @@
         /// <param name="channel"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public async Task<long> PublishAsync<T>(RedisChannel channel, T message)
+        public static async Task<long> PublishAsync<T>(RedisChannel channel, T message, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
+            var db = GetDatabase(dbIndex);
             return await sub.PublishAsync(channel, Serialize(message));
         }
 

@@ -27,11 +27,11 @@ namespace Gseey.Middleware.Weixin.Helpers
             else if (channelId == 2)
             {
                 configDto.ChannelId = 2;
-                configDto.AppId = "wx5f06bae632204d55";
-                configDto.AppId = "90482a2898b82b64a045c0a08e43c58f";
+                configDto.AppId = "wxf469126fc1cbdc63";
+                configDto.AppSercet = "2bb6660472c3beff87baa831201fa8ad";
                 configDto.WxType = Enums.WeixinType.WxMp;
                 configDto.AgentId = 0;
-                configDto.EncodingAESKey = "";
+                configDto.EncodingAESKey = "OFhDh1eyfv8GYBluexZUAeLJ5gBx9yoykW45jfGX0Uu";
                 configDto.Token = "Gscoy";
             }
 

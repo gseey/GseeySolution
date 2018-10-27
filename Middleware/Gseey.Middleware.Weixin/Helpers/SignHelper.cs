@@ -2,6 +2,8 @@
 using Gseey.Middleware.Weixin.TencentSdk;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Gseey.Middleware.Weixin.Helpers
@@ -25,6 +27,51 @@ namespace Gseey.Middleware.Weixin.Helpers
             var crypt = new WXBizMsgCrypt(configDto.Token, configDto.EncodingAESKey, configDto.AppId);
             return crypt;
         }
+
+        /// <summary>
+        /// 返回正确的签名
+        /// </summary>
+        /// <param name="timestamp"></param>
+        /// <param name="nonce"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private static string GetSignature(string timestamp, string nonce, string token)
+        {
+            var args = new[] { token, timestamp, nonce }.OrderBy(z => z).ToArray();
+            var argsString = string.Join("", args);
+            var sha1 = SHA1.Create();
+            var sha1Arr = sha1.ComputeHash(Encoding.UTF8.GetBytes(argsString
+));
+            StringBuilder enText = new StringBuilder();
+            foreach (var b in sha1Arr)
+            {
+                enText.AppendFormat("{0:x2}", b);
+            }
+
+            return enText.ToString();
+        }
+        #endregion
+
+        #region 校验签名
+
+        /// <summary>
+        /// 校验微信公众号签名
+        /// </summary>
+        /// <param name="channelId">渠道id</param>
+        /// <param name="msg_signature">微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数</param>
+        /// <param name="timestamp">时间戳</param>
+        /// <param name="nonce">随机数</param>
+        /// <returns></returns>
+        public static bool CheckSignature(int channelId, string msg_signature, string timestamp, string nonce, string echo, out string replyEcho)
+        {
+            replyEcho = string.Empty;
+            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var result = msg_signature == GetSignature(timestamp, nonce, configDto.Token);
+            if (result)
+                replyEcho = echo;
+            return result;
+        }
+
         #endregion
 
         #region 验证url有效性
@@ -84,7 +131,7 @@ namespace Gseey.Middleware.Weixin.Helpers
             var crypt = GetWXBizMsgCrypt(channelId);
             var msg = string.Empty;
             var timestamp = DateTime.Now.ToUnixTime().ToString();
-            var nonce = EncryptHelper.EncryptMD5(Guid.NewGuid().ToString());
+            var nonce = Guid.NewGuid().ToString().Replace("-", "");
             var result = crypt.EncryptMsg(replyMsg, timestamp, nonce, ref msg);
             return msg;
         }

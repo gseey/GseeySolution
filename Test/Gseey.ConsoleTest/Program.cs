@@ -23,6 +23,11 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            var k1 = "111";
+            var v1 = "222";
+            RedisHelper.StringSet(k1, v1);
+            var v2 = RedisHelper.StringGet(k1);
+
             var u1 = MediaApi.UploadAsync(1, UploadMediaFileType.file, @"F:\30_09.log").Result;
 
             var xml = @"<xml><ToUserName><![CDATA[toUser]]></ToUserName>
