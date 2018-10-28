@@ -1,4 +1,5 @@
-﻿using Gseey.Framework.DataBase;
+﻿using Gseey.Framework.Common.Helpers;
+using Gseey.Framework.DataBase;
 using Gseey.Framework.DataBase.DalBase;
 using Gseey.Middleware.Weixin.Keywords.Entities;
 using System;
@@ -25,19 +26,19 @@ namespace Gseey.Middleware.Weixin.Keywords.DBContext
         {
             try
             {
-                return new KeywordReplyDetailEntity
+                var redisKey = string.Format("{0}_{1}_{2}", channelId, keyword, preKeywordContextId);
+                var replyDetailCache = await RedisHelper.StringGetAsync<KeywordReplyDetailEntity>(redisKey);
+                if (replyDetailCache == null || replyDetailCache.KeywordContextId <= 0)
                 {
-                    KeywordContextId = 1,
-                    ReplyMsg = "test reply",
-                };
-
-                var sql = "";
-                var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { a = 1 });
-                var channelRelationEntities = await ChannelKeywrodRelationDAL.QueryListAsync(new { ChannelId = channelId });
-                if (keywordEntities.Count() > 0)
-                {
-                    return keywordEntities.SingleOrDefault();
+                    var sql = "";
+                    var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { ChannelId = channelId });
+                    if (keywordEntities.Count() > 0)
+                    {
+                        var replyDetailEntity = keywordEntities.SingleOrDefault();
+                        var setResult = await RedisHelper.StringSetAsync<KeywordReplyDetailEntity>(redisKey, replyDetailCache, TimeSpan.FromHours(1.0));
+                    }
                 }
+                return replyDetailCache;
             }
             catch (Exception)
             {

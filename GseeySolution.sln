@@ -19,10 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.DataBase", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.MessageQueue", "Framework\Gseey.Framework.MessageQueue\Gseey.Framework.MessageQueue.csproj", "{483ABC36-D704-43CE-B45B-D24508A4D24F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Middleware.WeixinMp", "Middleware\Gseey.Middleware.WeixinMp\Gseey.Middleware.WeixinMp.csproj", "{4FF439AD-4975-4791-B846-9D605A9AF0A6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Middleware.WeixinQy", "Middleware\Gseey.Middleware.WeixinQy\Gseey.Middleware.WeixinQy.csproj", "{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Apis.Weixin", "Apis\Gseey.Apis.Weixin\Gseey.Apis.Weixin.csproj", "{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.UserInterface.FontUI", "UserInterface\Gseey.UserInterface.FontUI\Gseey.UserInterface.FontUI.csproj", "{F519A2FA-DAAB-4BC5-B819-CE0439FDA3F6}"
@@ -31,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.ConsoleTest", "Test\G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Framework.BaseDTO", "Framework\Gseey.Framework.BaseDTO\Gseey.Framework.BaseDTO.csproj", "{BAB26939-EF74-47A4-A356-0A5C09F2DB43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gseey.Middleware.Weixin", "Middleware\Gseey.Middleware.Weixin\Gseey.Middleware.Weixin.csproj", "{732D7327-C1DC-4C67-9557-61E27998F9B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Middleware.Weixin", "Middleware\Gseey.Middleware.Weixin\Gseey.Middleware.Weixin.csproj", "{732D7327-C1DC-4C67-9557-61E27998F9B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +47,6 @@ Global
 		{483ABC36-D704-43CE-B45B-D24508A4D24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{483ABC36-D704-43CE-B45B-D24508A4D24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{483ABC36-D704-43CE-B45B-D24508A4D24F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FF439AD-4975-4791-B846-9D605A9AF0A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FF439AD-4975-4791-B846-9D605A9AF0A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FF439AD-4975-4791-B846-9D605A9AF0A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FF439AD-4975-4791-B846-9D605A9AF0A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,8 +75,6 @@ Global
 		{A21912AC-DFD1-4752-BEE0-90310209AF67} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{26202ABC-2DDE-47F6-B377-E5FF603D3902} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{483ABC36-D704-43CE-B45B-D24508A4D24F} = {1BFF248D-8399-425C-8180-3BD9556821DD}
-		{4FF439AD-4975-4791-B846-9D605A9AF0A6} = {7376D610-FD89-476E-AEF0-8406C63F2830}
-		{9E7DAF3B-B4DA-4947-ABE6-1BAE9CDC78E4} = {7376D610-FD89-476E-AEF0-8406C63F2830}
 		{7EB17BB7-4493-45B2-AA6A-8AB2B0129CA1} = {2D185327-C077-4AC9-A5DD-F91124F47572}
 		{F519A2FA-DAAB-4BC5-B819-CE0439FDA3F6} = {F78D9D0D-FFB4-47EA-8397-FEC5FFBDC469}
 		{20F94AD8-9268-4F40-AC60-5FB1F9BC7D71} = {A95B0C6D-AAFA-4D7D-BDBD-62AF2551169E}

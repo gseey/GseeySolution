@@ -6,9 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.Weixin.Services;
-using Gseey.Middleware.WeixinQy.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Senparc.CO2NET.HttpUtility;
 
 namespace Gseey.UserInterface.FontUI.Controllers
 {
@@ -16,16 +14,14 @@ namespace Gseey.UserInterface.FontUI.Controllers
     {
         #region 构造函数
 
-        IChannelConfigService _channelService;
         private readonly IMessageHandlerService _messageHandlerService;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="configService"></param>
-        public WeixinController(IChannelConfigService configService, IMessageHandlerService messageHandlerService)
+        public WeixinController(IMessageHandlerService messageHandlerService)
         {
-            _channelService = configService;
             _messageHandlerService = messageHandlerService;
         }
 
@@ -41,7 +37,7 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
         [HttpGet]
-        [ActionName("QyIndex")]
+        [ActionName("Index")]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
             //校验微信签名
@@ -57,7 +53,7 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [ActionName("QyIndex")]
+        [ActionName("Index")]
         public async Task<IActionResult> IndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
         {
             //获取推送过来的消息

@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <UserSecretsId>fc58474a-5356-4bad-a495-3209476f0b88</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,13 +24,13 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.1916590" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Gseey.Framework.BaseDTO\Gseey.Framework.BaseDTO.csproj" />
     <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
-    <ProjectReference Include="..\..\Middleware\Gseey.Middleware.WeixinQy\Gseey.Middleware.WeixinQy.csproj" />
     <ProjectReference Include="..\..\Middleware\Gseey.Middleware.Weixin\Gseey.Middleware.Weixin.csproj" />
   </ItemGroup>
 
