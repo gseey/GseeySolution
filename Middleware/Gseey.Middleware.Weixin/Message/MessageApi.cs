@@ -1,5 +1,6 @@
 ﻿using Gseey.Framework.BaseDTO;
 using Gseey.Framework.Common.Helpers;
+using Gseey.Middleware.Weixin.Enums;
 using Gseey.Middleware.Weixin.Helpers;
 using Gseey.Middleware.Weixin.Keywords;
 using Gseey.Middleware.Weixin.Message.Entities.Request;
@@ -32,6 +33,13 @@ namespace Gseey.Middleware.Weixin.Message
             var result = await KeywordHelper.GetCustomKeywordsReplyAsync<ExecuteResult<string>>(channelId, baseMessageDTO.ToUserName, baseMessageDTO.FromUserName, "");
 
             return result.Data;
+        }
+
+        public static async Task<ExecuteResult<ResponseWorkBaseMsgDTO>> SendMsgAsync(int channelId, List<string> userIdList, List<string> partyIdList, List<string> tagIdList, ResponseWorkMsgTypeEnum msgType = ResponseWorkMsgTypeEnum.Text)
+        {
+            var result = new ExecuteResult<ResponseWorkBaseMsgDTO> { };
+
+            return result;
         }
 
         private static RequestBaseMessageDTO ParseBaseMessage(int channelId, string encryptMsg, out XElement encryptXml)
@@ -73,7 +81,7 @@ namespace Gseey.Middleware.Weixin.Message
         /// </summary>
         /// <param name="encryptMsg"></param>
         /// <returns></returns>
-        public static RequestBaseMessageDTO ParseMessage(int channelId, string encryptMsg)
+        private static RequestBaseMessageDTO ParseMessage(int channelId, string encryptMsg)
         {
             var baseMessageDTO = ParseBaseMessage(channelId, encryptMsg, out XElement encryptXml);
 

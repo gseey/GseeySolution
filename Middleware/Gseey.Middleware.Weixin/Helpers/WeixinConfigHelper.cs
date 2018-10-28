@@ -34,6 +34,16 @@ namespace Gseey.Middleware.Weixin.Helpers
                 configDto.EncodingAESKey = "OFhDh1eyfv8GYBluexZUAeLJ5gBx9yoykW45jfGX0Uu";
                 configDto.Token = "Gscoy";
             }
+            else if (channelId == 3)
+            {
+                configDto.ChannelId = 2;
+                configDto.AppId = "wx9a80f6e6ed2a89e6";
+                configDto.AppSercet = "KOSGE5-MGw2aLlc5X7jFClkHYoV77umBMi1LyHnt8tw";
+                configDto.WxType = Enums.WeixinType.WxWork;
+                configDto.AgentId = 15;
+                configDto.EncodingAESKey = "OFhDh1eyfv8GYBluexZUAeLJ5gBx9yoykW45jfGX0Uu";
+                configDto.Token = "Gscoy";
+            }
 
 
             return configDto;

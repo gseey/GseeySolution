@@ -4,6 +4,7 @@ using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
 using Gseey.Framework.DataBase.DalBase;
 using Gseey.Framework.DataBase.EntityBase;
+using Gseey.Middleware.Weixin.Contact;
 using Gseey.Middleware.Weixin.Media;
 using Gseey.Middleware.Weixin.Menu;
 using Gseey.Middleware.Weixin.Menu.DTOs;
@@ -23,24 +24,9 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            var k1 = "111";
-            var v1 = "222";
-            RedisHelper.StringSet(k1, v1);
-            var v2 = RedisHelper.StringGet(k1);
+            //var d1 = ContactApi.GetDepartmentListAsync(3, 1).Result;
 
-            var u1 = MediaApi.UploadAsync(1, UploadMediaFileType.file, @"F:\30_09.log").Result;
-
-            var xml = @"<xml><ToUserName><![CDATA[toUser]]></ToUserName>
-<FromUserName><![CDATA[FromUser]]></FromUserName>
-<CreateTime>1408091189</CreateTime>
-<MsgType><![CDATA[event]]></MsgType>
-<Event><![CDATA[enter_agent]]></Event>
-<EventKey><![CDATA[]]></EventKey>
-</xml>
-";
-
-            var t = MessageApi.ParseMessage(1, xml);
-
+            var t1 = ContactApi.GetTagListAsync(3).Result;
 
             Console.ReadKey();
         }

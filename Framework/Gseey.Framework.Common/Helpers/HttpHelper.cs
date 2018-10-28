@@ -13,6 +13,12 @@ namespace Gseey.Framework.Common.Helpers
     /// </summary>
     public sealed class HttpHelper
     {
+        #region 获取httpclient
+
+        /// <summary>
+        /// 获取httpclient
+        /// </summary>
+        /// <returns></returns>
         private static HttpClient GetHttpClient()
         {
             HttpClientHandler handler = new HttpClientHandler()
@@ -23,7 +29,9 @@ namespace Gseey.Framework.Common.Helpers
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             httpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
             return httpClient;
-        }
+        } 
+
+        #endregion
 
         #region 获取网页信息
 
@@ -161,18 +169,28 @@ namespace Gseey.Framework.Common.Helpers
                 client.BaseAddress = uri;
                 var nonceStr = Guid.NewGuid().ToString().Replace("-", "");
 
-                using (MultipartFormDataContent content = new MultipartFormDataContent(string.Format("{0}", nonceStr)))
+                var buffers = await File.ReadAllBytesAsync(fileFullPath);
+                Stream paramFileStream = new MemoryStream(buffers);
+                var fileName = Path.GetFileName(fileFullPath);
+
+                var stringContentfilename = new StringContent(fileName);
+                var fileStreamContent = new StreamContent(paramFileStream);
+                var bytesContent = new ByteArrayContent(buffers);
+
+                using (var formdata = new MultipartFormDataContent())
                 {
-                    var fileName = Path.GetFileName(fileFullPath);
-                    content.Add(new StreamContent(File.OpenRead(fileFullPath)), "bilddatei", fileName);
-                    using (var message = await client.PostAsync(uri, content))
-                    {
-                        var html = await message.Content.ReadAsStringAsync();
+                    formdata.Add(stringContentfilename, "file_name");
 
-                        var result = html.FromJson<TResult>();
+                    formdata.Add(fileStreamContent, "file", fileName);
+                    formdata.Add(bytesContent, fileName);
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response = await client.PostAsync(uri, formdata);
 
-                        return result;
-                    }
+                    var html = await response.Content.ReadAsStringAsync();
+
+                    var result = html.FromJson<TResult>();
+
+                    return result;
                 }
             }
         }
