@@ -5,10 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Gseey.Middleware.WeixinQy;
-using Gseey.Middleware.WeixinQy.Interfaces;
-using Gseey.Middleware.WeixinQy.Middlewares;
-using Gseey.Middleware.WeixinQy.Service;
+using Gseey.Middleware.Weixin;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -83,8 +80,8 @@ namespace Gseey.Apis.Weixin
             });
 
             var builder = new ContainerBuilder();
-            //注册微信企业号服务
-            builder.RegisterModule<RegistWeixinQyModel>();
+            //注册微信服务
+            builder.RegisterModule<RegistWeixinModel>();
 
             builder.Populate(services);
             var container = builder.Build();
@@ -124,7 +121,6 @@ namespace Gseey.Apis.Weixin
                     name: "default",
                     template: "{controller=Weixin}/{action=QyIndex}/{id?}");
             });
-            app.UseInterceptMiddleware();
         }
     }
 }

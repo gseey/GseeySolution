@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Gseey.Framework.DataBase.EntityBase
 {
+    [Serializable]
     public class DapperEntityBase
     {
 

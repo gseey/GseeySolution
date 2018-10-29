@@ -50,10 +50,11 @@ namespace Gseey.ConsoleTest
             //    Safe = 1
             //}).Result;
 
-            var r2 = ActiveMessageApi.SendWorkAgentMediaMsgAsync(1, new RequestWorkFileMsgDTO
+            var r2 = ActiveMessageApi.SendWorkAgentMediaMsgAsync(1, new RequestWorkImageMsgDTO
             {
-                FilePath = @"‪E:\03_18.log",
+                FilePath = @"E:\1.jpg",
                 UserIdList = userIdList,
+                PartyIdList = result.partylist,
             }).Result;
 
 

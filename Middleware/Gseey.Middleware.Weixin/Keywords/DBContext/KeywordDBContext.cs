@@ -37,13 +37,13 @@ namespace Gseey.Middleware.Weixin.Keywords.DBContext
                     var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { ChannelId = channelId });
                     if (keywordEntities.Count() > 0)
                     {
-                        var replyDetailEntity = keywordEntities.SingleOrDefault();
-                        var setResult = await RedisHelper.StringSetAsync<KeywordReplyDetailEntity>(redisKey, replyDetailCache, TimeSpan.FromHours(1.0));
+                        replyDetailCache = keywordEntities.SingleOrDefault();
+                        var setResult = await RedisHelper.StringSetAsync(redisKey, replyDetailCache, TimeSpan.FromHours(1.0));
                     }
                 }
                 return replyDetailCache;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
             }

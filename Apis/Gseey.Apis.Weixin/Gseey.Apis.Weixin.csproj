@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Framework\Gseey.Framework.Common\Gseey.Framework.Common.csproj" />
-    <ProjectReference Include="..\..\Middleware\Gseey.Middleware.WeixinQy\Gseey.Middleware.WeixinQy.csproj" />
+    <ProjectReference Include="..\..\Middleware\Gseey.Middleware.Weixin\Gseey.Middleware.Weixin.csproj" />
   </ItemGroup>
 
 </Project>

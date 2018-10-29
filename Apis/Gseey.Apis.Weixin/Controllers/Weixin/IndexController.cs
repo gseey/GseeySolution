@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Gseey.Framework.Common.Helpers;
+﻿using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.Weixin.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Gseey.UserInterface.FontUI.Controllers
+namespace Gseey.Apis.Weixin.Controllers.Weixin
 {
-    public class WeixinController : Controller
+    /// <summary>
+    /// 
+    /// </summary>
+    [Route("api/weixin/Index")]
+    [ApiController]
+    public class IndexController : ControllerBase
     {
         #region 构造函数
 
@@ -19,8 +22,8 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="configService"></param>
-        public WeixinController(IMessageHandlerService messageHandlerService)
+        /// <param name="messageHandlerService"></param>
+        public IndexController(IMessageHandlerService messageHandlerService)
         {
             _messageHandlerService = messageHandlerService;
         }
@@ -32,7 +35,6 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
         [HttpGet]
-        [ActionName("Index")]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
             //校验微信签名
@@ -51,8 +53,7 @@ namespace Gseey.UserInterface.FontUI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [ActionName("Index")]
-        public async Task<IActionResult> IndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
+        public IActionResult Index(int channelId, string msg_signature, string timestamp, string nonce)
         {
             //获取推送过来的消息
             var msg = string.Empty;
@@ -63,15 +64,20 @@ namespace Gseey.UserInterface.FontUI.Controllers
                 msg = Encoding.UTF8.GetString(buffer);
             }
 
-            var result = await _messageHandlerService.GetResponseAsync(channelId, msg_signature, timestamp, nonce, msg);
+            var result = _messageHandlerService.GetResponseAsync(channelId, msg_signature, timestamp, nonce, msg).Result;
             //var result = await _channelService.HandleInputWeixinQyMessageAsync(channelId, msg_signature, timestamp, nonce, msg);
 
             return Content(result);
         }
         #endregion
 
-        #region Menu
-
-        #endregion
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Test()
+        {
+            return Content(Guid.NewGuid().ToString());
+        }
     }
 }

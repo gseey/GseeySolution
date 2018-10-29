@@ -23,7 +23,7 @@ namespace Gseey.Middleware.Weixin.Contact.DTOs.Tag
         /// <summary>
         /// 标签中包含的部门id列表
         /// </summary>
-        public List<int> partylist { get; set; }
+        public List<string> partylist { get; set; }
     }
 
     public class MemberBaseList
