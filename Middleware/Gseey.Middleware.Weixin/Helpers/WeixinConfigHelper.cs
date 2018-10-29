@@ -48,24 +48,5 @@ namespace Gseey.Middleware.Weixin.Helpers
 
             return configDto;
         }
-
-        ///// <summary>
-        ///// 获取微信基本配置信息
-        ///// </summary>
-        ///// <param name="channelId"></param>
-        ///// <returns></returns>
-        //public static async Task<WeixinConfigDTO> GetWeixinConfigDTOAsync(int channelId)
-        //{
-        //    var accessToken = await AccessTokenHelper.GetAccessTokenAsync(channelId);
-
-        //    var jsapiTicket = await AccessTokenHelper.GetJsapiTicketAsync(channelId);
-
-        //    var configDto = GetWeixinConfigDTO(channelId);
-
-        //    configDto.AccessToken = accessToken;
-        //    configDto.JsapiTicket = jsapiTicket;
-
-        //    return configDto;
-        //}
     }
 }

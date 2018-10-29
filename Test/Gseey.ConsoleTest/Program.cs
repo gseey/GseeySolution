@@ -4,7 +4,9 @@ using Gseey.Framework.Common.Helpers;
 using Gseey.Framework.DataBase;
 using Gseey.Framework.DataBase.DalBase;
 using Gseey.Framework.DataBase.EntityBase;
+using Gseey.Middleware.Weixin.BaseDTOs;
 using Gseey.Middleware.Weixin.Contact;
+using Gseey.Middleware.Weixin.Enums;
 using Gseey.Middleware.Weixin.Media;
 using Gseey.Middleware.Weixin.Menu;
 using Gseey.Middleware.Weixin.Menu.DTOs;
@@ -24,9 +26,21 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            //var d1 = ContactApi.GetDepartmentListAsync(3, 1).Result;
+            //var sql = "select * from WeixinConfig where @Channel";
 
-            var t1 = ContactApi.GetTagListAsync(3).Result;
+            var dALBase = new DapperDALBase<WeixinConfigEntity>();
+
+            //var t = dALBase.QueryList(new { ChannelId = 1 });
+
+            var i = dALBase.InsertAsync(new
+            {
+                AppId = "wx9a80f6e6ed2a89e6",
+                AppSercet = "KVZ_1nE2thZdbu3kcftpgA5Ld-O3TafmS3AlUtWQeHM",
+                Token = "qygscoy",
+                EncodingAESKey = "FDPibMBM3MExJxBaD9Oe6uaOfsvsjmTQT94f6tt2lJl",
+                AgentId = 6,
+                WxType = (int)WeixinType.WxWork
+            }).Result;
 
             Console.ReadKey();
         }

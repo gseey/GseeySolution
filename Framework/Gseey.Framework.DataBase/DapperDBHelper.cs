@@ -159,25 +159,38 @@ namespace Gseey.Framework.DataBase
         /// <summary>
         /// 生成带自增的sql语句
         /// </summary>
-        /// <param name="sql"></param>
         /// <returns></returns>
-        private static string GetInsertSqlWithIndentity(string sql, bool useParam = true)
+        private static string GetInsertSqlWithIndentity()
         {
             var indentitySql = string.Empty;
             switch (DataBaseType)
             {
                 case DBType.MSSQL:
                 default:
-                    indentitySql = string.Format("{0};select {1} SCOPE_IDENTITY();", sql, useParam ? "@id=" : "");
+                    indentitySql = string.Format("select @@IDENTITY;");
                     break;
                 case DBType.MYSQL:
-                    indentitySql = $"DELIMITER;{sql};set " + (useParam ? "@id=" : "") + " LAST_INSERT_ID();DELIMITER;";
+                    indentitySql = string.Format("select LAST_INSERT_ID();");
                     break;
                 case DBType.SQLITE:
-                    indentitySql = string.Format("{0};select {1} last_insert_rowid();", sql, useParam ? "@id=" : "");
+                    //indentitySql = string.Format("{0};select {1} last_insert_rowid();", sql, useParam ? "@id=" : "");
+                    indentitySql = string.Format("select last_insert_rowid();");
                     break;
             }
             return indentitySql;
+        }
+
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
+        private static IDbTransaction OpenTransaction(IDbConnection connection)
+        {
+            if (connection.State != ConnectionState.Open)
+                connection.Open();
+            var tran = connection.BeginTransaction();
+            return tran;
         }
         #endregion
 
@@ -194,14 +207,28 @@ namespace Gseey.Framework.DataBase
         /// <returns>自增ID</returns>
         public static int Insert(string sql, object param = null, int? commandTimeout = null)
         {
-            sql = GetInsertSqlWithIndentity(sql);
-            var newParam = new DynamicParameters();
-            newParam.AddDynamicParams(param);
-            newParam.Add("@id", dbType: DbType.Int32, direction: ParameterDirection.Output);
+            var indentitySql = GetInsertSqlWithIndentity();
 
-            DBWriteConnection.Execute(sql, newParam, commandTimeout: commandTimeout);
-            var id = newParam.Get<int>("@id");
-            return id;
+            using (var tran = OpenTransaction(DBWriteConnection))
+            {
+                try
+                {
+                    DBWriteConnection.Execute(sql, param, transaction: tran, commandTimeout: commandTimeout);
+
+                    var id = DBWriteConnection.ExecuteScalar<int>(indentitySql, transaction: tran, commandTimeout: commandTimeout);
+
+                    tran.Commit();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+
+                    ex.WriteExceptionLog("插入数据库失败");
+                    return -1;
+                }
+            }
         }
 
         #endregion
@@ -217,9 +244,28 @@ namespace Gseey.Framework.DataBase
         /// <returns>自增ID</returns>
         public static async Task<int> InsertAsync(string sql, object param = null, int? commandTimeout = null)
         {
-            sql = GetInsertSqlWithIndentity(sql, false);
-            var result = await DBWriteConnection.ExecuteScalarAsync<int>(sql, param, commandTimeout: commandTimeout);
-            return result;
+            var indentitySql = GetInsertSqlWithIndentity();
+
+            using (var tran = OpenTransaction(DBWriteConnection))
+            {
+                try
+                {
+                    await DBWriteConnection.ExecuteAsync(sql, param, transaction: tran, commandTimeout: commandTimeout);
+
+                    var id = await DBWriteConnection.ExecuteScalarAsync<int>(indentitySql, transaction: tran, commandTimeout: commandTimeout);
+
+                    tran.Commit();
+
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+
+                    ex.WriteExceptionLog("插入数据库失败");
+                    return -1;
+                }
+            }
         }
 
         #endregion

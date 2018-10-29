@@ -124,7 +124,7 @@ namespace Gseey.Framework.DataBase.DalBase
             var tableName = GetTableName();
             var columns = string.Join(",", properties);
             var values = string.Join(",", properties.Select(p => BuildSqlParamName(p)));
-            var sql = string.Format("insert into {0} ({1}) values ({2}) select cast(scope_identity() as bigint)", tableName, columns, values);
+            var sql = string.Format("insert into {0} ({1}) values ({2})", tableName, columns, values);
             return sql;
         }
 
