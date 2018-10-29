@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Gseey.Middleware.Weixin.Keywords.Entities
 {
-    [Table(Name = "KeywordReplyDetail")]
+    [Table(Name = "ChannelKeywordRelation")]
     public class ChannelKeywordRelationEntity : DapperEntityBase
     {
         /// <summary>

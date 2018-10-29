@@ -30,7 +30,10 @@ namespace Gseey.Middleware.Weixin.Keywords.DBContext
                 var replyDetailCache = await RedisHelper.StringGetAsync<KeywordReplyDetailEntity>(redisKey);
                 if (replyDetailCache == null || replyDetailCache.KeywordContextId <= 0)
                 {
-                    var sql = "";
+                    var sql = @"SELECT a.* FROM KeywordReplyDetail a
+                                        JOIN ChannelKeywordRelation b ON a.KeywordContextId=b.KeywordContextId
+                                        WHERE b.ChannelId=@ChannelId
+                                        ORDER BY a.LastModifyTime DESC";
                     var keywordEntities = await DapperDBHelper.QueryAsync<KeywordReplyDetailEntity>(sql, new { ChannelId = channelId });
                     if (keywordEntities.Count() > 0)
                     {

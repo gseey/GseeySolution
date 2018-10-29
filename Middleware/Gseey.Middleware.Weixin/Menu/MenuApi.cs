@@ -21,7 +21,7 @@ namespace Gseey.Middleware.Weixin.Menu
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> CreateMenuAsync(int channelId, ButtonGroup buttonData)
         {
-            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var configDto = await WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId);
             var weixinCreateMenuUrl = string.Empty;
             switch (configDto.WxType)
             {
@@ -50,7 +50,7 @@ namespace Gseey.Middleware.Weixin.Menu
         /// <returns></returns>
         public static async Task<ButtonGroup> GetMenuAsync(int channelId)
         {
-            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var configDto = await WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId);
             var weixinGetMenuUrl = string.Empty;
             switch (configDto.WxType)
             {
@@ -81,7 +81,7 @@ namespace Gseey.Middleware.Weixin.Menu
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> DeleteMenuAsync(int channelId)
         {
-            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var configDto =await WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId);
             var weixinDeleteMenuUrl = string.Empty;
             switch (configDto.WxType)
             {

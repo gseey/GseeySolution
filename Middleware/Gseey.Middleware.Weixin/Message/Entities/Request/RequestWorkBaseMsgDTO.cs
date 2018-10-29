@@ -4,13 +4,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Gseey.Middleware.Weixin.Message.Entities.Response
+namespace Gseey.Middleware.Weixin.Message.Entities.Request
 {
     /// <summary>
     /// 企业主动发送消息基类
     /// </summary>
-    public class ResponseWorkBaseMsgDTO : ResponseBaseMsgDTO
+    public class RequestWorkBaseMsgDTO
     {
+        public RequestWorkBaseMsgDTO(ResponseWorkMsgTypeEnum msgTypeEnum, int safe = 1)
+        {
+            MsgTypeEnum = msgTypeEnum;
+            Safe = safe;
+        }
+
         /// <summary>
         /// 成员ID列表（消息接收者，多个接收者用‘|’分隔，最多支持1000个）。
         /// 特殊情况：指定为@all，则向该企业应用的全部成员发送
@@ -20,8 +26,12 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         {
             get
             {
-                var result = string.Join("|", PartyIdList.ToArray());
-                return result;
+                if (UserIdList != null)
+                {
+                    var result = string.Join("|", UserIdList.ToArray());
+                    return result;
+                }
+                return string.Empty;
             }
         }
 
@@ -34,8 +44,12 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         {
             get
             {
-                var result = string.Join("|", TagIdList.ToArray());
-                return result;
+                if (PartyIdList != null)
+                {
+                    var result = string.Join("|", PartyIdList.ToArray());
+                    return result;
+                }
+                return string.Empty;
             }
         }
 
@@ -48,8 +62,12 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         {
             get
             {
-                var result = string.Join("|", UserIdList.ToArray());
-                return result;
+                if (TagIdList != null)
+                {
+                    var result = string.Join("|", TagIdList.ToArray());
+                    return result;
+                }
+                return string.Empty;
             }
         }
 
@@ -61,7 +79,7 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         {
             get
             {
-                return MsgTypeEnum.ToString();
+                return MsgTypeEnum.ToString().ToLower();
             }
         }
 
@@ -69,13 +87,13 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         /// 企业应用的id，整型。
         /// </summary>
         [JsonProperty(PropertyName = "agentid")]
-        public int AgentId { get; set; }
+        public int AgentId { get; internal set; }
 
         /// <summary>
         /// 表示是否是保密消息，0表示否，1表示是，默认0
         /// </summary>
         [JsonProperty(PropertyName = "safe")]
-        public int Safe { get; set; }
+        public int Safe { get; }
 
         /// <summary>
         /// 用户id集合
@@ -100,5 +118,28 @@ namespace Gseey.Middleware.Weixin.Message.Entities.Response
         /// </summary>
         [JsonIgnore]
         public ResponseWorkMsgTypeEnum MsgTypeEnum { get; internal set; }
+
+        /// <summary>
+        /// 校验接收人
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Validate()
+        {
+            if (UserIdList == null
+                 && PartyIdList == null
+                 && TagIdList == null
+                 )//校验用户是否为空
+            {
+                return false;
+            }
+            if (UserIdList.Count <= 0
+                    && PartyIdList.Count <= 0
+                    && TagIdList.Count <= 0
+                    )//校验是否有用户
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

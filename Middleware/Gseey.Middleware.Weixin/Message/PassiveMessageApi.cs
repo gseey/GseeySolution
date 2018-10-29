@@ -13,7 +13,10 @@ using System.Xml.Linq;
 
 namespace Gseey.Middleware.Weixin.Message
 {
-    public class MessageApi
+    /// <summary>
+    /// 被动消息回复api
+    /// </summary>
+    public class PassiveMessageApi
     {
         /// <summary>
         /// 解析输入消息
@@ -35,12 +38,12 @@ namespace Gseey.Middleware.Weixin.Message
             return result.Data;
         }
 
-        public static async Task<ExecuteResult<ResponseWorkBaseMsgDTO>> SendMsgAsync(int channelId, List<string> userIdList, List<string> partyIdList, List<string> tagIdList, ResponseWorkMsgTypeEnum msgType = ResponseWorkMsgTypeEnum.Text)
-        {
-            var result = new ExecuteResult<ResponseWorkBaseMsgDTO> { };
+        //public static async Task<ExecuteResult<ResponseWorkBaseMsgDTO>> SendMsgAsync(int channelId, List<string> userIdList, List<string> partyIdList, List<string> tagIdList, ResponseWorkMsgTypeEnum msgType = ResponseWorkMsgTypeEnum.Text)
+        //{
+        //    var result = new ExecuteResult<ResponseWorkBaseMsgDTO> { };
 
-            return result;
-        }
+        //    return result;
+        //}
 
         private static RequestBaseMessageDTO ParseBaseMessage(int channelId, string encryptMsg, out XElement encryptXml)
         {

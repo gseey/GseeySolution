@@ -132,7 +132,8 @@ namespace Gseey.Framework.Common.Helpers
             var uri = new Uri(url);
             var client = GetHttpClient();
             client.BaseAddress = uri;
-            var content = new StringContent(value.ToJson(), Encoding.UTF8, "application/json");
+            var json = value.ToJson();
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = client.PostAsync(uri, content).Result;
             var html = response.Content.ReadAsStringAsync().Result;
             var result = html.FromJson<TResult>();
@@ -144,7 +145,8 @@ namespace Gseey.Framework.Common.Helpers
             var uri = new Uri(url);
             var client = GetHttpClient();
             client.BaseAddress = uri;
-            var content = new StringContent(value.ToJson(), Encoding.UTF8, "application/json");
+            var json = value.ToJson();
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(uri, content);
             var html = await response.Content.ReadAsStringAsync();
             var result = html.FromJson<TResult>();

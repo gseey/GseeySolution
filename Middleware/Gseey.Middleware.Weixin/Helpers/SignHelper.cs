@@ -22,7 +22,7 @@ namespace Gseey.Middleware.Weixin.Helpers
         /// <returns></returns>
         private static WXBizMsgCrypt GetWXBizMsgCrypt(int channelId)
         {
-            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var configDto = WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId).Result;
 
             var crypt = new WXBizMsgCrypt(configDto.Token, configDto.EncodingAESKey, configDto.AppId);
             return crypt;
@@ -65,7 +65,7 @@ namespace Gseey.Middleware.Weixin.Helpers
         public static bool CheckSignature(int channelId, string msg_signature, string timestamp, string nonce, string echo, out string replyEcho)
         {
             replyEcho = string.Empty;
-            var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+            var configDto = WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId).Result;
             var result = msg_signature == GetSignature(timestamp, nonce, configDto.Token);
             if (result)
                 replyEcho = echo;

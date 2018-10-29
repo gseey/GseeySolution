@@ -22,7 +22,7 @@ namespace Gseey.Middleware.Weixin.Services.Impl
         /// <returns></returns>
         public async Task<string> GetResponseAsync(int channelId, string msg_signature, string timestamp, string nonce, string inputMsg)
         {
-            var result = await MessageApi.ParseInputMsgAsync(channelId, msg_signature, timestamp, nonce, inputMsg);
+            var result = await PassiveMessageApi.ParseInputMsgAsync(channelId, msg_signature, timestamp, nonce, inputMsg);
             return result;
         }
 
@@ -45,7 +45,7 @@ namespace Gseey.Middleware.Weixin.Services.Impl
             {
                 var checkResult = false;
                 var replyEcho = string.Empty;
-                var configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
+                var configDto = WeixinConfigHelper.GetWeixinConfigDTOAsync(channelId).Result;
                 switch (configDto.WxType)
                 {
                     case Enums.WeixinType.WxMp:

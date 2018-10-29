@@ -12,8 +12,10 @@ using Gseey.Middleware.Weixin.Menu;
 using Gseey.Middleware.Weixin.Menu.DTOs;
 using Gseey.Middleware.Weixin.Message;
 using Gseey.Middleware.Weixin.Message.Entities;
+using Gseey.Middleware.Weixin.Message.Entities.Request;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -26,21 +28,34 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            //var sql = "select * from WeixinConfig where @Channel";
 
-            var dALBase = new DapperDALBase<WeixinConfigEntity>();
+            var result = ContactApi.GetTagMemberAsync(3, 3).Result;
 
-            //var t = dALBase.QueryList(new { ChannelId = 1 });
-
-            var i = dALBase.InsertAsync(new
+            var userIdList = new List<string>();
+            result.userlist.ForEach(m =>
             {
-                AppId = "wx9a80f6e6ed2a89e6",
-                AppSercet = "KVZ_1nE2thZdbu3kcftpgA5Ld-O3TafmS3AlUtWQeHM",
-                Token = "qygscoy",
-                EncodingAESKey = "FDPibMBM3MExJxBaD9Oe6uaOfsvsjmTQT94f6tt2lJl",
-                AgentId = 6,
-                WxType = (int)WeixinType.WxWork
+                userIdList.Add(m.userid);
+            });
+
+            //var r1 = ActiveMessageApi.SendWorkAgentContentMsgAsync(1, new RequestWorkTextCardMsgDTO
+            //{
+            //    UserIdList = userIdList,
+            //    TextCard = new RequestWorkTextCardItemMsgDTO
+            //    {
+            //        Btntxt = "加载更多",
+            //        Description = "test水水水水水水水水水水水水水水",
+            //        Title = "发生发生发射点",
+            //        Url = "https://www.cnblogs.com/jajian/p/9853592.html"
+            //    },
+            //    Safe = 1
+            //}).Result;
+
+            var r2 = ActiveMessageApi.SendWorkAgentMediaMsgAsync(1, new RequestWorkFileMsgDTO
+            {
+                FilePath = @"‪E:\03_18.log",
+                UserIdList = userIdList,
             }).Result;
+
 
             Console.ReadKey();
         }

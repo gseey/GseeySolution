@@ -1,6 +1,8 @@
-﻿using Gseey.Middleware.Weixin.BaseDTOs;
+﻿using Gseey.Framework.DataBase.DalBase;
+using Gseey.Middleware.Weixin.BaseDTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,15 +13,33 @@ namespace Gseey.Middleware.Weixin.Helpers
     /// </summary>
     internal class WeixinConfigHelper
     {
+        #region 获取微信基本配置信息
+
         /// <summary>
         /// 获取微信基本配置信息
         /// </summary>
         /// <param name="channelId"></param>
         /// <returns></returns>
-        public static WeixinConfigDTO GetWeixinConfigDTO(int channelId)
+        public static async Task<WeixinConfigDTO> GetWeixinConfigDTOAsync(int channelId)
         {
-            //这里从数据库中读取当前渠道的配置信息
             var configDto = new WeixinConfigDTO();
+            var weixinDal = new DapperDALBase<WeixinConfigEntity>();
+            var weixinConfigEntities = await weixinDal.QueryListAsync(new { ChannelId = channelId });
+            if (weixinConfigEntities != null
+                && weixinConfigEntities.Count() > 0
+                && weixinConfigEntities.SingleOrDefault().ChannelId > 0)
+            {
+                configDto.AgentId = weixinConfigEntities.SingleOrDefault().AgentId;
+                configDto.AppId = weixinConfigEntities.SingleOrDefault().AppId;
+                configDto.AppSercet = weixinConfigEntities.SingleOrDefault().AppSercet;
+                configDto.ChannelId = weixinConfigEntities.SingleOrDefault().ChannelId;
+                configDto.EncodingAESKey = weixinConfigEntities.SingleOrDefault().EncodingAESKey;
+                configDto.Token = weixinConfigEntities.SingleOrDefault().Token;
+
+                return configDto;
+            }
+
+            //这里从数据库中读取当前渠道的配置信息
             if (channelId == 1)
             {
                 configDto.ChannelId = 1;
@@ -48,5 +68,24 @@ namespace Gseey.Middleware.Weixin.Helpers
 
             return configDto;
         }
+
+        #endregion
+
+        #region 验证渠道信息
+
+        /// <summary>
+        /// 验证渠道信息
+        /// </summary>
+        /// <param name="channelId"></param>
+        /// <param name="configDto"></param>
+        /// <returns></returns>
+        internal static bool ValidateWorkChannel(int channelId, out WeixinConfigDTO configDto)
+        {
+            configDto = GetWeixinConfigDTOAsync(channelId).Result;
+            var result = configDto.WxType == Enums.WeixinType.WxWork;
+            return result;
+        }
+
+        #endregion
     }
 }

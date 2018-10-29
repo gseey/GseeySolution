@@ -11,24 +11,12 @@ using System.Threading.Tasks;
 
 namespace Gseey.Middleware.Weixin.Contact
 {
+    /// <summary>
+    /// 通讯录api
+    /// </summary>
     public class ContactApi
     {
-        #region 私有方法
-
-        /// <summary>
-        /// 验证渠道信息
-        /// </summary>
-        /// <param name="channelId"></param>
-        /// <param name="configDto"></param>
-        /// <returns></returns>
-        public static bool ValidateChannel(int channelId, out WeixinConfigDTO configDto)
-        {
-            configDto = WeixinConfigHelper.GetWeixinConfigDTO(channelId);
-            var result = configDto.WxType == Enums.WeixinType.WxWork;
-            return result;
-        }
-
-        #endregion
+        
 
         #region 部门管理
 
@@ -43,7 +31,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<CreateDepartmentResponseDTO> CreateDepartmentAsync(int channelId, string name, long parentId, int order = 1, long? id = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var createDepartmentUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/department/create?access_token={0}", configDto.AccessToken);
@@ -73,7 +61,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> UpdateDepartmentAsync(int channelId, string name, long parentId, int order = 1, long? id = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var updateDepartmentUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/department/update?access_token={0}", configDto.AccessToken);
@@ -100,7 +88,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> DeleteDepartmentAsync(int channelId, int id)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var deleteDepartmentUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/department/delete?access_token={0}&id={1}", configDto.AccessToken, id);
@@ -126,7 +114,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<DepartmentListResponseDTO> GetDepartmentListAsync(int channelId, int id)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var getDepartmentListUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/department/list?access_token={0}&id={1}", configDto.AccessToken, id);
@@ -157,7 +145,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<AddOrDeleteTagMemberResponseDTO> CreateTagAsync(int channelId, string tagName, int tagId)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var createTagUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/create?access_token={0}", configDto.AccessToken);
@@ -185,7 +173,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> UpdateTagNameAsync(int channelId, string tagName, int tagId)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var updateTagNameUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/update?access_token={0}", configDto.AccessToken);
@@ -212,7 +200,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> DeleteTagAsync(int channelId, int tagId)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var deleteTagUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/delete?access_token={0}&tagid={1}", configDto.AccessToken, tagId);
@@ -238,7 +226,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<GetTagMemberResponseDTO> GetTagMemberAsync(int channelId, int tagId)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var deleteTagUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/get?access_token={0}&tagid={1}", configDto.AccessToken, tagId);
@@ -266,7 +254,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<AddOrDeleteTagMemberResponseDTO> AddTagMemberAsync(int channelId, int tagId, List<string> userList = null, List<string> partyList = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var addTagUsersUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/addtagusers?access_token={0}", configDto.AccessToken);
@@ -295,7 +283,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<AddOrDeleteTagMemberResponseDTO> DeleteTagMemberAsync(int channelId, int tagId, List<string> userList = null, List<string> partyList = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var delTagUsersUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/deltagusers?access_token={0}", configDto.AccessToken);
@@ -323,7 +311,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<GetTagListResponseDTO> GetTagListAsync(int channelId)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var tagListUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/tag/list?access_token={0}", configDto.AccessToken);
@@ -352,7 +340,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> CreateMemberAsync(int channelId, MemberDetailListResponseDTO memberDetail)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var createMemberUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={0}", configDto.AccessToken);
@@ -378,7 +366,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<MemberDetailListResponseDTO> GetMemberAsync(int channelId, string userid)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var getMemberUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/get?access_token={0}&userid={1}", configDto.AccessToken, userid);
@@ -404,7 +392,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> UpdateMemberAsync(int channelId, MemberDetailListResponseDTO memberDetail)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var updateMemberUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={0}", configDto.AccessToken);
@@ -430,7 +418,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> DelteMemberAsync(int channelId, string userid)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var deleteMemberUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/delete?access_token={0}&userid={1}", configDto.AccessToken, userid);
@@ -456,7 +444,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<ResponseBaseDTO> BatchDelteMemberAsync(int channelId, List<string> useridlist)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var batchDeleteMemberUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/batchdelete?access_token={0}", configDto.AccessToken);
@@ -483,7 +471,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<GetDepartmentMemberListResponseDTO> GetDepartmentMemberList(int channelId, int department_id, int? fetch_child = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var getMemberListUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?access_token={0}&department_id={1}&fetch_child={2}", configDto.AccessToken, department_id, fetch_child);
@@ -510,7 +498,7 @@ namespace Gseey.Middleware.Weixin.Contact
         /// <returns></returns>
         public static async Task<GetDepartmentMemberDetailListResponseDTO> GetDepartmentMemberDetailList(int channelId, int department_id, int? fetch_child = null)
         {
-            var validateResult = ValidateChannel(channelId, out WeixinConfigDTO configDto);
+            var validateResult = WeixinConfigHelper.ValidateWorkChannel(channelId, out WeixinConfigDTO configDto);
             if (validateResult)
             {
                 var getMemberListUrl = string.Format("https://qyapi.weixin.qq.com/cgi-bin/user/list?access_token={0}&department_id={1}&fetch_child={2}", configDto.AccessToken, department_id, fetch_child);
