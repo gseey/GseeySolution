@@ -13,7 +13,7 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
     /// <summary>
     /// 
     /// </summary>
-    [Route("api/weixin/Index")]
+    [Route("api/Index")]
     [ApiController]
     public class IndexController : ControllerBase
     {
@@ -39,12 +39,9 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         /// <summary>
         /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
-        [HttpGet]
+        [HttpGet("/{channelId}")]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
-            var ex = new Exception("fsfsfsd");
-            ex.WriteExceptionLog("sfsfsfsf");
-
             //校验微信签名
             var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
             if (checkResult.Success)
