@@ -69,6 +69,7 @@ namespace Gseey.Middleware.Weixin.Services.Impl
             catch (Exception ex)
             {
                 ex.WriteExceptionLog("校验渠道微信签名失败");
+                throw ex;
             }
             return result;
         }

@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Exceptionless;
+using Gseey.Framework.Common.Middlewares;
 using Gseey.Middleware.Weixin;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -47,7 +51,7 @@ namespace Gseey.Apis.Weixin
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            
+
             services.AddMvcCore().AddApiExplorer();
 
             var builder = new ContainerBuilder();
@@ -76,8 +80,10 @@ namespace Gseey.Apis.Weixin
                 app.UseHsts();
             }
 
+            //异常处理中间件
+            app.UseMiddleware(typeof(ExceptionHandlerMiddleWare));
+
             app.UseMvc();
-            app.UseExceptionless("w0ju4PBSRuxTTdK67WeDxe63tEtFVW0jDRsh9pCT");
 
             app.UseHttpsRedirection();
         }
