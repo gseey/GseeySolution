@@ -45,7 +45,7 @@ namespace Gseey.Middleware.Weixin.Keywords.DBContext
             }
             catch (Exception ex)
             {
-
+                ex.WriteExceptionLog("获取渠道关键词回复内容出错");
             }
             return new KeywordReplyDetailEntity();
         }

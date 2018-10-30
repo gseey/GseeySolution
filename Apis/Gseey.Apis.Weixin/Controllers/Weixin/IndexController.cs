@@ -1,6 +1,8 @@
-﻿using Gseey.Framework.Common.Helpers;
+﻿using Exceptionless;
+using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.Weixin.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Text;
@@ -18,14 +20,17 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         #region 构造函数
 
         private readonly IMessageHandlerService _messageHandlerService;
+        private readonly ILogger<IndexController> _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="messageHandlerService"></param>
-        public IndexController(IMessageHandlerService messageHandlerService)
+        /// <param name="logger"></param>
+        public IndexController(IMessageHandlerService messageHandlerService, ILogger<IndexController> logger)
         {
             _messageHandlerService = messageHandlerService;
+            _logger = logger;
         }
 
         #endregion
@@ -37,6 +42,10 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         [HttpGet]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
+            _logger.LogError("fsdfsdfsfsfsd");
+            var ex = new Exception("fsfsfsd");
+            ex.ToExceptionless().Submit();
+
             //校验微信签名
             var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
             if (checkResult.Success)

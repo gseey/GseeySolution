@@ -13,6 +13,10 @@ using Gseey.Middleware.Weixin.Menu.DTOs;
 using Gseey.Middleware.Weixin.Message;
 using Gseey.Middleware.Weixin.Message.Entities;
 using Gseey.Middleware.Weixin.Message.Entities.Request;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Logging.Debug;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,34 +32,38 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
+            //LogHelper.Warn("fsfsfsfsfsfsd");
+            var ex = new Exception("犯得上发生发生");
+            ex.WriteExceptionLog("fsfsdf");
 
-            var result = ContactApi.GetTagMemberAsync(3, 3).Result;
 
-            var userIdList = new List<string>();
-            result.userlist.ForEach(m =>
-            {
-                userIdList.Add(m.userid);
-            });
+            //var result = ContactApi.GetTagMemberAsync(3, 3).Result;
 
-            //var r1 = ActiveMessageApi.SendWorkAgentContentMsgAsync(1, new RequestWorkTextCardMsgDTO
+            //var userIdList = new List<string>();
+            //result.userlist.ForEach(m =>
             //{
-            //    UserIdList = userIdList,
-            //    TextCard = new RequestWorkTextCardItemMsgDTO
-            //    {
-            //        Btntxt = "加载更多",
-            //        Description = "test水水水水水水水水水水水水水水",
-            //        Title = "发生发生发射点",
-            //        Url = "https://www.cnblogs.com/jajian/p/9853592.html"
-            //    },
-            //    Safe = 1
-            //}).Result;
+            //    userIdList.Add(m.userid);
+            //});
 
-            var r2 = ActiveMessageApi.SendWorkAgentMediaMsgAsync(1, new RequestWorkImageMsgDTO
-            {
-                FilePath = @"E:\1.jpg",
-                UserIdList = userIdList,
-                PartyIdList = result.partylist,
-            }).Result;
+            ////var r1 = ActiveMessageApi.SendWorkAgentContentMsgAsync(1, new RequestWorkTextCardMsgDTO
+            ////{
+            ////    UserIdList = userIdList,
+            ////    TextCard = new RequestWorkTextCardItemMsgDTO
+            ////    {
+            ////        Btntxt = "加载更多",
+            ////        Description = "test水水水水水水水水水水水水水水",
+            ////        Title = "发生发生发射点",
+            ////        Url = "https://www.cnblogs.com/jajian/p/9853592.html"
+            ////    },
+            ////    Safe = 1
+            ////}).Result;
+
+            //var r2 = ActiveMessageApi.SendWorkAgentMediaMsgAsync(1, new RequestWorkImageMsgDTO
+            //{
+            //    FilePath = @"E:\1.jpg",
+            //    UserIdList = userIdList,
+            //    PartyIdList = result.partylist,
+            //}).Result;
 
 
             Console.ReadKey();
