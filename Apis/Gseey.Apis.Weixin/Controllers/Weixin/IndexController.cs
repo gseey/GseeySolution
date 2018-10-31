@@ -48,7 +48,9 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         /// <response code="201">Returns the newly created item</response>
         /// <response code="400">If the item is null</response>   
         /// <returns>
-        /// /index/1?msg_signature=634d15b89eac28a4971bcd0cad3e93c9b812d215&timestamp=1540396364&nonce=1541329218
+        /// /index/1?msg_signature=634d15b89eac28a4971bcd0cad3e93c9b812d215
+        /// timestamp=1540396364
+        /// nonce=1541329218
         /// </returns>
         [HttpGet]
         [Route("index/{channelId}")]
@@ -70,10 +72,15 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         /// <summary>
         /// 微信事件处理
         /// </summary>
+        /// <param name="channelId">渠道id</param>
+        /// <param name="msg_signature">微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。</param>
+        /// <param name="signature">微信加密签名，signature结合了开发者填写的token参数和请求中的timestamp参数、nonce参数。</param>
+        /// <param name="timestamp">时间戳</param>
+        /// <param name="nonce">随机数</param>
         /// <returns></returns>
         [HttpPost]
         [Route("index/{channelId}")]
-        public async Task<IActionResult> IndexAsync(int channelId, string msg_signature, string timestamp, string nonce)
+        public async Task<IActionResult> IndexAsync(int channelId, string msg_signature, string signature, string timestamp, string nonce)
         {
             //获取推送过来的消息
             var msg = string.Empty;
