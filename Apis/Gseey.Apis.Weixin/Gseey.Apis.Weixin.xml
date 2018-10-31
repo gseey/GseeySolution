@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Gseey.Apis.Weixin</name>
+    </assembly>
+    <members>
+        <member name="T:Gseey.Apis.Weixin.Controllers.Weixin.IndexController">
+            <summary>
+            验证/被动回复消息
+            </summary>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.#ctor(Gseey.Middleware.Weixin.Services.IMessageHandlerService,Microsoft.Extensions.Logging.ILogger{Gseey.Apis.Weixin.Controllers.Weixin.IndexController})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="messageHandlerService"></param>
+            <param name="logger"></param>
+        </member>
+        <!-- 对于成员“M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.Index(System.Int32,System.String,System.String,System.String,System.String,System.String)”忽略有格式错误的 XML 注释 -->
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.IndexAsync(System.Int32,System.String,System.String,System.String)">
+            <summary>
+            微信事件处理
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Gseey.Apis.Weixin.Controllers.Weixin.ManageController">
+            <summary>
+            后台管理模块
+            </summary>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuCreate(System.Int32,Gseey.Middleware.Weixin.Menu.DTOs.ButtonGroup)">
+            <summary>
+            创建微信菜单
+            </summary>
+            <param name="channelId"></param>
+            <param name="buttonGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuGet(System.Int32)">
+            <summary>
+            获取微信菜单
+            </summary>
+            <param name="channelId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuDelete(System.Int32)">
+            <summary>
+            删除微信菜单
+            </summary>
+            <param name="channelId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.SendTextMsg(System.Int32)">
+            <summary>
+            发送文本消息
+            </summary>
+            <param name="channelId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.SendMediaMsg(System.Int32)">
+            <summary>
+            发送媒体消息
+            </summary>
+            <param name="channelId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Gseey.Apis.Weixin.Program">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Program.Main(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Program.CreateWebHostBuilder(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Gseey.Apis.Weixin.Startup">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:Gseey.Apis.Weixin.Startup.Configuration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Gseey.Apis.Weixin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

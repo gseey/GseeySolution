@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Gseey.Apis.Weixin
 {
+
+#pragma warning disable CS1591
     /// <summary>
     /// 
     /// </summary>
@@ -28,4 +30,5 @@ namespace Gseey.Apis.Weixin
             .UseStartup<Startup>()
             ;
     }
+#pragma warning restore CS1591
 }
