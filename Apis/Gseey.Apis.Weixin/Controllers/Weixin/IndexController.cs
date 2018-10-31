@@ -91,7 +91,9 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
                 msg = Encoding.UTF8.GetString(buffer);
             }
 
-            var result = await _messageHandlerService.GetResponseAsync(channelId, msg_signature, timestamp, nonce, msg);
+            var signStr = string.IsNullOrEmpty(msg_signature) ? signature : msg_signature;
+
+            var result = await _messageHandlerService.GetResponseAsync(channelId, signStr, timestamp, nonce, msg);
 
             return Content(result);
         }
