@@ -32,9 +32,9 @@ namespace Gseey.ConsoleTest
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            //LogHelper.Warn("fsfsfsfsfsfsd");
-            var ex = new Exception("犯得上发生发生");
-            ex.WriteExceptionLog("fsfsdf");
+
+            var dbType = ConfigHelper.Get("Gseey:Connections:DbConnectionType");
+
 
 
             //var result = ContactApi.GetTagMemberAsync(3, 3).Result;

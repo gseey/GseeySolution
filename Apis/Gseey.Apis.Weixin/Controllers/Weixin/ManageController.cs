@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Gseey.Framework.Common.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gseey.Apis.Weixin.Controllers.Weixin
@@ -13,7 +14,17 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         [HttpGet]
         public IActionResult Index(int id)
         {
-            return Content("HttpGet");
+            var dbType = string.Empty;
+            try
+            {
+                dbType = ConfigHelper.Get("Gseey:Connections:DbConnectionType");
+            }
+            catch (Exception ex)
+            {
+                ex.WriteExceptionLog("读取配置文件出错");
+            }
+
+            return Content("HttpGet" + "------" + dbType);
         }
 
         [HttpPost]

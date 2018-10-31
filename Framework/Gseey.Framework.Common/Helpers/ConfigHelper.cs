@@ -17,7 +17,9 @@ namespace Gseey.Framework.Common.Helpers
             var binder = new ConfigurationBuilder();
             binder.SetBasePath(Directory.GetCurrentDirectory());
             binder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            binder.AddJsonFile(@"C:\MineConfig\gseey.json", optional: false, reloadOnChange: true);
+#if DEBUG
+            //binder.AddJsonFile(@"C:\MineConfig\gseey.json", optional: false, reloadOnChange: true);
+#endif
             config = binder.Build();
         }
 
