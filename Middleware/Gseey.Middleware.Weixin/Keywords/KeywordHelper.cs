@@ -40,7 +40,7 @@ namespace Gseey.Middleware.Weixin.Keywords
 
             //根据当前语境及关键词,匹配对应的回复
             var keywordReplyEntity = await KeywordDBContext.GetKeywordReplyAsync(channelId, keyword, cackeKeywordContextId);
-            if (keywordReplyEntity.KeywordContextId > 0)
+            if (keywordReplyEntity != null && keywordReplyEntity.KeywordContextId > 0)
             {
                 var replyMsg = string.Empty;
                 switch (keywordReplyEntity.RelpyType)
@@ -135,7 +135,7 @@ namespace Gseey.Middleware.Weixin.Keywords
                                                    fromUserName,
                                                    DateTime.Now.ToUnixTime(),
                                                    media_id);
-        } 
+        }
 
         #endregion
     }
