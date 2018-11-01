@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// 随机数帮助类

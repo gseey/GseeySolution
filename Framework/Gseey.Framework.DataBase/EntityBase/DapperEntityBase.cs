@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gseey.Framework.DataBase.EntityBase
+﻿namespace Gseey.Framework.DataBase.EntityBase
 {
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="DapperEntityBase" />
+    /// </summary>
     [Serializable]
     public class DapperEntityBase
     {
-
     }
 }

@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="DateTimeHelper" />
+    /// </summary>
     public static class DateTimeHelper
     {
-        #region Fields
-
         /// <summary>
         /// 星座
         /// </summary>
         private static string[] _Constellations = new string[] { "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "魔羯座" };
+
         /// <summary>
         /// 星座分割日期
         /// </summary>
         private static int[] _ConstellationDays = new int[] { 21, 21, 21, 21, 22, 23, 24, 24, 24, 24, 23, 22 };
 
         /// <summary>
+        /// Gets the MinTime
         /// 最小时间
         /// </summary>
         public static DateTime MinTime
@@ -29,6 +30,7 @@ namespace Gseey.Framework.Common.Helpers
         }
 
         /// <summary>
+        /// Gets the MinTimeUnix
         /// 最小时间戳
         /// </summary>
         public static long MinTimeUnix
@@ -39,14 +41,10 @@ namespace Gseey.Framework.Common.Helpers
             }
         }
 
-        #endregion
-
-        #region 日期/整数转换
-
         /// <summary>
         /// 日期转换成8位整数格式，如: 2011-8-1 => 20110801
         /// </summary>
-        /// <param name="dt"></param>
+        /// <param name="date">The date<see cref="DateTime"/></param>
         /// <returns></returns>
         public static int DateToInt(this DateTime date)
         {
@@ -63,14 +61,10 @@ namespace Gseey.Framework.Common.Helpers
             return DateTime.ParseExact(date.ToString(), "yyyyMMdd", null);
         }
 
-        #endregion
-
-        #region 日期/字符串转换
-
         /// <summary>
         /// 日期转换成10位字符串，如: 2011-8-1 => 2011-08-01
         /// </summary>
-        /// <param name="dt"></param>
+        /// <param name="date">The date<see cref="DateTime"/></param>
         /// <returns></returns>
         public static string DateToString(this DateTime date)
         {
@@ -86,10 +80,6 @@ namespace Gseey.Framework.Common.Helpers
         {
             return DateTime.ParseExact(date, "yyyy-MM-dd", null);
         }
-
-        #endregion
-
-        #region 时间/日期描述
 
         /// <summary>
         /// 返回时间描述字符串
@@ -144,10 +134,6 @@ namespace Gseey.Framework.Common.Helpers
             else return string.Format("{0}月{1}日", date.Month, date.Day);
         }
 
-        #endregion
-
-        #region 日期显示
-
         /// <summary>
         /// 根据年月日返回字符串，格式如: 2009-7
         /// </summary>
@@ -197,12 +183,8 @@ namespace Gseey.Framework.Common.Helpers
             return string.Empty;
         }
 
-        #endregion
-
-        #region 获取星座
-
         /// <summary>
-        /// 获取日期对应的星座 
+        /// 获取日期对应的星座
         /// </summary>
         /// <param name="date">日期</param>
         /// <returns></returns>
@@ -212,9 +194,10 @@ namespace Gseey.Framework.Common.Helpers
         }
 
         /// <summary>
-        /// 获取日期对应的星座 
+        /// 获取日期对应的星座
         /// </summary>
-        /// <param name="date">日期</param>
+        /// <param name="month">The month<see cref="int"/></param>
+        /// <param name="day">The day<see cref="int"/></param>
         /// <returns></returns>
         public static string GetConstellation(int month, int day)
         {
@@ -222,10 +205,6 @@ namespace Gseey.Framework.Common.Helpers
             if (day < _ConstellationDays[index]) return month == 1 ? _Constellations[11] : _Constellations[index - 1];
             else return _Constellations[index];
         }
-
-        #endregion
-
-        #region unix timestamp
 
         /// <summary>
         /// 将指定的本地时间转换为相应的 Unix 时间戳
@@ -263,7 +242,5 @@ namespace Gseey.Framework.Common.Helpers
                 return start.AddSeconds(unixTime);
             }
         }
-
-        #endregion
     }
 }

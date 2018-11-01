@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.Weixin.Menu.DTOs;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Gseey.Apis.Weixin.Controllers
+﻿namespace Gseey.Apis.Weixin.Controllers
 {
+    using Gseey.Middleware.Weixin.Menu.DTOs;
+    using Microsoft.AspNetCore.Mvc;
+
     /// <summary>
     /// 后台管理模块
     /// </summary>
@@ -15,8 +10,6 @@ namespace Gseey.Apis.Weixin.Controllers
     [ApiController]
     public class ManageController : ControllerBase
     {
-        #region 菜单
-
         /// <summary>
         /// 创建微信菜单
         /// </summary>
@@ -39,8 +32,6 @@ namespace Gseey.Apis.Weixin.Controllers
         [Route("menu/get/{channelId}")]
         public IActionResult MenuGet(int channelId)
         {
-            LogHelper.RunLog(string.Format("info"), logLevel: LogHelper.LogLevelEnum.Warn);
-
             return Content("MenuGet");
         }
 
@@ -55,18 +46,6 @@ namespace Gseey.Apis.Weixin.Controllers
         {
             return Content("MenuDelete");
         }
-
-        #endregion
-
-        #region 部门/成员/标签管理
-
-        #region 部门
-
-        #endregion
-
-        #endregion
-
-        #region 发送主动消息
 
         /// <summary>
         /// 发送文本消息
@@ -91,7 +70,5 @@ namespace Gseey.Apis.Weixin.Controllers
         {
             return Content("SendMediaMsg");
         }
-
-        #endregion
     }
 }

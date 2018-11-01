@@ -1,10 +1,7 @@
-﻿using Castle.DynamicProxy;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gseey.Framework.Common.AopIntercepor
+﻿namespace Gseey.Framework.Common.AopIntercepor
 {
+    using Castle.DynamicProxy;
+
     /// <summary>
     /// AOP基类
     /// </summary>

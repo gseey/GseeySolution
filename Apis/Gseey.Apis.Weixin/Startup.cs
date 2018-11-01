@@ -1,35 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Gseey.Framework.Common.Middlewares;
-using Gseey.Middleware.Weixin;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
-
-namespace Gseey.Apis.Weixin
+﻿namespace Gseey.Apis.Weixin
 {
+    using Autofac;
+    using Autofac.Extensions.DependencyInjection;
+    using Gseey.Middleware.Weixin;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using System;
+
     /// <summary>
-    /// 
+    /// Defines the <see cref="Startup" />
     /// </summary>
     public class Startup
     {
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
@@ -38,16 +25,15 @@ namespace Gseey.Apis.Weixin
         }
 
         /// <summary>
-        /// 
+        /// Gets the Configuration
         /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// 
+        /// The ConfigureServices
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -91,11 +77,10 @@ namespace Gseey.Apis.Weixin
         }
 
         /// <summary>
-        /// 
+        /// The Configure
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -106,6 +91,7 @@ namespace Gseey.Apis.Weixin
             {
                 app.UseHsts();
             }
+
             app.UseStaticFiles();
             //// Enable middleware to serve generated Swagger as a JSON endpoint.
             //app.UseSwagger();
@@ -120,7 +106,7 @@ namespace Gseey.Apis.Weixin
 
 
             //异常处理中间件
-            app.UseMiddleware(typeof(ExceptionHandlerMiddleWare));
+            //app.UseMiddleware(typeof(ExceptionHandlerMiddleWare));
 
             app.UseMvc();
 

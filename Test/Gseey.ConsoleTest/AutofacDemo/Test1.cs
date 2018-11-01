@@ -1,40 +1,78 @@
-﻿using Autofac.Extras.DynamicProxy;
-using Castle.DynamicProxy;
-using Gseey.Framework.Common.AopIntercepor;
-using Gseey.Framework.Common.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Gseey.ConsoleTest.AutofacDemo
+﻿namespace Gseey.ConsoleTest.AutofacDemo
 {
+    using Castle.DynamicProxy;
+    using Gseey.Framework.Common.AopIntercepor;
+    using Gseey.Framework.Common.Helpers;
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="TestObj" />
+    /// </summary>
     public class TestObj
     {
+        /// <summary>
+        /// Gets or sets the MyProperty
+        /// </summary>
         public int MyProperty { get; set; }
 
+        /// <summary>
+        /// Gets or sets the MyProperty2
+        /// </summary>
         public string MyProperty2 { get; set; }
     }
 
+    /// <summary>
+    /// Defines the <see cref="ITest1" />
+    /// </summary>
     public interface ITest1
     {
-
+        /// <summary>
+        /// The TestMethod
+        /// </summary>
         void TestMethod();
 
+        /// <summary>
+        /// The TestMethod2
+        /// </summary>
+        /// <param name="input">The input<see cref="int"/></param>
+        /// <returns>The <see cref="string"/></returns>
         string TestMethod2(int input);
 
+        /// <summary>
+        /// The TestMethod3
+        /// </summary>
+        /// <param name="input1">The input1<see cref="int"/></param>
+        /// <param name="input2">The input2<see cref="string"/></param>
+        /// <returns>The <see cref="TestObj"/></returns>
         TestObj TestMethod3(int input1, string input2);
+
+        /// <summary>
+        /// The TestMethod4
+        /// </summary>
+        /// <param name="obj">The obj<see cref="TestObj"/></param>
+        /// <returns>The <see cref="TestObj"/></returns>
         TestObj TestMethod4(TestObj obj);
     }
 
     //[Intercept(typeof(TestIinterceptor))]
+    /// <summary>
+    /// Defines the <see cref="Test1" />
+    /// </summary>
     public class Test1 : ITest1
     {
+        /// <summary>
+        /// The TestMethod
+        /// </summary>
         public void TestMethod()
         {
             Console.WriteLine("in method!!!!!!");
         }
 
+        /// <summary>
+        /// The TestMethod2
+        /// </summary>
+        /// <param name="input">The input<see cref="int"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public string TestMethod2(int input)
         {
             Console.WriteLine("input:" + input);
@@ -42,6 +80,12 @@ namespace Gseey.ConsoleTest.AutofacDemo
             return Guid.NewGuid().ToString();
         }
 
+        /// <summary>
+        /// The TestMethod3
+        /// </summary>
+        /// <param name="input1">The input1<see cref="int"/></param>
+        /// <param name="input2">The input2<see cref="string"/></param>
+        /// <returns>The <see cref="TestObj"/></returns>
         public TestObj TestMethod3(int input1, string input2)
         {
             Console.WriteLine("input1:" + input1);
@@ -54,6 +98,11 @@ namespace Gseey.ConsoleTest.AutofacDemo
             return obj;
         }
 
+        /// <summary>
+        /// The TestMethod4
+        /// </summary>
+        /// <param name="obj">The obj<see cref="TestObj"/></param>
+        /// <returns>The <see cref="TestObj"/></returns>
         public TestObj TestMethod4(TestObj obj)
         {
             Console.WriteLine("in method!!!!!!");
@@ -67,8 +116,15 @@ namespace Gseey.ConsoleTest.AutofacDemo
         }
     }
 
+    /// <summary>
+    /// Defines the <see cref="TestIinterceptor" />
+    /// </summary>
     public class TestIinterceptor : BaseInterceptor
     {
+        /// <summary>
+        /// The PostProceed
+        /// </summary>
+        /// <param name="invocation">The invocation<see cref="IInvocation"/></param>
         public override void PostProceed(IInvocation invocation)
         {
             Console.WriteLine("=======end=============");
@@ -76,6 +132,10 @@ namespace Gseey.ConsoleTest.AutofacDemo
             Console.WriteLine("Done: result was {0}.", invocation.ReturnValue.ToJson());
         }
 
+        /// <summary>
+        /// The PreProceed
+        /// </summary>
+        /// <param name="invocation">The invocation<see cref="IInvocation"/></param>
         public override void PreProceed(IInvocation invocation)
         {
             Console.WriteLine("{0}:拦截{1}方法{2}前,", DateTime.Now.ToString("O"), invocation.InvocationTarget.GetType().BaseType, invocation.Method.Name);
@@ -87,8 +147,14 @@ namespace Gseey.ConsoleTest.AutofacDemo
         }
     }
 
+    /// <summary>
+    /// Defines the <see cref="TestDemo" />
+    /// </summary>
     public class TestDemo
     {
+        /// <summary>
+        /// The Test
+        /// </summary>
         public static void Test()
         {
             //AutofacHelper.Register<ITest1, Test1>();

@@ -1,14 +1,13 @@
-﻿using Gseey.Framework.Common.Helpers;
-using Gseey.Middleware.Weixin.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gseey.Apis.Weixin.Controllers
+﻿namespace Gseey.Apis.Weixin.Controllers
 {
+    using Gseey.Middleware.Weixin.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// 验证/被动回复消息
     /// </summary>
@@ -17,13 +16,18 @@ namespace Gseey.Apis.Weixin.Controllers
     [ApiController]
     public class IndexController : ControllerBase
     {
-        #region 构造函数
-
+        /// <summary>
+        /// Defines the _messageHandlerService
+        /// </summary>
         private readonly IMessageHandlerService _messageHandlerService;
+
+        /// <summary>
+        /// Defines the _logger
+        /// </summary>
         private readonly ILogger<IndexController> _logger;
 
         /// <summary>
-        /// 构造函数
+        /// Initializes a new instance of the <see cref="IndexController"/> class.
         /// </summary>
         /// <param name="messageHandlerService"></param>
         /// <param name="logger"></param>
@@ -33,9 +37,6 @@ namespace Gseey.Apis.Weixin.Controllers
             _logger = logger;
         }
 
-        #endregion
-
-        #region 验证微信接口有效性
         /// <summary>
         /// 微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
         /// </summary>
@@ -45,19 +46,14 @@ namespace Gseey.Apis.Weixin.Controllers
         /// <param name="timestamp">时间戳</param>
         /// <param name="nonce">随机数</param>
         /// <param name="echostr">随机字符串</param>
-        /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>   
-        /// <returns>
-        /// /index/1?msg_signature=634d15b89eac28a4971bcd0cad3e93c9b812d215
-        /// timestamp=1540396364
-        /// nonce=1541329218
-        /// </returns>
+        /// <returns>The <see cref="IActionResult"/></returns>
         [HttpGet]
         [Route("index/{channelId}")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
+            _logger.LogInformation("info");
             //校验微信签名
             var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
             if (checkResult.Success)
@@ -65,9 +61,6 @@ namespace Gseey.Apis.Weixin.Controllers
             else
                 return Content(Guid.NewGuid().ToString());
         }
-        #endregion
-
-        #region 接收微信消息
 
         /// <summary>
         /// 微信事件处理
@@ -97,6 +90,5 @@ namespace Gseey.Apis.Weixin.Controllers
 
             return Content(result);
         }
-        #endregion
     }
 }

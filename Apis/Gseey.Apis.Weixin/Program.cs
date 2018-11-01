@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-
-namespace Gseey.Apis.Weixin
+﻿namespace Gseey.Apis.Weixin
 {
+    using Microsoft.AspNetCore;
+    using Microsoft.AspNetCore.Hosting;
 
-#pragma warning disable CS1591
     /// <summary>
-    /// 
+    /// Defines the <see cref="Program" />
     /// </summary>
     public class Program
     {
         /// <summary>
-        /// 
+        /// The Main
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)
@@ -20,7 +18,7 @@ namespace Gseey.Apis.Weixin
         }
 
         /// <summary>
-        /// 
+        /// The CreateWebHostBuilder
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
@@ -30,5 +28,4 @@ namespace Gseey.Apis.Weixin
             .UseStartup<Startup>()
             ;
     }
-#pragma warning restore CS1591
 }

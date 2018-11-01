@@ -1,27 +1,27 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-
-namespace Gseey.Framework.Common.Extensions
+﻿namespace Gseey.Framework.Common.Extensions
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     /// <summary>
     /// 枚举扩展类
     /// </summary>
     public static class EnumExtension
     {
-        #region 私有方法
+        /// <summary>
+        /// Defines the enumDescriptionDic
+        /// </summary>
         private static ConcurrentDictionary<Type, Dictionary<string, string>>
      enumDescriptionDic = new ConcurrentDictionary<Type, Dictionary<string, string>>();
-        #endregion
 
         /// <summary>
         /// 获取枚举的描述
         /// 枚举必须打上DescriptionAttribute标签
         /// 如果枚举没有DescriptionAttribute特性，那么将返回枚举的ToString()值，如果枚举与类型不匹配，则返回String.Empty
         /// </summary>
-        /// <param name="@enum">枚举</param>
+        /// <param name="@enum">The enum<see cref="Enum"/></param>
         /// <returns>枚举的描述值</returns>
         public static string GetDescription(this Enum @enum)
         {
@@ -30,11 +30,11 @@ namespace Gseey.Framework.Common.Extensions
             return dic.ContainsKey(enumStr) ? dic[enumStr] : string.Empty;
         }
 
-        ///<summary>
-        /// 返回 Dic,取enum的FiledName值作为key
-        ///</summary>
-        ///<param name="enumType"></param>
-        ///<returns>Dic</returns>
+        /// <summary>
+        /// The GetEnumDic
+        /// </summary>
+        /// <param name="enumType">The enumType<see cref="Type"/></param>
+        /// <returns>The <see cref="Dictionary{string, string}"/></returns>
         public static Dictionary<string, string> GetEnumDic(Type enumType)
         {
             return enumDescriptionDic.GetOrAdd(enumType, t =>

@@ -1,13 +1,13 @@
-﻿using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading.Tasks;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Redis 助手
     /// http://www.cnblogs.com/liqingwen/p/6672452.html
@@ -57,6 +57,11 @@ namespace Gseey.Framework.Common.Helpers
             return _connMultiplexer;
         }
 
+        /// <summary>
+        /// The GetDatabase
+        /// </summary>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
+        /// <returns>The <see cref="IDatabase"/></returns>
         private static IDatabase GetDatabase(int dbIndex = -1)
         {
             _db = _connMultiplexer.GetDatabase(dbIndex);
@@ -66,6 +71,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// The GetTransaction
         /// </summary>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns>The <see cref="ITransaction"/></returns>
         public static ITransaction GetTransaction(int dbIndex = -1)
         {
@@ -90,8 +96,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
-        public static bool StringSet(string redisKey, string redisValue, TimeSpan? expiry = null,int dbIndex=-1)
+        public static bool StringSet(string redisKey, string redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var db = GetDatabase(dbIndex);
@@ -102,6 +109,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 保存多个 Key-value
         /// </summary>
         /// <param name="keyValuePairs"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool StringSet(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs, int dbIndex = -1)
         {
@@ -116,6 +124,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static string StringGet(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -131,6 +140,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool StringSet<T>(string redisKey, T redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -146,6 +156,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static T StringGet<T>(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -160,6 +171,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> StringSetAsync(string redisKey, string redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -172,6 +184,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 保存一组字符串值
         /// </summary>
         /// <param name="keyValuePairs"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> StringSetAsync(IEnumerable<KeyValuePair<RedisKey, RedisValue>> keyValuePairs, int dbIndex = -1)
         {
@@ -187,6 +200,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<string> StringGetAsync(string redisKey, string redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -202,6 +216,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> StringSetAsync<T>(string redisKey, T redisValue, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -217,6 +232,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<T> StringGetAsync<T>(string redisKey, TimeSpan? expiry = null, int dbIndex = -1)
         {
@@ -230,6 +246,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool HashExists(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -243,6 +260,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool HashDelete(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -256,6 +274,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long HashDelete(string redisKey, IEnumerable<RedisValue> hashField, int dbIndex = -1)
         {
@@ -270,6 +289,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool HashSet(string redisKey, string hashField, string value, int dbIndex = -1)
         {
@@ -283,6 +303,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashFields"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         public static void HashSet(string redisKey, IEnumerable<HashEntry> hashFields, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
@@ -295,6 +316,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static RedisValue HashGet(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -309,6 +331,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static RedisValue[] HashGet(string redisKey, RedisValue[] hashField, string value, int dbIndex = -1)
         {
@@ -321,6 +344,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 从 hash 返回所有的字段值
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static IEnumerable<RedisValue> HashKeys(string redisKey, int dbIndex = -1)
         {
@@ -333,6 +357,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回 hash 中的所有值
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static RedisValue[] HashValues(string redisKey, int dbIndex = -1)
         {
@@ -348,6 +373,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool HashSet<T>(string redisKey, string hashField, T value, int dbIndex = -1)
         {
@@ -363,6 +389,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static T HashGet<T>(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -376,8 +403,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
-        public static async Task<bool> HashExistsAsync(string redisKey, string hashField,int dbIndex=-1)
+        public static async Task<bool> HashExistsAsync(string redisKey, string hashField, int dbIndex = -1)
         {
             redisKey = AddKeyPrefix(redisKey);
             var db = GetDatabase(dbIndex);
@@ -389,6 +417,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> HashDeleteAsync(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -402,6 +431,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> HashDeleteAsync(string redisKey, IEnumerable<RedisValue> hashField, int dbIndex = -1)
         {
@@ -416,6 +446,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> HashSetAsync(string redisKey, string hashField, string value, int dbIndex = -1)
         {
@@ -429,6 +460,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashFields"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns>The <see cref="Task"/></returns>
         public static async Task HashSetAsync(string redisKey, IEnumerable<HashEntry> hashFields, int dbIndex = -1)
         {
@@ -442,6 +474,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<RedisValue> HashGetAsync(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -456,6 +489,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<IEnumerable<RedisValue>> HashGetAsync(string redisKey, RedisValue[] hashField, string value, int dbIndex = -1)
         {
@@ -468,6 +502,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 从 hash 返回所有的字段值
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<IEnumerable<RedisValue>> HashKeysAsync(string redisKey, int dbIndex = -1)
         {
@@ -480,6 +515,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回 hash 中的所有值
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<IEnumerable<RedisValue>> HashValuesAsync(string redisKey, int dbIndex = -1)
         {
@@ -495,6 +531,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
         /// <param name="value"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> HashSetAsync<T>(string redisKey, string hashField, T value, int dbIndex = -1)
         {
@@ -510,6 +547,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="hashField"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<T> HashGetAsync<T>(string redisKey, string hashField, int dbIndex = -1)
         {
@@ -522,6 +560,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除并返回存储在该键列表的第一个元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static string ListLeftPop(string redisKey, int dbIndex = -1)
         {
@@ -534,6 +573,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除并返回存储在该键列表的最后一个元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static string ListRightPop(string redisKey, int dbIndex = -1)
         {
@@ -547,6 +587,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListRemove(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -560,6 +601,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListRightPush(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -573,6 +615,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListLeftPush(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -585,6 +628,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回列表上该键的长度，如果不存在，返回 0
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListLength(string redisKey, int dbIndex = -1)
         {
@@ -597,6 +641,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回在该列表上键所对应的元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static IEnumerable<RedisValue> ListRange(string redisKey, int dbIndex = -1)
         {
@@ -610,6 +655,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static T ListLeftPop<T>(string redisKey, int dbIndex = -1)
         {
@@ -623,6 +669,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static T ListRightPop<T>(string redisKey, int dbIndex = -1)
         {
@@ -637,6 +684,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListRightPush<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
@@ -651,6 +699,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long ListLeftPush<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
@@ -663,6 +712,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除并返回存储在该键列表的第一个元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<string> ListLeftPopAsync(string redisKey, int dbIndex = -1)
         {
@@ -675,6 +725,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除并返回存储在该键列表的最后一个元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<string> ListRightPopAsync(string redisKey, int dbIndex = -1)
         {
@@ -688,6 +739,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListRemoveAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -701,6 +753,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListRightPushAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -714,6 +767,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListLeftPushAsync(string redisKey, string redisValue, int dbIndex = -1)
         {
@@ -726,6 +780,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回列表上该键的长度，如果不存在，返回 0
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListLengthAsync(string redisKey, int dbIndex = -1)
         {
@@ -738,6 +793,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回在该列表上键所对应的元素
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<IEnumerable<RedisValue>> ListRangeAsync(string redisKey, int dbIndex = -1)
         {
@@ -751,6 +807,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<T> ListLeftPopAsync<T>(string redisKey, int dbIndex = -1)
         {
@@ -764,6 +821,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<T> ListRightPopAsync<T>(string redisKey, int dbIndex = -1)
         {
@@ -778,6 +836,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListRightPushAsync<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
@@ -792,6 +851,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="redisKey"></param>
         /// <param name="redisValue"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> ListLeftPushAsync<T>(string redisKey, T redisValue, int dbIndex = -1)
         {
@@ -806,6 +866,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool SortedSetAdd(string redisKey, string member, double score, int dbIndex = -1)
         {
@@ -818,6 +879,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 在有序集合中返回指定范围的元素，默认情况下从低到高。
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static IEnumerable<RedisValue> SortedSetRangeByRank(string redisKey, int dbIndex = -1)
         {
@@ -830,6 +892,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回有序集合的元素个数
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long SortedSetLength(string redisKey, int dbIndex = -1)
         {
@@ -843,6 +906,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="memebr"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool SortedSetLength(string redisKey, string memebr, int dbIndex = -1)
         {
@@ -858,6 +922,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool SortedSetAdd<T>(string redisKey, T member, double score, int dbIndex = -1)
         {
@@ -873,6 +938,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> SortedSetAddAsync(string redisKey, string member, double score, int dbIndex = -1)
         {
@@ -885,6 +951,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 在有序集合中返回指定范围的元素，默认情况下从低到高。
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<IEnumerable<RedisValue>> SortedSetRangeByRankAsync(string redisKey, int dbIndex = -1)
         {
@@ -897,6 +964,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 返回有序集合的元素个数
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> SortedSetLengthAsync(string redisKey, int dbIndex = -1)
         {
@@ -910,6 +978,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="memebr"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> SortedSetRemoveAsync(string redisKey, string memebr, int dbIndex = -1)
         {
@@ -925,6 +994,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="redisKey"></param>
         /// <param name="member"></param>
         /// <param name="score"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> SortedSetAddAsync<T>(string redisKey, T member, double score, int dbIndex = -1)
         {
@@ -938,6 +1008,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除指定 Key
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool KeyDelete(string redisKey, int dbIndex = -1)
         {
@@ -950,6 +1021,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除指定 Key
         /// </summary>
         /// <param name="redisKeys"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long KeyDelete(IEnumerable<string> redisKeys, int dbIndex = -1)
         {
@@ -962,6 +1034,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 校验 Key 是否存在
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool KeyExists(string redisKey, int dbIndex = -1)
         {
@@ -975,6 +1048,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisNewKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool KeyRename(string redisKey, string redisNewKey, int dbIndex = -1)
         {
@@ -988,6 +1062,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static bool KeyExpire(string redisKey, TimeSpan? expiry, int dbIndex = -1)
         {
@@ -1000,6 +1075,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除指定 Key
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> KeyDeleteAsync(string redisKey, int dbIndex = -1)
         {
@@ -1012,6 +1088,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 移除指定 Key
         /// </summary>
         /// <param name="redisKeys"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> KeyDeleteAsync(IEnumerable<string> redisKeys, int dbIndex = -1)
         {
@@ -1024,6 +1101,7 @@ namespace Gseey.Framework.Common.Helpers
         /// 校验 Key 是否存在
         /// </summary>
         /// <param name="redisKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> KeyExistsAsync(string redisKey, int dbIndex = -1)
         {
@@ -1037,6 +1115,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="redisNewKey"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> KeyRenameAsync(string redisKey, string redisNewKey, int dbIndex = -1)
         {
@@ -1050,6 +1129,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="redisKey"></param>
         /// <param name="expiry"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<bool> KeyExpireAsync(string redisKey, TimeSpan? expiry, int dbIndex = -1)
         {
@@ -1063,6 +1143,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="handle"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         public static void Subscribe(RedisChannel channel, Action<RedisChannel, RedisValue> handle, int dbIndex = -1)
         {
             var sub = _connMultiplexer.GetSubscriber();
@@ -1075,6 +1156,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="message"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long Publish(RedisChannel channel, RedisValue message, int dbIndex = -1)
         {
@@ -1089,6 +1171,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="channel"></param>
         /// <param name="message"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static long Publish<T>(RedisChannel channel, T message, int dbIndex = -1)
         {
@@ -1102,6 +1185,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="handle"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns>The <see cref="Task"/></returns>
         public static async Task SubscribeAsync(RedisChannel channel, Action<RedisChannel, RedisValue> handle, int dbIndex = -1)
         {
@@ -1115,6 +1199,7 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="message"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> PublishAsync(RedisChannel channel, RedisValue message, int dbIndex = -1)
         {
@@ -1129,6 +1214,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="channel"></param>
         /// <param name="message"></param>
+        /// <param name="dbIndex">The dbIndex<see cref="int"/></param>
         /// <returns></returns>
         public static async Task<long> PublishAsync<T>(RedisChannel channel, T message, int dbIndex = -1)
         {

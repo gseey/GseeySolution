@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// http帮助类
     /// </summary>
     public sealed class HttpHelper
     {
-        #region 获取httpclient
-
         /// <summary>
         /// 获取httpclient
         /// </summary>
@@ -29,11 +27,7 @@ namespace Gseey.Framework.Common.Helpers
             httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             httpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
             return httpClient;
-        } 
-
-        #endregion
-
-        #region 获取网页信息
+        }
 
         /// <summary>
         /// 获取网页信息(同步)
@@ -50,6 +44,7 @@ namespace Gseey.Framework.Common.Helpers
                 return result;
             }
         }
+
         /// <summary>
         /// 获取网页信息(异步)
         /// </summary>
@@ -66,10 +61,10 @@ namespace Gseey.Framework.Common.Helpers
             }
         }
 
-
         /// <summary>
         /// 获取网页信息(同步)
         /// </summary>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="url"></param>
         /// <returns></returns>
         public static TResult GetHtml<TResult>(string url) where TResult : class
@@ -83,9 +78,11 @@ namespace Gseey.Framework.Common.Helpers
                 return result;
             }
         }
+
         /// <summary>
         /// 获取网页信息(异步)
         /// </summary>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="url"></param>
         /// <returns></returns>
         public static async Task<TResult> GetHtmlAsync<TResult>(string url) where TResult : class
@@ -100,10 +97,12 @@ namespace Gseey.Framework.Common.Helpers
             }
         }
 
-        #endregion
-
-        #region 向网页提交数据
-
+        /// <summary>
+        /// The PostData
+        /// </summary>
+        /// <param name="url">The url<see cref="string"/></param>
+        /// <param name="dataBuffer">The dataBuffer<see cref="Dictionary{string, string}"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string PostData(string url, Dictionary<string, string> dataBuffer)
         {
             var uri = new Uri(url);
@@ -115,6 +114,12 @@ namespace Gseey.Framework.Common.Helpers
             return result;
         }
 
+        /// <summary>
+        /// The PostDataAsync
+        /// </summary>
+        /// <param name="url">The url<see cref="string"/></param>
+        /// <param name="dataBuffer">The dataBuffer<see cref="Dictionary{string, string}"/></param>
+        /// <returns>The <see cref="Task{string}"/></returns>
         public static async Task<string> PostDataAsync(string url, Dictionary<string, string> dataBuffer)
         {
             var uri = new Uri(url);
@@ -126,7 +131,14 @@ namespace Gseey.Framework.Common.Helpers
             return result;
         }
 
-
+        /// <summary>
+        /// The PostData
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="url">The url<see cref="string"/></param>
+        /// <param name="value">The value<see cref="TValue"/></param>
+        /// <returns>The <see cref="TResult"/></returns>
         public static TResult PostData<TResult, TValue>(string url, TValue value) where TResult : class
         {
             var uri = new Uri(url);
@@ -140,6 +152,14 @@ namespace Gseey.Framework.Common.Helpers
             return result;
         }
 
+        /// <summary>
+        /// The PostDataAsync
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="url">The url<see cref="string"/></param>
+        /// <param name="value">The value<see cref="TValue"/></param>
+        /// <returns>The <see cref="Task{TResult}"/></returns>
         public static async Task<TResult> PostDataAsync<TResult, TValue>(string url, TValue value) where TResult : class
         {
             var uri = new Uri(url);
@@ -152,9 +172,6 @@ namespace Gseey.Framework.Common.Helpers
             var result = html.FromJson<TResult>();
             return result;
         }
-        #endregion
-
-        #region 上传文件
 
         /// <summary>
         /// 上传文件
@@ -196,7 +213,5 @@ namespace Gseey.Framework.Common.Helpers
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+    using System;
+    using System.Xml;
+
     /// <summary>
     /// JSON帮助类
     /// </summary>
     public static class JsonHelper
     {
+        /// <summary>
+        /// Defines the _jsonSettings
+        /// </summary>
         private static JsonSerializerSettings _jsonSettings;
 
+        /// <summary>
+        /// Initializes static members of the <see cref="JsonHelper"/> class.
+        /// </summary>
         static JsonHelper()
         {
             IsoDateTimeConverter datetimeConverter = new IsoDateTimeConverter();
@@ -49,7 +53,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 将指定的 JSON 数据反序列化成指定对象。
         /// </summary>
-        /// <typeparam name="T">对象类型。</typeparam> 
+        /// <typeparam name="T">对象类型。</typeparam>
         /// <param name="json">JSON 数据。</param>
         /// <returns></returns>
         public static T FromJson<T>(this string json) where T : class
@@ -92,6 +96,11 @@ namespace Gseey.Framework.Common.Helpers
             var obj = FromJson<T>(json);
             return obj;
         }
+
+        /// <summary>
+        /// The ReplaceXmlCData
+        /// </summary>
+        /// <param name="node">The node<see cref="XmlNode"/></param>
         private static void ReplaceXmlCData(XmlNode node)
         {
             if (node.FirstChild != null)

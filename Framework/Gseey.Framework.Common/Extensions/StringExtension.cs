@@ -1,11 +1,12 @@
-﻿using Gseey.Framework.Common.Helpers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gseey.Framework.Common.Extensions
+﻿namespace Gseey.Framework.Common.Extensions
 {
+    using Gseey.Framework.Common.Helpers;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Defines the <see cref="StringExtension" />
+    /// </summary>
     public static class StringExtension
     {
         /// <summary>
@@ -22,6 +23,11 @@ namespace Gseey.Framework.Common.Extensions
             return result;
         }
 
+        /// <summary>
+        /// The ToStringList
+        /// </summary>
+        /// <param name="list">The list<see cref="IEnumerable"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string ToStringList(this IEnumerable list)
         {
             var result = new List<string>();

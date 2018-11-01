@@ -1,13 +1,12 @@
-﻿using Autofac;
-using Autofac.Extras.DynamicProxy;
-using Castle.DynamicProxy;
-using Gseey.Framework.Common.AopIntercepor;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using Autofac;
+    using Autofac.Extras.DynamicProxy;
+    using Gseey.Framework.Common.AopIntercepor;
+
+    /// <summary>
+    /// Defines the <see cref="AutofacHelper" />
+    /// </summary>
     public class AutofacHelper
     {
         /// <summary>
@@ -15,8 +14,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         private static ContainerBuilder builder = new ContainerBuilder();
 
-        #region 内部枚举
-
+        /// <summary>
+        /// Defines the LifeCycleEnum
+        /// </summary>
         public enum LifeCycleEnum
         {
             /// <summary>
@@ -24,40 +24,31 @@ namespace Gseey.Framework.Common.Helpers
             /// Configure the component so that every dependent component or call to Resolve() gets a new, unique instance (default.)
             /// </summary>
             InstancePerDependency = 10,
-
             /// <summary>
             /// 在一个生命周期域中，每一个依赖或调用创建一个单一的共享的实例，且每一个不同的生命周期域，实例是唯一的，不共享的。
             /// Configure the component so that every dependent component or call to Resolve() within a single ILifetimeScope gets the same, shared instance. Dependent components in different lifetime scopes will get different instances.
             /// </summary>
             InstancePerLifetimeScope = 20,
-
             /// <summary>
             /// 在一个做标识的生命周期域中，每一个依赖或调用创建一个单一的共享的实例。打了标识了的生命周期域中的子标识域中可以共享父级域中的实例。若在整个继承层次中没有找到打标识的生命周期域，则会抛出异常：DependencyResolutionException
             /// Configure the component so that every dependent component or call to Resolve() within a ILifetimeScope tagged with any of the provided tags value gets the same, shared instance. Dependent components in lifetime scopes that are children of the tagged scope will share the parent's instance. If no appropriately tagged scope can be found in the hierarchy an DependencyResolutionException is thrown.
             /// </summary>
             InstancePerMatchingLifetimeScope = 30,
-
             /// <summary>
             /// 在一个生命周期域中所拥有的实例创建的生命周期中，每一个依赖组件或调用Resolve()方法创建一个单一的共享的实例，并且子生命周期域共享父生命周期域中的实例。若在继承层级中没有发现合适的拥有子实例的生命周期域，则抛出异常：DependencyResolutionException。
             /// Configure the component so that every dependent component or call to Resolve() within a ILifetimeScope created by an owned instance gets the same, shared instance. Dependent components in lifetime scopes that are children of the owned instance scope will share the parent's instance. If no appropriate owned instance scope can be found in the hierarchy an DependencyResolutionException is thrown.
             /// </summary>
             InstancePerOwned = 40,
-
             /// <summary>
             /// 每一次依赖组件或调用Resolve()方法都会得到一个相同的共享的实例。其实就是单例模式。
             /// Configure the component so that every dependent component or call to Resolve() gets the same, shared instance.
             /// </summary>
             SingleInstance = 50,
-
             /// <summary>
             /// 在一次Http请求上下文中,共享一个组件实例。
             /// </summary>
             InstancePerRequest = 60
         }
-
-        #endregion
-
-        #region 获取当前容器
 
         /// <summary>
         /// 获取当前容器
@@ -67,10 +58,6 @@ namespace Gseey.Framework.Common.Helpers
         {
             return builder;
         }
-
-        #endregion
-
-        #region 注册接口
 
         /// <summary>
         /// 注册接口
@@ -113,7 +100,6 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="TClass">接口的实际实现</typeparam>
         /// <typeparam name="TIInterceptor">aop拦截器实现</typeparam>
         /// <param name="lifeCycle">生命周期</param>
-        /// <param name="enableInterceptors">是否启用aop注册</param>
         public static void Register<TInterface, TClass, TIInterceptor>(LifeCycleEnum lifeCycle = LifeCycleEnum.InstancePerDependency)
             where TClass : TInterface
             where TIInterceptor : BaseInterceptor
@@ -148,9 +134,6 @@ namespace Gseey.Framework.Common.Helpers
             result.EnableInterfaceInterceptors().InterceptedBy(typeof(TIInterceptor));
         }
 
-        #endregion
-
-        #region 获取接口实例
         /// <summary>
         /// 获取接口实例
         /// </summary>
@@ -161,7 +144,5 @@ namespace Gseey.Framework.Common.Helpers
             var result = builder.Build().Resolve<TInterface>();
             return result;
         }
-
-        #endregion
     }
 }

@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+﻿namespace Gseey.Framework.Common.Helpers
+{
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
 
-namespace Gseey.Framework.Common.Helpers
-{/// <summary>
- /// 加密帮助类
- /// </summary>
+    /// <summary>
+    /// 加密帮助类
+    /// </summary>
     public class EncryptHelper
     {
-        #region 属性
         /// <summary>
+        /// Gets the EncryptSalt
         /// 加密盐值
         /// </summary>
         private static string EncryptSalt
@@ -24,6 +24,7 @@ namespace Gseey.Framework.Common.Helpers
         }
 
         /// <summary>
+        /// Gets the EncryptKey
         /// 加密密钥
         /// </summary>
         private static string EncryptKey
@@ -33,9 +34,7 @@ namespace Gseey.Framework.Common.Helpers
                 return GetEncryptKey(ConfigHelper.Get("EncryptKey", "5df523*^&ed2"));
             }
         }
-        #endregion
 
-        #region 私有方法
         /// <summary>
         /// 获取加密密钥（长度固定8位）
         /// </summary>
@@ -54,9 +53,7 @@ namespace Gseey.Framework.Common.Helpers
             }
             return result;
         }
-        #endregion
 
-        #region 公有方法
         /// <summary>
         /// 对字符串进行des加密
         /// </summary>
@@ -238,7 +235,5 @@ namespace Gseey.Framework.Common.Helpers
             Result = encoding.GetString(DypherTextBArray);
             return Result;
         }
-        #endregion
-
     }
 }

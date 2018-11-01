@@ -9,9 +9,19 @@
             验证/被动回复消息
             </summary>
         </member>
+        <member name="F:Gseey.Apis.Weixin.Controllers.IndexController._messageHandlerService">
+            <summary>
+            Defines the _messageHandlerService
+            </summary>
+        </member>
+        <member name="F:Gseey.Apis.Weixin.Controllers.IndexController._logger">
+            <summary>
+            Defines the _logger
+            </summary>
+        </member>
         <member name="M:Gseey.Apis.Weixin.Controllers.IndexController.#ctor(Gseey.Middleware.Weixin.Services.IMessageHandlerService,Microsoft.Extensions.Logging.ILogger{Gseey.Apis.Weixin.Controllers.IndexController})">
             <summary>
-            构造函数
+            Initializes a new instance of the <see cref="T:Gseey.Apis.Weixin.Controllers.IndexController"/> class.
             </summary>
             <param name="messageHandlerService"></param>
             <param name="logger"></param>
@@ -26,13 +36,7 @@
             <param name="timestamp">时间戳</param>
             <param name="nonce">随机数</param>
             <param name="echostr">随机字符串</param>
-            <response code="201">Returns the newly created item</response>
-            <response code="400">If the item is null</response>   
-            <returns>
-            /index/1?msg_signature=634d15b89eac28a4971bcd0cad3e93c9b812d215
-            timestamp=1540396364
-            nonce=1541329218
-            </returns>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/></returns>
         </member>
         <member name="M:Gseey.Apis.Weixin.Controllers.IndexController.IndexAsync(System.Int32,System.String,System.String,System.String,System.String)">
             <summary>
@@ -88,48 +92,48 @@
         </member>
         <member name="T:Gseey.Apis.Weixin.Program">
             <summary>
-            
+            Defines the <see cref="T:Gseey.Apis.Weixin.Program" />
             </summary>
         </member>
         <member name="M:Gseey.Apis.Weixin.Program.Main(System.String[])">
             <summary>
-            
+            The Main
             </summary>
             <param name="args"></param>
         </member>
         <member name="M:Gseey.Apis.Weixin.Program.CreateWebHostBuilder(System.String[])">
             <summary>
-            
+            The CreateWebHostBuilder
             </summary>
             <param name="args"></param>
             <returns></returns>
         </member>
         <member name="T:Gseey.Apis.Weixin.Startup">
             <summary>
-            
+            Defines the <see cref="T:Gseey.Apis.Weixin.Startup" />
             </summary>
         </member>
         <member name="M:Gseey.Apis.Weixin.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
-            
+            Initializes a new instance of the <see cref="T:Gseey.Apis.Weixin.Startup"/> class.
             </summary>
             <param name="configuration"></param>
         </member>
         <member name="P:Gseey.Apis.Weixin.Startup.Configuration">
             <summary>
-            
+            Gets the Configuration
             </summary>
         </member>
         <member name="M:Gseey.Apis.Weixin.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
-            
+            The ConfigureServices
             </summary>
             <param name="services"></param>
             <returns></returns>
         </member>
         <member name="M:Gseey.Apis.Weixin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
             <summary>
-            
+            The Configure
             </summary>
             <param name="app"></param>
             <param name="env"></param>

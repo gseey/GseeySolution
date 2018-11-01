@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+    using System.Text;
+    using System.Web;
+
     /// <summary>
     /// Base64编码解码
     /// </summary>
@@ -79,7 +78,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 先编码成字符串在base64编码后在进行url编码
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="buffer">The buffer<see cref="byte[]"/></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
         public static string Base64UrlEncode(byte[] buffer, Encoding encoding)
@@ -127,7 +126,6 @@ namespace Gseey.Framework.Common.Helpers
         /// html编码
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="encoding"></param>
         /// <returns></returns>
         public static string HtmlEncode(string input)
         {
@@ -138,7 +136,6 @@ namespace Gseey.Framework.Common.Helpers
         /// html解码
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="encoding"></param>
         /// <returns></returns>
         public static string HtmlDecode(string input)
         {

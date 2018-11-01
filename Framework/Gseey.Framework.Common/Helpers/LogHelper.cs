@@ -1,32 +1,27 @@
-﻿using log4net;
-using log4net.Appender;
-using log4net.Config;
-using log4net.Core;
-using log4net.Layout;
-using log4net.Repository.Hierarchy;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Primitives;
-using NLog;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using log4net.Appender;
+    using log4net.Config;
+    using log4net.Core;
+    using log4net.Layout;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Primitives;
+    using NLog;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Net;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading;
+
     /// <summary>
     /// 日志帮助类 默认开启log4net的日志debug模式,如需关闭,配置文件添加节点即可: <add key="log4net.Internal.Quiet" value="true"/>
     /// </summary>
     public static class LogHelper
     {
-        #region 私有成员
-
         /// <summary>
         /// log4net对象
         /// </summary>
@@ -58,6 +53,7 @@ namespace Gseey.Framework.Common.Helpers
         private static string _logPath = ConfigHelper.Get("LogPath");
 
         /// <summary>
+        /// Gets a value indicating whether DisableInfoLog
         /// 是否禁用记录info级别日志
         /// </summary>
         private static bool DisableInfoLog
@@ -69,6 +65,7 @@ namespace Gseey.Framework.Common.Helpers
         }
 
         /// <summary>
+        /// Gets a value indicating whether DisableDebugLog
         /// 是否禁用记录debug级别日志
         /// </summary>
         private static bool DisableDebugLog
@@ -80,6 +77,7 @@ namespace Gseey.Framework.Common.Helpers
         }
 
         /// <summary>
+        /// Gets a value indicating whether DisableErrorLog
         /// 是否禁用记录error级别日志
         /// </summary>
         private static bool DisableErrorLog
@@ -88,18 +86,22 @@ namespace Gseey.Framework.Common.Helpers
             {
                 return ConfigHelper.Get("DisableErrorLog", "0").ToInt() == 1;
             }
-        } /// <summary>
+        }
 
-        /// 是否禁用记录warn级别日志 </summary>
+        /// <summary>
+        /// Gets a value indicating whether DisableWarnLog
+        /// </summary>
         private static bool DisableWarnLog
         {
             get
             {
                 return ConfigHelper.Get("DisableWarnLog", "0").ToInt() == 1;
             }
-        } /// <summary>
+        }
 
-        /// 是否禁用记录fatal级别日志 </summary>
+        /// <summary>
+        /// Gets a value indicating whether DisableFatalLog
+        /// </summary>
         private static bool DisableFatalLog
         {
             get
@@ -108,10 +110,9 @@ namespace Gseey.Framework.Common.Helpers
             }
         }
 
-        #endregion
-
-        #region 构造函数
-
+        /// <summary>
+        /// Initializes static members of the <see cref="LogHelper"/> class.
+        /// </summary>
         static LogHelper()
         {
             if (string.IsNullOrEmpty(_logPath))
@@ -140,15 +141,15 @@ namespace Gseey.Framework.Common.Helpers
             t.IsBackground = false;
             t.Start();
         }
-        #endregion
-
-        #region 公有方法
 
         /// <summary>
         /// 记录Debug级别日志
         /// </summary>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Debug(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             if (Enqueue)
@@ -178,6 +179,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Debug<T>(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog) where T : class
         {
             if (Enqueue)
@@ -206,6 +210,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Error(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             if (Enqueue)
@@ -235,6 +242,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Error<T>(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog) where T : class
         {
             if (Enqueue)
@@ -263,6 +273,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Info(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             if (Enqueue)
@@ -292,6 +305,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Info<T>(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog) where T : class
         {
             if (Enqueue)
@@ -320,6 +336,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Fatal(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             if (Enqueue)
@@ -349,6 +368,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Fatal<T>(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog) where T : class
         {
             if (Enqueue)
@@ -377,6 +399,9 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Warn(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             if (Enqueue)
@@ -406,6 +431,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <typeparam name="T"></typeparam>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void Warn<T>(string message, Exception exception = null, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool Enqueue = false, LogType logType = LogType.Nlog) where T : class
         {
             if (Enqueue)
@@ -433,31 +461,35 @@ namespace Gseey.Framework.Common.Helpers
         /// 记录日志
         /// </summary>
         /// <param name="message"></param>
+        /// <param name="exception">The exception<see cref="Exception"/></param>
         /// <param name="logLevel"></param>
         /// <param name="bizEnum"></param>
         /// <param name="isShowConsole"></param>
         /// <param name="folderName"></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void RunLog(string message, Exception exception = null, LogLevelEnum logLevel = LogLevelEnum.Info, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool isShowConsole = false, string folderName = "", bool Enqueue = false, LogType logType = LogType.Nlog)
         {
-            if (Enqueue)
-            {
-                var msg = new LogMessage
-                {
-                    Message = message,
-                    Exception = exception,
-                    BizEnum = bizEnum,
-                    IsShowConsole = isShowConsole,
-                    LogLevel = logLevel,
-                    LogTag = folderName,
-                    LogType = logType
-                };
-                _msgQueue.Enqueue(msg);
-                _signal.Set();
-            }
-            else
-            {
-                WriteLog(logLevel, message, exception, bizEnum, folderName, isShowConsole, logType);
-            }
+            Console.WriteLine("==================RunLog=====================");
+            //if (Enqueue)
+            //{
+            //    var msg = new LogMessage
+            //    {
+            //        Message = message,
+            //        Exception = exception,
+            //        BizEnum = bizEnum,
+            //        IsShowConsole = isShowConsole,
+            //        LogLevel = logLevel,
+            //        LogTag = folderName,
+            //        LogType = logType
+            //    };
+            //    _msgQueue.Enqueue(msg);
+            //    _signal.Set();
+            //}
+            //else
+            //{
+            //    WriteLog(logLevel, message, exception, bizEnum, folderName, isShowConsole, logType);
+            //}
         }
 
         /// <summary>
@@ -467,13 +499,12 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="message"></param>
         /// <param name="bizEnum"></param>
         /// <param name="isShowConsole"></param>
+        /// <param name="Enqueue">The Enqueue<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         public static void WriteExceptionLog(this Exception ex, string message = "", LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool isShowConsole = true, bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             RunLog(message, ex, logLevel: LogLevelEnum.Error, bizEnum: bizEnum, isShowConsole: isShowConsole, folderName: "", Enqueue: Enqueue, logType: logType);
         }
-        #endregion
-
-        #region 私有方法
 
         /// <summary>
         /// 获取lognet的日志level
@@ -521,17 +552,22 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="logLevel">日志级别</param>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Tag">The Tag<see cref="string"/></param>
+        /// <param name="isShowConsole">The isShowConsole<see cref="bool"/></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
         private static void WriteLog(LogLevelEnum logLevel, string message, Exception exception, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, string Tag = "", bool isShowConsole = false, LogType logType = LogType.Nlog)
         {
             try
             {
-                var logMsg = GetExceptionMsg(exception, message.ToString());
+                Console.WriteLine("==================WriteLog=====================");
+                //var logMsg = GetExceptionMsg(exception, message.ToString());
 
-                var folderName = string.IsNullOrEmpty(Tag) ? GetBussinussLogFilePath(bizEnum) : Tag;
+                //var folderName = string.IsNullOrEmpty(Tag) ? GetBussinussLogFilePath(bizEnum) : Tag;
 
-                WriteCustomLog(MethodBase.GetCurrentMethod().DeclaringType, logLevel, logMsg, logType, folderName);
+                //WriteCustomLog(MethodBase.GetCurrentMethod().DeclaringType, logLevel, logMsg, logType, folderName);
 
-                SetConsoleForegroundColor(logLevel, message, isShowConsole);
+                //SetConsoleForegroundColor(logLevel, message, isShowConsole);
             }
             catch (Exception ex)
             {
@@ -584,6 +620,8 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="type"></param>
         /// <param name="logLevel"></param>
         /// <param name="message"></param>
+        /// <param name="logType">The logType<see cref="LogType"/></param>
+        /// <param name="folderName">The folderName<see cref="string"/></param>
         private static void WriteCustomLog(Type type, LogLevelEnum logLevel, string message, LogType logType = LogType.Nlog, string folderName = "")
         {
             switch (logType)
@@ -666,6 +704,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="type"></param>
         /// <param name="logLevel"></param>
         /// <param name="message"></param>
+        /// <param name="folderName">The folderName<see cref="string"/></param>
         private static void RecoredLog4Net(Type type, Level logLevel, string message, string folderName = "")
         {
             LoadAppender(folderName);
@@ -712,13 +751,13 @@ namespace Gseey.Framework.Common.Helpers
             {
                 log.Fatal(message);
             }
-            //LogManager.Shutdown();//日志记录完成后，立即停止，以免让logger一直占用文件，方便查询；
         }
 
         /// <summary>
         /// 获取异常消息
         /// </summary>
         /// <param name="exception"></param>
+        /// <param name="message">The message<see cref="string"/></param>
         /// <returns></returns>
         private static string GetExceptionMsg(Exception exception = null, string message = "")
         {
@@ -742,7 +781,6 @@ namespace Gseey.Framework.Common.Helpers
                 builder.Append("\n\t错误信息：" + exception.Message);
                 builder.Append("\n\t异常类型：" + exception.GetType().FullName);
 
-                #region 根据不同的异常类型进行解析
                 if (exception is ArgumentNullException)
                 {
                     builder.Append("\n\t异常参数名：" + ((ArgumentNullException)exception).ParamName);
@@ -758,7 +796,6 @@ namespace Gseey.Framework.Common.Helpers
                     builder.Append("\n\tWeb返回值：" + exp.Status.ToString());
                     builder.Append("\n\tWeb异常路径：" + exp.Response.ResponseUri.AbsoluteUri);
                 }
-                #endregion
 
                 builder.Append("\n\t错误源：" + exception.Source);
                 builder.Append("\n\t异常方法：" + exception.TargetSite);
@@ -790,6 +827,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 获取传输过来的参数及参数值
         /// </summary>
+        /// <param name="request">The request<see cref="HttpRequest"/></param>
         /// <returns></returns>
         private static string GetNameValueCollection(HttpRequest request)
         {
@@ -823,7 +861,6 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 记录堆栈信息
         /// </summary>
-        /// <param name="exception"></param>
         /// <returns></returns>
         private static string GetStactTraceMsg()
         {
@@ -870,6 +907,9 @@ namespace Gseey.Framework.Common.Helpers
         /// <param name="logLevel">日志级别</param>
         /// <param name="message">消息内容</param>
         /// <param name="exception">异常信息</param>
+        /// <param name="bizEnum">The bizEnum<see cref="LogicBuissnussEnum"/></param>
+        /// <param name="Tag">The Tag<see cref="string"/></param>
+        /// <param name="isShowConsole">The isShowConsole<see cref="bool"/></param>
         private static void WriteLog<T>(LogLevelEnum logLevel, string message, Exception exception, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, string Tag = "", bool isShowConsole = false)
         {
             WriteLog(logLevel, message, exception, bizEnum, typeof(T).FullName, isShowConsole);
@@ -878,8 +918,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 根据业务类型,获取不同的业务appender
         /// </summary>
-        /// <param name="bizEnum"></param>
-        /// <param name="Tag"></param>
+        /// <param name="folderName">The folderName<see cref="string"/></param>
         private static void LoadAppender(string folderName)
         {
             var appender = _AppenderDictionary.GetOrAdd(folderName, m =>
@@ -910,19 +949,20 @@ namespace Gseey.Framework.Common.Helpers
                 fileAppender.ActivateOptions();
                 return fileAppender;
             });
-            //BasicConfigurator.Configure(appender);
         }
-        #endregion
-
-        #region 内部枚举
 
         /// <summary>
         /// 日志类型
         /// </summary>
         public enum LogType
         {
+            /// <summary>
+            /// Defines the Log4Net
+            /// </summary>
             Log4Net = 10,
-
+            /// <summary>
+            /// Defines the Nlog
+            /// </summary>
             Nlog = 20,
         }
 
@@ -931,10 +971,25 @@ namespace Gseey.Framework.Common.Helpers
         /// </summary>
         public enum LogLevelEnum
         {
+            /// <summary>
+            /// Defines the Info
+            /// </summary>
             Info,
+            /// <summary>
+            /// Defines the Error
+            /// </summary>
             Error,
+            /// <summary>
+            /// Defines the Warn
+            /// </summary>
             Warn,
+            /// <summary>
+            /// Defines the Fatal
+            /// </summary>
             Fatal,
+            /// <summary>
+            /// Defines the Debug
+            /// </summary>
             Debug,
         }
 
@@ -947,61 +1002,47 @@ namespace Gseey.Framework.Common.Helpers
             /// 默认（不区分）业务
             /// </summary>
             Default = 0,
-
             /// <summary>
             /// 通用业务
             /// </summary>
             Common = 10,
-
             /// <summary>
             /// 用户登录业务
             /// </summary>
             UserLogin = 20,
-
             /// <summary>
             /// 用户权限业务
             /// </summary>
             UserPermission = 30,
-
             /// <summary>
             /// 微信业务
             /// </summary>
             Wechat = 40,
-
             /// <summary>
             /// 记账业务
             /// </summary>
             Account = 50,
-
             /// <summary>
             /// 红酒业务
             /// </summary>
             Wine = 60,
-
             /// <summary>
             /// 框架日志
             /// </summary>
             Framework = 70,
-
             /// <summary>
             /// 系统日志
             /// </summary>
             System = 80,
-
             /// <summary>
             /// 看书世界
             /// </summary>
             Kanshushijie = 90,
-
             /// <summary>
             /// 小说
             /// </summary>
             Novel = 100
         }
-
-        #endregion
-
-        #region 内部私有类
 
         /// <summary>
         /// 日志消息
@@ -1009,41 +1050,46 @@ namespace Gseey.Framework.Common.Helpers
         private class LogMessage
         {
             /// <summary>
+            /// Gets or sets the Message
             /// 消息
             /// </summary>
             public string Message { get; set; }
 
             /// <summary>
+            /// Gets or sets the Exception
             /// 异常信息
             /// </summary>
             public Exception Exception { get; set; }
 
             /// <summary>
+            /// Gets or sets the LogLevel
             /// 日志级别
             /// </summary>
             public LogLevelEnum LogLevel { get; set; }
 
             /// <summary>
+            /// Gets or sets the BizEnum
             /// 业务类型
             /// </summary>
             public LogicBuissnussEnum BizEnum { get; set; }
 
             /// <summary>
+            /// Gets or sets the LogTag
             /// 日志标签
             /// </summary>
             public string LogTag { get; set; }
 
             /// <summary>
+            /// Gets or sets a value indicating whether IsShowConsole
             /// 是否在控制台展示
             /// </summary>
             public bool IsShowConsole { get; set; }
 
             /// <summary>
+            /// Gets or sets the LogType
             /// 日志类型
             /// </summary>
             public LogType LogType { get; set; }
         }
-
-        #endregion
     }
 }

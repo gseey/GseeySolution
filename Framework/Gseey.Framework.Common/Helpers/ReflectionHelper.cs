@@ -1,56 +1,55 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// 反射帮助类
     /// </summary>
     public sealed class ReflectionHelper
     {
-        #region 私有属性
-
         /// <summary>
         /// 类型的属性集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<PropertyInfo>> currentPropDict = new ConcurrentDictionary<Type, IEnumerable<PropertyInfo>>();
+
         /// <summary>
         /// 类型的自定义标签集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<Attribute>> currentCustomAttributeDict = new ConcurrentDictionary<Type, IEnumerable<Attribute>>();
+
         /// <summary>
         /// 类型的自定义标签集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<Attribute>> currentAttributeDict = new ConcurrentDictionary<Type, IEnumerable<Attribute>>();
+
         /// <summary>
         /// 类型的属性集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<MemberInfo>> currentMemberDict = new ConcurrentDictionary<Type, IEnumerable<MemberInfo>>();
+
         /// <summary>
         /// 类型的字段集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<FieldInfo>> currentFieldDict = new ConcurrentDictionary<Type, IEnumerable<FieldInfo>>();
+
         /// <summary>
         /// 类型的方法集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<MethodInfo>> currentMethodDict = new ConcurrentDictionary<Type, IEnumerable<MethodInfo>>();
+
         /// <summary>
         /// 类型的方法集合
         /// </summary>
         private static ConcurrentDictionary<Type, IEnumerable<EventInfo>> currentEventDict = new ConcurrentDictionary<Type, IEnumerable<EventInfo>>();
 
-        #endregion
-
-        #region 公共方法
-
         /// <summary>
         /// 获取类型的属性集合
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The obj<see cref="object"/></param>
         /// <returns></returns>
         public static IEnumerable<PropertyInfo> GetPropertyInfos(object obj)
         {
@@ -115,7 +114,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 获取类型的自定义标签集合
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The obj<see cref="object"/></param>
         /// <returns></returns>
         public static IEnumerable<MemberInfo> GetMemberInfos(object obj)
         {
@@ -132,7 +131,7 @@ namespace Gseey.Framework.Common.Helpers
         /// <summary>
         /// 获取类型的自定义标签集合
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="obj">The obj<see cref="object"/></param>
         /// <returns></returns>
         public static IEnumerable<FieldInfo> GetFieldInfos(object obj)
         {
@@ -161,7 +160,5 @@ namespace Gseey.Framework.Common.Helpers
             });
             return memberInfoList;
         }
-
-        #endregion
     }
 }

@@ -1,20 +1,28 @@
-﻿using Dapper;
-using Gseey.Framework.Common.Helpers;
-using Gseey.Framework.DataBase.Attributes;
-using Gseey.Framework.DataBase.EntityBase;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gseey.Framework.DataBase.DalBase
+﻿namespace Gseey.Framework.DataBase.DalBase
 {
+    using Dapper;
+    using Gseey.Framework.Common.Helpers;
+    using Gseey.Framework.DataBase.Attributes;
+    using Gseey.Framework.DataBase.EntityBase;
+    using System.Collections.Generic;
+    using System.Dynamic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    /// <summary>
+    /// Defines the <see cref="DapperDALBase{T}" />
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class DapperDALBase<T> where T : DapperEntityBase
     {
-        #region 内部方法
-
+        /// <summary>
+        /// The GetDbSelectSql
+        /// </summary>
+        /// <param name="selectColumnStr">The selectColumnStr<see cref="string"/></param>
+        /// <param name="whereSql">The whereSql<see cref="string"/></param>
+        /// <param name="orderbyStr">The orderbyStr<see cref="string"/></param>
+        /// <param name="groupbyStr">The groupbyStr<see cref="string"/></param>
+        /// <returns>The <see cref="string"/></returns>
         private string GetDbSelectSql(string selectColumnStr = "", string whereSql = "", string orderbyStr = "", string groupbyStr = "")
         {
             //获取表名
@@ -52,7 +60,6 @@ namespace Gseey.Framework.DataBase.DalBase
         /// <summary>
         /// 获取对象属性
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
         private List<string> GetProperties(object obj)
@@ -110,7 +117,6 @@ namespace Gseey.Framework.DataBase.DalBase
             return formatValue;
         }
 
-
         /// <summary>
         /// 生成insert 语句
         /// </summary>
@@ -132,6 +138,7 @@ namespace Gseey.Framework.DataBase.DalBase
         /// 生成select sql语句
         /// </summary>
         /// <param name="condition"></param>
+        /// <param name="conditionObj">The conditionObj<see cref="object"/></param>
         /// <param name="selectPart"></param>
         /// <param name="isOr"></param>
         /// <returns></returns>
@@ -151,13 +158,13 @@ namespace Gseey.Framework.DataBase.DalBase
             return string.Format("SELECT {2} FROM {0} WHERE {1}", tableName, wherePart, selectPart);
         }
 
-
         /// <summary>
         /// 创建update sql语句
         /// </summary>
         /// <param name="data">带更新字段</param>
         /// <param name="condition">更新条件</param>
         /// <param name="parameters"></param>
+        /// <returns>The <see cref="string"/></returns>
         private string BuildUpdateSql(dynamic data, dynamic condition, out DynamicParameters parameters)
         {
             var obj = data as object;
@@ -187,11 +194,7 @@ namespace Gseey.Framework.DataBase.DalBase
 
             return sql;
         }
-        #endregion
 
-        #region 公共方法
-
-        #region Insert操作
         /// <summary>
         /// Insert操作
         /// </summary>
@@ -217,9 +220,6 @@ namespace Gseey.Framework.DataBase.DalBase
 
             return await DapperDBHelper.InsertAsync(sql, param: obj, commandTimeout: commandTimeout);
         }
-        #endregion
-
-        #region Update操作
 
         /// <summary>
         /// Update操作
@@ -236,7 +236,6 @@ namespace Gseey.Framework.DataBase.DalBase
             return result;
         }
 
-
         /// <summary>
         /// Update操作
         /// </summary>
@@ -251,9 +250,6 @@ namespace Gseey.Framework.DataBase.DalBase
             var result = await DapperDBHelper.ExecuteAsync(sql, param: parameters, commandTimeout: commandTimeout);
             return result;
         }
-        #endregion
-
-        #region 查询方法
 
         /// <summary>
         /// 查询方法
@@ -289,22 +285,16 @@ namespace Gseey.Framework.DataBase.DalBase
             return result;
         }
 
-        #endregion
-
-        #region 根据sql自定义Insert/Update/Delete操作
-
+        /// <summary>
+        /// The Execute
+        /// </summary>
+        /// <param name="sql">The sql<see cref="string"/></param>
+        /// <param name="param">The param<see cref="object"/></param>
+        /// <param name="timeout">The timeout<see cref="int?"/></param>
+        /// <returns>The <see cref="int"/></returns>
         public int Execute(string sql, object param, int? timeout = null)
         {
             return DapperDBHelper.Execute(sql, param: param, commandTimeout: timeout);
         }
-
-        #endregion
-
-        #endregion
-
-        #region 公共属性
-        
-
-        #endregion
     }
 }

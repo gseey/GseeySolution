@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace Gseey.Framework.Common.Helpers
+﻿namespace Gseey.Framework.Common.Helpers
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    /// <summary>
+    /// Defines the <see cref="EncrtpyHelper" />
+    /// </summary>
     public sealed class EncrtpyHelper
     {
         /// <summary>

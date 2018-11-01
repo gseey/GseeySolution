@@ -1,34 +1,22 @@
-﻿using Dapper;
-using Gseey.ConsoleTest.AutofacDemo;
-using Gseey.Framework.Common.Helpers;
-using Gseey.Framework.DataBase;
-using Gseey.Framework.DataBase.DalBase;
-using Gseey.Framework.DataBase.EntityBase;
-using Gseey.Middleware.Weixin.BaseDTOs;
-using Gseey.Middleware.Weixin.Contact;
-using Gseey.Middleware.Weixin.Enums;
-using Gseey.Middleware.Weixin.Media;
-using Gseey.Middleware.Weixin.Menu;
-using Gseey.Middleware.Weixin.Menu.DTOs;
-using Gseey.Middleware.Weixin.Message;
-using Gseey.Middleware.Weixin.Message.Entities;
-using Gseey.Middleware.Weixin.Message.Entities.Request;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
-using Microsoft.Extensions.Logging.Debug;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-
-namespace Gseey.ConsoleTest
+﻿namespace Gseey.ConsoleTest
 {
+    using Gseey.Middleware.Weixin.Contact;
+    using Gseey.Middleware.Weixin.Message;
+    using Gseey.Middleware.Weixin.Message.Entities.Request;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    /// <summary>
+    /// Defines the <see cref="Program" />
+    /// </summary>
     public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The Main
+        /// </summary>
+        /// <param name="args">The args<see cref="string[]"/></param>
+        internal static void Main(string[] args)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -70,12 +58,19 @@ namespace Gseey.ConsoleTest
         }
     }
 
+    /// <summary>
+    /// Defines the <see cref="person" />
+    /// </summary>
     public class person
     {
+        /// <summary>
+        /// Gets or sets the name
+        /// </summary>
         public string name { get; set; }
 
+        /// <summary>
+        /// Gets or sets the age
+        /// </summary>
         public int age { get; set; }
-
     }
-
 }

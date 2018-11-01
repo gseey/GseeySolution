@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Castle.DynamicProxy;
-using Gseey.Framework.Common.Helpers;
-
-namespace Gseey.Framework.Common.AopIntercepor
+﻿namespace Gseey.Framework.Common.AopIntercepor
 {
+    using Castle.DynamicProxy;
+    using Gseey.Framework.Common.Helpers;
+    using System;
+
+    /// <summary>
+    /// Defines the <see cref="RedisInterceptor" />
+    /// </summary>
     public class RedisInterceptor : BaseInterceptor
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace Gseey.Framework.Common.AopIntercepor
         {
             var redisKey = string.Format("{0}.{1}_{2}", invocation.InvocationTarget, invocation.Method.Name, invocation.Arguments.ToJson());
             Console.WriteLine(redisKey);
-            
+
             var value = RedisHelper.StringGet(redisKey);
             if (!string.IsNullOrEmpty(value))
             {
