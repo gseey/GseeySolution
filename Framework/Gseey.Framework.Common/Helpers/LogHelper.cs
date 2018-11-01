@@ -16,6 +16,7 @@
     using System.Reflection;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// 日志帮助类 默认开启log4net的日志debug模式,如需关闭,配置文件添加节点即可: <add key="log4net.Internal.Quiet" value="true"/>
@@ -120,7 +121,7 @@
                 _logPath = "";
             }
 
-            Thread t = new Thread(new ParameterizedThreadStart(obj =>
+            Task.Run(() =>
             {
                 while (true)
                 {
@@ -136,10 +137,7 @@
                     //重置线程信号
                     _signal.Reset();
                 }
-            }), 10);
-
-            t.IsBackground = false;
-            t.Start();
+            });
         }
 
         /// <summary>
@@ -471,25 +469,25 @@
         public static void RunLog(string message, Exception exception = null, LogLevelEnum logLevel = LogLevelEnum.Info, LogicBuissnussEnum bizEnum = LogicBuissnussEnum.Default, bool isShowConsole = false, string folderName = "", bool Enqueue = false, LogType logType = LogType.Nlog)
         {
             Console.WriteLine("==================RunLog=====================");
-            //if (Enqueue)
-            //{
-            //    var msg = new LogMessage
-            //    {
-            //        Message = message,
-            //        Exception = exception,
-            //        BizEnum = bizEnum,
-            //        IsShowConsole = isShowConsole,
-            //        LogLevel = logLevel,
-            //        LogTag = folderName,
-            //        LogType = logType
-            //    };
-            //    _msgQueue.Enqueue(msg);
-            //    _signal.Set();
-            //}
-            //else
-            //{
-            //    WriteLog(logLevel, message, exception, bizEnum, folderName, isShowConsole, logType);
-            //}
+            if (Enqueue)
+            {
+                var msg = new LogMessage
+                {
+                    Message = message,
+                    Exception = exception,
+                    BizEnum = bizEnum,
+                    IsShowConsole = isShowConsole,
+                    LogLevel = logLevel,
+                    LogTag = folderName,
+                    LogType = logType
+                };
+                _msgQueue.Enqueue(msg);
+                _signal.Set();
+            }
+            else
+            {
+                WriteLog(logLevel, message, exception, bizEnum, folderName, isShowConsole, logType);
+            }
         }
 
         /// <summary>
