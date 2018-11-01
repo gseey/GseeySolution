@@ -4,19 +4,19 @@
         <name>Gseey.Apis.Weixin</name>
     </assembly>
     <members>
-        <member name="T:Gseey.Apis.Weixin.Controllers.Weixin.IndexController">
+        <member name="T:Gseey.Apis.Weixin.Controllers.IndexController">
             <summary>
             验证/被动回复消息
             </summary>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.#ctor(Gseey.Middleware.Weixin.Services.IMessageHandlerService,Microsoft.Extensions.Logging.ILogger{Gseey.Apis.Weixin.Controllers.Weixin.IndexController})">
+        <member name="M:Gseey.Apis.Weixin.Controllers.IndexController.#ctor(Gseey.Middleware.Weixin.Services.IMessageHandlerService,Microsoft.Extensions.Logging.ILogger{Gseey.Apis.Weixin.Controllers.IndexController})">
             <summary>
             构造函数
             </summary>
             <param name="messageHandlerService"></param>
             <param name="logger"></param>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.Index(System.Int32,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.IndexController.Index(System.Int32,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             微信后台验证地址（使用Get），微信后台的“接口配置信息”的Url
             </summary>
@@ -34,7 +34,7 @@
             nonce=1541329218
             </returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.IndexController.IndexAsync(System.Int32,System.String,System.String,System.String,System.String)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.IndexController.IndexAsync(System.Int32,System.String,System.String,System.String,System.String)">
             <summary>
             微信事件处理
             </summary>
@@ -45,12 +45,12 @@
             <param name="nonce">随机数</param>
             <returns></returns>
         </member>
-        <member name="T:Gseey.Apis.Weixin.Controllers.Weixin.ManageController">
+        <member name="T:Gseey.Apis.Weixin.Controllers.ManageController">
             <summary>
             后台管理模块
             </summary>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuCreate(System.Int32,Gseey.Middleware.Weixin.Menu.DTOs.ButtonGroup)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.ManageController.MenuCreate(System.Int32,Gseey.Middleware.Weixin.Menu.DTOs.ButtonGroup)">
             <summary>
             创建微信菜单
             </summary>
@@ -58,28 +58,28 @@
             <param name="buttonGroup"></param>
             <returns></returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuGet(System.Int32)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.ManageController.MenuGet(System.Int32)">
             <summary>
             获取微信菜单
             </summary>
             <param name="channelId"></param>
             <returns></returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.MenuDelete(System.Int32)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.ManageController.MenuDelete(System.Int32)">
             <summary>
             删除微信菜单
             </summary>
             <param name="channelId"></param>
             <returns></returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.SendTextMsg(System.Int32)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.ManageController.SendTextMsg(System.Int32)">
             <summary>
             发送文本消息
             </summary>
             <param name="channelId"></param>
             <returns></returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Controllers.Weixin.ManageController.SendMediaMsg(System.Int32)">
+        <member name="M:Gseey.Apis.Weixin.Controllers.ManageController.SendMediaMsg(System.Int32)">
             <summary>
             发送媒体消息
             </summary>

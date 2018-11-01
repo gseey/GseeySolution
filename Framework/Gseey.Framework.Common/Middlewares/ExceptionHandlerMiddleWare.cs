@@ -33,7 +33,7 @@ namespace Gseey.Framework.Common.Middlewares
             if (ex == null)
                 return;
             //记录日志
-            ex.WriteExceptionLog("捕获全局未处理异常");
+            ex.WriteExceptionLog("捕获全局未处理异常", isShowConsole: true);
 
             var location = ConfigHelper.Get("ErrorPage", "/");
             context.Response.Redirect(location);

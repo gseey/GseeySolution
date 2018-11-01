@@ -16,6 +16,8 @@ namespace Gseey.Framework.Common.AopIntercepor
         /// <param name="invocation"></param>
         public override void PostProceed(IInvocation invocation)
         {
+            LogHelper.RunLog(string.Format("info"), logLevel: LogHelper.LogLevelEnum.Warn);
+
             var msg = string.Format("{0}.{1}_{2}", invocation.InvocationTarget, invocation.Method.Name, invocation.Arguments.ToJson());
 
             var result = string.Format("==========={2}===========\n{0}\n{1}", msg, invocation.ReturnValue.ToJson(), GuidStr);
@@ -29,6 +31,8 @@ namespace Gseey.Framework.Common.AopIntercepor
         /// <param name="invocation"></param>
         public override void PreProceed(IInvocation invocation)
         {
+            LogHelper.RunLog(string.Format("info"), logLevel: LogHelper.LogLevelEnum.Warn);
+
             var msg = string.Format("==========={3}===========\n{0}.{1}_{2}", invocation.InvocationTarget, invocation.Method.Name, invocation.Arguments.ToJson(), GuidStr);
 
             LogHelper.RunLog(msg, folderName: "LogInterceptor");

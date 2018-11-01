@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Gseey.Middleware.Weixin.BaseDTOs
 {
+    [Serializable]
     [Table(Name = "WeixinConfig")]
     public class WeixinConfigEntity : DapperEntityBase
     {

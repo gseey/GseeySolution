@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Gseey.Apis.Weixin.Controllers.Weixin
+namespace Gseey.Apis.Weixin.Controllers
 {
     /// <summary>
     /// 验证/被动回复消息

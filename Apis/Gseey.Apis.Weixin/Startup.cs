@@ -52,36 +52,34 @@ namespace Gseey.Apis.Weixin
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                //c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-                c.SwaggerDoc("v1", new Info
-                {
-                    Version = "v1",
-                    Title = "微信api",
-                    Description = "微信api",
-                    TermsOfService = "Gseey",
-                    Contact = new Contact
-                    {
-                        Name = "Gaos",
-                        Email = string.Empty,
-                        Url = "www.gseey.com"
-                    },
-                    License = new License
-                    {
-                        Name = "Use under LICX",
-                        Url = "https://example.com/license"
-                    }
-                });
+            //// Register the Swagger generator, defining 1 or more Swagger documents
+            //services.AddSwaggerGen(c =>
+            //{
+            //    //c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            //    c.SwaggerDoc("v1", new Info
+            //    {
+            //        Version = "v1",
+            //        Title = "微信api",
+            //        Description = "微信api",
+            //        TermsOfService = "Gseey",
+            //        Contact = new Contact
+            //        {
+            //            Name = "Gaos",
+            //            Email = string.Empty,
+            //            Url = "www.gseey.com"
+            //        },
+            //        License = new License
+            //        {
+            //            Name = "Use under LICX",
+            //            Url = "https://example.com/license"
+            //        }
+            //    });
 
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-
-            services.AddMvcCore().AddApiExplorer();
+            //    // Set the comments path for the Swagger JSON and UI.
+            //    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //    c.IncludeXmlComments(xmlPath);
+            //});
 
             var builder = new ContainerBuilder();
             //注册微信服务
@@ -109,16 +107,16 @@ namespace Gseey.Apis.Weixin
                 app.UseHsts();
             }
             app.UseStaticFiles();
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
+            //// Enable middleware to serve generated Swagger as a JSON endpoint.
+            //app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "微信api");
-                c.RoutePrefix = string.Empty;
-            });
+            //// Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            //// specifying the Swagger JSON endpoint.
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "GseeyApi");
+            //    c.RoutePrefix = string.Empty;
+            //});
 
 
             //异常处理中间件

@@ -1,4 +1,5 @@
-﻿using Gseey.Framework.DataBase.DalBase;
+﻿using Gseey.Framework.Common.Helpers;
+using Gseey.Framework.DataBase.DalBase;
 using Gseey.Middleware.Weixin.BaseDTOs;
 using System;
 using System.Collections.Generic;
@@ -24,17 +25,26 @@ namespace Gseey.Middleware.Weixin.Helpers
         {
             var configDto = new WeixinConfigDTO();
             var weixinDal = new DapperDALBase<WeixinConfigEntity>();
-            var weixinConfigEntities = await weixinDal.QueryListAsync(new { ChannelId = channelId });
-            if (weixinConfigEntities != null
-                && weixinConfigEntities.Count() > 0
-                && weixinConfigEntities.SingleOrDefault().ChannelId > 0)
+
+            var redisKey = string.Format("WeixinConfigEntity_{0}", channelId);
+            //先从缓存中读取渠道配置信息
+            var weixinConfigEntity = await RedisHelper.StringGetAsync<WeixinConfigEntity>(redisKey);
+            if (weixinConfigEntity == null)
             {
-                configDto.AgentId = weixinConfigEntities.SingleOrDefault().AgentId;
-                configDto.AppId = weixinConfigEntities.SingleOrDefault().AppId;
-                configDto.AppSercet = weixinConfigEntities.SingleOrDefault().AppSercet;
-                configDto.ChannelId = weixinConfigEntities.SingleOrDefault().ChannelId;
-                configDto.EncodingAESKey = weixinConfigEntities.SingleOrDefault().EncodingAESKey;
-                configDto.Token = weixinConfigEntities.SingleOrDefault().Token;
+                var weixinConfigEntities = await weixinDal.QueryListAsync(new { ChannelId = channelId });
+                if (weixinConfigEntities != null
+                    && weixinConfigEntities.Count() > 0)
+                {
+                    weixinConfigEntity = weixinConfigEntities.SingleOrDefault();
+                    if (weixinConfigEntity.ChannelId > 0)
+                    {
+                        await RedisHelper.StringSetAsync(redisKey, weixinConfigEntity);
+                    }
+                }
+            }
+            if (weixinConfigEntity == null)
+            {
+                configDto = ConvertToWeixinConfigDTO(weixinConfigEntity);
 
                 return configDto;
             }
@@ -84,6 +94,27 @@ namespace Gseey.Middleware.Weixin.Helpers
             configDto = GetWeixinConfigDTOAsync(channelId).Result;
             var result = configDto.WxType == Enums.WeixinType.WxWork;
             return result;
+        }
+
+        #endregion
+
+        #region 转换为dto
+
+        /// <summary>
+        /// 转换为dto
+        /// </summary>
+        /// <param name="singleWeixinConfigEntity"></param>
+        /// <returns></returns>
+        public static WeixinConfigDTO ConvertToWeixinConfigDTO(WeixinConfigEntity singleWeixinConfigEntity)
+        {
+            var configDto = new WeixinConfigDTO();
+            configDto.AgentId = singleWeixinConfigEntity.AgentId;
+            configDto.AppId = singleWeixinConfigEntity.AppId;
+            configDto.AppSercet = singleWeixinConfigEntity.AppSercet;
+            configDto.ChannelId = singleWeixinConfigEntity.ChannelId;
+            configDto.EncodingAESKey = singleWeixinConfigEntity.EncodingAESKey;
+            configDto.Token = singleWeixinConfigEntity.Token;
+            return configDto;
         }
 
         #endregion

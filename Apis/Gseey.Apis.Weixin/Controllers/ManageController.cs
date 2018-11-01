@@ -6,7 +6,7 @@ using Gseey.Framework.Common.Helpers;
 using Gseey.Middleware.Weixin.Menu.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Gseey.Apis.Weixin.Controllers.Weixin
+namespace Gseey.Apis.Weixin.Controllers
 {
     /// <summary>
     /// 后台管理模块
@@ -39,6 +39,8 @@ namespace Gseey.Apis.Weixin.Controllers.Weixin
         [Route("menu/get/{channelId}")]
         public IActionResult MenuGet(int channelId)
         {
+            LogHelper.RunLog(string.Format("info"), logLevel: LogHelper.LogLevelEnum.Warn);
+
             return Content("MenuGet");
         }
 

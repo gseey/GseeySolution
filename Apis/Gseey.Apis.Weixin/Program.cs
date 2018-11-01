@@ -26,7 +26,7 @@ namespace Gseey.Apis.Weixin
         /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseUrls("http://0.0.0.0:6000")
+            .UseUrls("http://*:6000")
             .UseStartup<Startup>()
             ;
     }
