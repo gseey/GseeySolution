@@ -1,6 +1,7 @@
 ﻿namespace Gseey.ConsoleTest
 {
     using Exceptionless;
+    using Gseey.Framework.Common.Helpers;
     using Gseey.Middleware.Weixin.Contact;
     using Gseey.Middleware.Weixin.Message;
     using Gseey.Middleware.Weixin.Message.Entities.Request;
@@ -23,6 +24,8 @@
 
             //https://www.cnblogs.com/yilezhu/p/9339017.html
             //var dbType = ConfigHelper.Get("Gseey:Connections:DbConnectionType");
+
+            LogHelper.RunLog("w3mElygkYDcK7oygeRnQYfR9qPDkxDAUifCvsvI5", logLevel: LogHelper.LogLevelEnum.Error);
 
             ExceptionlessClient.Default.Configuration.ApiKey = "w3mElygkYDcK7oygeRnQYfR9qPDkxDAUifCvsvI5";
             ExceptionlessClient.Default.Configuration.ServerUrl = "http://localhost:50000";

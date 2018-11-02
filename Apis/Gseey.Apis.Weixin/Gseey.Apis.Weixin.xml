@@ -131,12 +131,13 @@
             <param name="services"></param>
             <returns></returns>
         </member>
-        <member name="M:Gseey.Apis.Weixin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+        <member name="M:Gseey.Apis.Weixin.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)">
             <summary>
             The Configure
             </summary>
             <param name="app"></param>
             <param name="env"></param>
+            <param name="loggerFactory"></param>
         </member>
     </members>
 </doc>

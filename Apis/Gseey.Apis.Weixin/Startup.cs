@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
@@ -87,7 +89,8 @@ namespace Gseey.Apis.Weixin
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        /// <param name="loggerFactory"></param>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -97,6 +100,13 @@ namespace Gseey.Apis.Weixin
             {
                 app.UseHsts();
             }
+
+            //添加控制台输出
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            loggerFactory.AddNLog();//添加NLog
+            NLog.LogManager.LoadConfiguration($@"{env.ContentRootPath}/nlog.config");//指定NLog的配置文件
 
             app.UseExceptionless("w0ju4PBSRuxTTdK67WeDxe63tEtFVW0jDRsh9pCT");
 

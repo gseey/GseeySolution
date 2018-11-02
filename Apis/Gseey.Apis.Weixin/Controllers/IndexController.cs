@@ -55,7 +55,8 @@ namespace Gseey.Apis.Weixin.Controllers
         [ProducesResponseType(400)]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
-            HttpContext.RequestServices.GetService(typeof(ILogger));
+
+            _logger.LogError("fdsfsfsdfs");
 
             //校验微信签名
             var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
