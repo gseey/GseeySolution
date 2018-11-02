@@ -1,18 +1,20 @@
-﻿namespace Gseey.Apis.Weixin
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Exceptionless;
+using Gseey.Framework.Common.Middlewares;
+using Gseey.Middleware.Weixin;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Reflection;
+
+namespace Gseey.Apis.Weixin
 {
-    using Autofac;
-    using Autofac.Extensions.DependencyInjection;
-    using Gseey.Framework.Common.Middlewares;
-    using Gseey.Middleware.Weixin;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Swashbuckle.AspNetCore.Swagger;
-    using System;
-    using System.IO;
-    using System.Reflection;
 
     /// <summary>
     /// Defines the <see cref="Startup" />
@@ -95,6 +97,8 @@
             {
                 app.UseHsts();
             }
+
+            app.UseExceptionless("w0ju4PBSRuxTTdK67WeDxe63tEtFVW0jDRsh9pCT");
 
             app.UseStaticFiles();
             // Enable middleware to serve generated Swagger as a JSON endpoint.

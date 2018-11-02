@@ -12,7 +12,7 @@
         /// <summary>
         /// Defines the GuidStr
         /// </summary>
-        private readonly string GuidStr = new Guid().ToString().Replace("-", "");
+        private readonly string GuidStr = Guid.NewGuid().ToString().Replace("-", "");
 
         /// <summary>
         /// 注入后执行方法

@@ -1,5 +1,6 @@
 ﻿namespace Gseey.ConsoleTest
 {
+    using Exceptionless;
     using Gseey.Middleware.Weixin.Contact;
     using Gseey.Middleware.Weixin.Message;
     using Gseey.Middleware.Weixin.Message.Entities.Request;
@@ -20,10 +21,15 @@
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-
+            //https://www.cnblogs.com/yilezhu/p/9339017.html
             //var dbType = ConfigHelper.Get("Gseey:Connections:DbConnectionType");
 
+            ExceptionlessClient.Default.Configuration.ApiKey = "w3mElygkYDcK7oygeRnQYfR9qPDkxDAUifCvsvI5";
+            ExceptionlessClient.Default.Configuration.ServerUrl = "http://localhost:50000";
+            ExceptionlessClient.Default.SubmitLog("Logging made easy");
 
+            var ex = new Exception("fsfsd");
+            ex.ToExceptionless().Submit();
 
 
             var result = ContactApi.GetTagMemberAsync(3, 3).Result;

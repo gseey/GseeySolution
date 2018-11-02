@@ -1,12 +1,14 @@
-﻿namespace Gseey.Apis.Weixin.Controllers
+﻿using Gseey.Framework.Common.Attributes;
+using Gseey.Middleware.Weixin.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Gseey.Apis.Weixin.Controllers
 {
-    using Gseey.Middleware.Weixin.Services;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// 验证/被动回复消息
@@ -53,7 +55,8 @@
         [ProducesResponseType(400)]
         public IActionResult Index(int channelId, string msg_signature, string signature, string timestamp, string nonce, string echostr)
         {
-            _logger.LogInformation("info");
+            HttpContext.RequestServices.GetService(typeof(ILogger));
+
             //校验微信签名
             var checkResult = _messageHandlerService.CheckChannelWeixinSign(channelId, msg_signature, signature, timestamp, nonce, echostr);
             if (checkResult.Success)
