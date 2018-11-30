@@ -1,15 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 
-    var fileList = (List<string>)ViewData["FileList"];
+    var fileList = (FileInfoModel)ViewData["FileModel"];
 }
 
 
 <div>
     <ul>
-        @foreach (var item in fileList)
+        @foreach (var item in fileList.DirDict)
         {
-            <li>@item</li>
+            <li><a href="/Home/Index?path=@item.Value.FilePath">@item.Value.FilePath</a></li>
+        }
+    </ul>
+
+    <ul>
+        @foreach (var item in fileList.FileDict)
+        {
+            <li><a href="/Home/Index?path=@item.Value.FilePath">@item.Value.FilePath</a></li>
         }
     </ul>
 </div>

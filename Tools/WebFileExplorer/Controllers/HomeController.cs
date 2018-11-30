@@ -11,7 +11,6 @@ namespace WebFileExplorer.Controllers
 {
     public class HomeController : Controller
     {
-
         public string RootPath { get; set; }
 
         public HomeController(IOptions<FileConfigModel> fileConfig)
@@ -19,41 +18,42 @@ namespace WebFileExplorer.Controllers
             RootPath = fileConfig.Value.RootPath;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string path)
         {
-            var fileDict = new Dictionary<string, string>();
-            System.IO.Directory.GetDirectories(RootPath).ToList().ForEach(dirInfo =>
+            var filePath = string.IsNullOrEmpty(path) ? RootPath : path;
+
+            var model = new FileInfoModel();
+
+            if (System.IO.Directory.Exists(filePath))
             {
-                var rootPath = System.IO.Path.GetFullPath(dirInfo);
-                var key = string.Format("Dir_{0}", rootPath);
-                if (!fileDict.ContainsKey(key))
+                System.IO.Directory.GetDirectories(filePath).ToList().ForEach(dirInfo =>
                 {
-                    fileDict.Add(key, rootPath);
-                }
-
-                System.IO.Directory.GetDirectories(rootPath).ToList().ForEach(subDirInfo =>
-                {
-                    rootPath = System.IO.Path.GetFullPath(subDirInfo);
-                    key = string.Format("Dir_{0}", rootPath);
-                    if (!fileDict.ContainsKey(key))
+                    var rootPath = System.IO.Path.GetFullPath(dirInfo);
+                    var key = string.Format("Dir_{0}", rootPath);
+                    if (!model.DirDict.ContainsKey(key))
                     {
-                        fileDict.Add(key, rootPath);
+                        model.DirDict.Add(key, new FileInfoItemModel { FileFullName = System.IO.Path.GetDirectoryName(rootPath), FilePath = rootPath });
                     }
                 });
 
-                System.IO.Directory.GetFiles(rootPath).ToList().ForEach(subFileInfo =>
+                System.IO.Directory.GetFiles(filePath).ToList().ForEach(fileInfo =>
                 {
-                    rootPath = System.IO.Path.GetFullPath(subFileInfo);
-                    key = string.Format("File_{0}", rootPath);
-                    if (!fileDict.ContainsKey(key))
+                    var rootPath = System.IO.Path.GetFullPath(fileInfo);
+                    var key = string.Format("File_{0}", rootPath);
+                    if (!model.FileDict.ContainsKey(key))
                     {
-                        fileDict.Add(key, rootPath);
+                        model.FileDict.Add(key, new FileInfoItemModel { FileFullName = System.IO.Path.GetFileNameWithoutExtension(rootPath), FilePath = rootPath });
                     }
                 });
-            });
+            }
+            ViewData["FileModel"] = model;
 
-            var fileList = new List<string>();
-            foreach (var item in fileDict.Values)
+            var fileList = new List<FileInfoItemModel>();
+            foreach (var item in model.DirDict.Values)
+            {
+                fileList.Add(item);
+            }
+            foreach (var item in model.FileDict.Values)
             {
                 fileList.Add(item);
             }
