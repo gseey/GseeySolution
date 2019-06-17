@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gseey.Middleware.Weixin", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 Tools", "5 Tools", "{DEBEB123-849A-48BA-80A4-C0B6A863B1F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFileExplorer", "Tools\WebFileExplorer\WebFileExplorer.csproj", "{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebFileExplorer", "Tools\WebFileExplorer\WebFileExplorer.csproj", "{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaobaokeTools", "TaobaokeTools\TaobaokeTools.csproj", "{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +95,7 @@ Global
 		{BAB26939-EF74-47A4-A356-0A5C09F2DB43} = {1BFF248D-8399-425C-8180-3BD9556821DD}
 		{732D7327-C1DC-4C67-9557-61E27998F9B9} = {7376D610-FD89-476E-AEF0-8406C63F2830}
 		{E7CCFE3B-19A1-47A8-90DD-407AB06B0F59} = {DEBEB123-849A-48BA-80A4-C0B6A863B1F1}
+		{4901A0B0-5DF6-486F-944A-C47E5FBE2DD2} = {DEBEB123-849A-48BA-80A4-C0B6A863B1F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FCF8BEF-F038-44B1-9A89-4D0A66576AEA}

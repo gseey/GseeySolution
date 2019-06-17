@@ -20,6 +20,10 @@
         /// <param name="args">The args<see cref="string[]"/></param>
         internal static void Main(string[] args)
         {
+            var json = TaobaokeTools.TaoBaoToolHelper.GetCouponList();
+
+
+
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             //https://www.cnblogs.com/yilezhu/p/9339017.html
